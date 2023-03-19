@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">"تطبيق الطقس "</string>
+    <string name="app_name">" تطبيق الطقس "</string>
     <string name="hello_blank_fragment">فارغ</string>
     <string name="home">الرئيسية</string>
     <string name="favorites">"المضلة "</string>
