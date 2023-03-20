@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".SplashFragment"
+        tools:context=".onboarding.SplashFragment"
         android:background="#0C000000">
 
         <!-- TODO: Update blank fragment layout -->

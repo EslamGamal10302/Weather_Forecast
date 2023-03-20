@@ -19,7 +19,7 @@ class SecondScreen : Fragment() {
         binding=DataBindingUtil.inflate(inflater,R.layout.fragment_second_screen, container, false)
         binding.lifecycleOwner
         val viewPager =activity?.findViewById<ViewPager2>(R.id.viewPager)
-        binding.tv2.setOnClickListener{
+        binding.next2.setOnClickListener{
             viewPager?.currentItem=2
         }
         return binding.root

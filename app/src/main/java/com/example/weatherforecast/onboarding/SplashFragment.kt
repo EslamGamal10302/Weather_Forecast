@@ -1,4 +1,4 @@
-package com.example.weatherforecast
+package com.example.weatherforecast.onboarding
 
 import android.content.Context
 import android.os.Bundle
@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
+import com.example.weatherforecast.R
 import com.example.weatherforecast.databinding.FragmentSplashBinding
 
 
@@ -21,7 +22,7 @@ class SplashFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_splash, container, false)
+        binding=DataBindingUtil.inflate(inflater, R.layout.fragment_splash, container, false)
         binding.lifecycleOwner
         binding.splashLottie.animate().setDuration(10000).setStartDelay(1500);
         Handler().postDelayed({

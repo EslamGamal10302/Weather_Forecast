@@ -21,7 +21,7 @@ class ThirdScreen : Fragment() {
         binding=DataBindingUtil.inflate(inflater,R.layout.fragment_third, container, false)
         binding.lifecycleOwner
         val viewPager =activity?.findViewById<ViewPager2>(R.id.viewPager)
-        binding.tv3.setOnClickListener{
+        binding.finish.setOnClickListener{
             findNavController().navigate(R.id.action_viewPagerFragment_to_homeFragment)
             onBoardingFinished()
         }

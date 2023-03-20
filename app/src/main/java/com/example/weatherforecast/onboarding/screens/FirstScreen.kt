@@ -19,7 +19,7 @@ class FirstScreen : Fragment() {
         binding=DataBindingUtil.inflate(inflater,R.layout.fragment_first_screen, container, false)
         binding.lifecycleOwner
         val viewPager =activity?.findViewById<ViewPager2>(R.id.viewPager)
-        binding.tv1.setOnClickListener{
+        binding.next.setOnClickListener{
             viewPager?.currentItem=1
         }
         return binding.root
