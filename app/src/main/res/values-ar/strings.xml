@@ -6,4 +6,10 @@
     <string name="favorites">"المضلة "</string>
     <string name="settings">"الاعدادات "</string>
     <string name="alerts">التنبيهات</string>
+    <string name="pressure">الضغط</string>
+    <string name="humidity">الرطوبة</string>
+    <string name="wind">الرياح</string>
+    <string name="cloud">السحاب</string>
+    <string name="ultraviolet">فوق بنفسجي</string>
+    <string name="visibility">الرؤية</string>
 </resources>
