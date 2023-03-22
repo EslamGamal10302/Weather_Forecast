@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="13dp"
         app:cardCornerRadius="50dp"
-        app:cardElevation="20dp">
+        android:backgroundTint="@color/medium_purple">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/daily_constrain"
@@ -22,25 +22,15 @@
 
             android:elevation="20dp">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/rnadom_cardView"
+            <ImageView
+                android:id="@+id/dailyWeatherImg"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_marginStart="120dp"
+                android:layout_marginStart="140dp"
                 android:elevation="20dp"
-                app:cardCornerRadius="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/daily_weather_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:srcCompat="@drawable/icon" />
-            </androidx.cardview.widget.CardView>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/dailly_day_txt"
@@ -54,7 +44,7 @@
                 android:gravity="center"
                 android:text="Sat"
                 android:textAlignment="gravity"
-                android:textColor="@color/medium_purple"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +61,7 @@
                 android:layout_marginBottom="15dp"
                 android:text="22/16°C"
                 android:textAlignment="center"
-                android:textColor="@color/medium_purple"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -84,10 +74,10 @@
                 android:layout_marginStart="10dp"
                 android:text="Clear sky"
                 android:textAlignment="gravity"
-                android:textColor="@color/medium_purple"
-                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/rnadom_cardView"
+                app:layout_constraintStart_toEndOf="@+id/dailyWeatherImg"
                 app:layout_constraintTop_toTopOf="parent" />
 
 

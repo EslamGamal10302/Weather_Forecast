@@ -31,7 +31,7 @@ class WeatherClient private constructor():RemoteSource {
 
     }
     override suspend fun getCurrentWeather(): Forecast {
-        val myResponser = MyApi.service.getResponse(33.44,-94.04)
+        val myResponser = MyApi.service.getResponse(30.033333,31.233334)
         if (myResponser.isSuccessful) {
             myData  = myResponser.body()!!
         }

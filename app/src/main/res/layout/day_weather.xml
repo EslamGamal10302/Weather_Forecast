@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="13dp"
         app:cardCornerRadius="50dp"
-        app:cardElevation="20dp">
+        android:backgroundTint="@color/medium_purple">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/daily_constrain"
@@ -22,25 +22,15 @@
 
             android:elevation="20dp">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/rnadom_cardView"
+            <ImageView
+                android:id="@+id/dailyWeatherImg"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:elevation="20dp"
-                app:cardCornerRadius="50dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dailly_day_txt">
-
-                <ImageView
-                    android:id="@+id/daily_weather_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:srcCompat="@drawable/icon" />
-            </androidx.cardview.widget.CardView>
+                app:layout_constraintTop_toBottomOf="@+id/dailly_day_txt" />
 
             <TextView
                 android:id="@+id/dailly_day_txt"
@@ -52,8 +42,8 @@
                 android:gravity="center"
                 android:text="6 AM"
                 android:textAlignment="gravity"
-                android:textColor="@color/medium_purple"
-                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -68,12 +58,12 @@
                 android:layout_marginBottom="15dp"
                 android:text="16°C"
                 android:textAlignment="center"
-                android:textColor="@color/medium_purple"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rnadom_cardView" />
+                app:layout_constraintTop_toBottomOf="@+id/dailyWeatherImg" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

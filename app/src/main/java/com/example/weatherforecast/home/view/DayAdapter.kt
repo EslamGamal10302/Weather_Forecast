@@ -5,10 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.weatherforecast.Forecast
 import com.example.weatherforecast.Hourly
 import com.example.weatherforecast.R
 import com.example.weatherforecast.databinding.DayWeatherBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DayAdapter(var context: Context,var myDayWeather:List<Hourly>):RecyclerView.Adapter<DayAdapter.DayViewHolder>() {
     lateinit var binding: DayWeatherBinding
@@ -21,13 +24,24 @@ class DayAdapter(var context: Context,var myDayWeather:List<Hourly>):RecyclerVie
     }
 
     override fun getItemCount(): Int {
-        return 24
+        return myDayWeather.size
     }
 
     override fun onBindViewHolder(holder: DayViewHolder, position: Int) {
         val weather=myDayWeather[position]
-        binding.daillyDayTxt.text=weather.dt.toString()
-        binding.daillyTempTxt.text=weather.temp.toString()
+        var date=Date(weather.dt*1000L)
+        var sdf= SimpleDateFormat("hh:mm a")
+        sdf.timeZone=TimeZone.getDefault()
+        var formatedData=sdf.format(date)
+        binding.daillyDayTxt.text=formatedData
+
+        var temp=weather.temp
+        var intTemp = Math.ceil(temp).toInt()
+
+        var tempCelucis= "$intTemp°C"
+        binding.daillyTempTxt.text=tempCelucis
+        val url = "https://openweathermap.org/img/wn/${weather.weather.get(0).icon}@2x.png"
+        Glide.with(context).load(url).into(binding.dailyWeatherImg)
 
     }
 }
