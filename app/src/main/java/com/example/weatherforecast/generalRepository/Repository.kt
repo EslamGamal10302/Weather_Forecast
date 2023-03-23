@@ -17,7 +17,7 @@ class Repository private constructor(var RS: RemoteSource):RepositoryInterface {
         }
 
     }
-    override suspend fun getCurrentWeather(): Forecast {
-        return RS.getCurrentWeather()
+    override suspend fun getCurrentWeather(latitude: Double, longitude: Double): Forecast {
+        return RS.getCurrentWeather(latitude,longitude)
     }
 }

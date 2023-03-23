@@ -1,8 +1,12 @@
 package com.example.weatherforecast
 
+
 object Constant{
     const val API_KEY:String="416c3f7d60f73a4f8f76c658c93cf3b7"
+    const val My_LOCATION_PERMISSION_ID = 5005
 }
+
+
 
 data class Forecast(
     // val place: String,

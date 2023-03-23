@@ -1,5 +1,7 @@
 package com.example.weatherforecast
 
+import android.content.Context
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +25,8 @@ class MainActivity : AppCompatActivity() {
         setUpActionBar()
         NavigationUI.setupWithNavController(binding.navigationView,navController)
     }
+
+
 
     private fun setUpActionBar() {
         val actionBar = supportActionBar

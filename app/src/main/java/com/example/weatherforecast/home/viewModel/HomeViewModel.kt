@@ -9,7 +9,7 @@ import com.example.weatherforecast.generalRepository.RepositoryInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val repo:RepositoryInterface):ViewModel() {
+class HomeViewModel(private val repo:RepositoryInterface,private val latitude:Double,private val longitude:Double):ViewModel() {
    private var myWeather:MutableLiveData<Forecast> = MutableLiveData<Forecast>()
     val finalWeather: LiveData<Forecast> = myWeather
     init {
@@ -17,7 +17,7 @@ class HomeViewModel(private val repo:RepositoryInterface):ViewModel() {
     }
     private fun getMyWeatherStatus(){
         viewModelScope.launch(Dispatchers.IO) {
-              myWeather.postValue(repo.getCurrentWeather())
+              myWeather.postValue(repo.getCurrentWeather(latitude,longitude))
         }
     }
 }
