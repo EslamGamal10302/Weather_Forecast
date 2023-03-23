@@ -6,6 +6,8 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable.Orientation
 import android.location.*
 import android.os.Bundle
@@ -59,10 +61,13 @@ class HomeFragment : Fragment() {
         loading.show()
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onResume() {
         super.onResume()
         (activity as AppCompatActivity?)?.supportActionBar?.show()
         (activity as AppCompatActivity?)?.supportActionBar?.title = "Home"
+        //medium_purple
+
         //  getLastLocation() call here
         factory = HomeViewModelFactory(
             GpsLocation(requireContext()),
