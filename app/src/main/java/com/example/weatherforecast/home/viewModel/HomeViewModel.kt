@@ -30,4 +30,5 @@ class HomeViewModel(private val myGps: GpsLocation,private val context: Context,
             getMyWeatherStatus(it.first,it.second)
         }
     }
+
 }

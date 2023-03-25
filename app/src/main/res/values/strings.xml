@@ -12,4 +12,5 @@
     <string name="cloud">Cloud</string>
     <string name="ultraviolet">Ultra violet</string>
     <string name="visibility">Visibility</string>
+    <string name="hint_search">search for place </string>
 </resources>

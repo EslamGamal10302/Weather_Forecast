@@ -12,4 +12,5 @@
     <string name="cloud">السحاب</string>
     <string name="ultraviolet">فوق بنفسجي</string>
     <string name="visibility">الرؤية</string>
+    <string name="hint_search">ابحث عن المكان </string>
 </resources>
