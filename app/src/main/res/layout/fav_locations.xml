@@ -30,7 +30,7 @@
                 android:text="Clear sky"
                 android:textAlignment="gravity"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -31,4 +31,11 @@ class FavoritesViewModel (private val repo: RepositoryInterface): ViewModel() {
              getAllFavLocations()
         }
     }
+
+    fun deleteFromFavorites(data:MyLocations){
+        viewModelScope.launch (Dispatchers.IO){
+            repo.delete(data)
+            getAllFavLocations()
+        }
+    }
 }

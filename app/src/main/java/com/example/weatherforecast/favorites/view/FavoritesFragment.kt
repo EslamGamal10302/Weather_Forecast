@@ -1,5 +1,7 @@
 package com.example.weatherforecast.favorites.view
 
+import android.app.ProgressDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -23,9 +25,10 @@ import com.example.weatherforecast.favorites.viewModel.FavoritesViewModelFactory
 import com.example.weatherforecast.generalRepository.Repository
 import com.example.weatherforecast.home.view.DayAdapter
 import com.example.weatherforecast.network.WeatherClient
+import com.google.android.gms.maps.model.LatLng
 
 
-class FavoritesFragment : Fragment() {
+class FavoritesFragment : Fragment(),FavoriteOnClickListner{
    lateinit var binding: FragmentFavoritesBinding
     val args : FavoritesFragmentArgs by navArgs()
     lateinit var factory:FavoritesViewModelFactory
@@ -57,13 +60,22 @@ class FavoritesFragment : Fragment() {
             var manger = LinearLayoutManager(requireContext())
             manger.orientation = RecyclerView.VERTICAL
             binding.favRv.layoutManager = manger
-            binding.favRv.adapter = FavoriteAdapter(requireContext(), it)
+            binding.favRv.adapter = FavoriteAdapter(requireContext(), it,this)
         }
 
         binding.floatingActionButton3.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_favoritesFragment_to_mapsFragment)
         }
         return binding.root
+    }
+
+    override fun removeFromFavorite(data: MyLocations) {
+      viewModel.deleteFromFavorites(data)
+    }
+
+    override fun showFavoriteLocationWeather(latitude: Double, longitude: Double) {
+        var action = FavoritesFragmentDirections.actionFavoritesFragmentToFavoriteWeather2(LatLng(latitude,longitude))
+        Navigation.findNavController(requireView()).navigate(action)
     }
 
 
