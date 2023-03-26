@@ -18,6 +18,11 @@
         <action
             android:id="@+id/action_favoritesFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" />
+        <argument
+            android:name="location"
+            app:argType="com.google.android.gms.maps.model.LatLng"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/alertsFragment"
@@ -60,5 +65,9 @@
         android:id="@+id/mapsFragment"
         android:name="com.example.weatherforecast.MapsFragment"
         android:label="fragment_maps"
-        tools:layout="@layout/fragment_maps" />
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/action_mapsFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+    </fragment>
 </navigation>

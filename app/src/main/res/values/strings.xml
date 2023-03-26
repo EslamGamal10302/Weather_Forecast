@@ -13,4 +13,5 @@
     <string name="ultraviolet">Ultra violet</string>
     <string name="visibility">Visibility</string>
     <string name="hint_search">search for place </string>
+    <string name="addtofav">Add To Favorite</string>
 </resources>

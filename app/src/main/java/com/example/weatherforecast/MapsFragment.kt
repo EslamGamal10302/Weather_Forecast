@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.navigation.Navigation
 import com.example.weatherforecast.databinding.FragmentMapsBinding
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -24,8 +25,9 @@ import java.io.IOException
 class MapsFragment : Fragment() {
     lateinit var binding: FragmentMapsBinding
     lateinit var map : GoogleMap
-    var lat :Double = 31.0
-    var lon :Double = 30.0
+    var lat :Double = 0.0
+    var lon :Double = 0.0
+    lateinit var location : LatLng
 
     private val callback = OnMapReadyCallback { googleMap ->
         /**
@@ -53,6 +55,10 @@ class MapsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
        binding=FragmentMapsBinding.inflate(inflater,container,false)
+        binding.add.setOnClickListener {
+            var action = MapsFragmentDirections.actionMapsFragmentToFavoritesFragment(LatLng(lat,lon))
+            Navigation.findNavController(it).navigate(action)
+        }
         return binding.root
     //inflater.inflate(R.layout.fragment_maps, container, false)
     }
@@ -91,9 +97,11 @@ class MapsFragment : Fragment() {
         if (list.size >0) {
             var adress: Address = list.get(0)
             var location: String = adress.adminArea
+            var y = adress.featureName
+            var x = adress.countryName
             lat  = adress.latitude
             lon = adress.longitude
-            Log.i("test","$lat $lon")
+            Log.i("test","$lat $lon $location")
             goToLatAndLonf(lat , lon , 17f)
         }
 
