@@ -101,7 +101,7 @@ class MapsFragment : Fragment() {
             var x = adress.countryName
             lat  = adress.latitude
             lon = adress.longitude
-            Log.i("test","$lat $lon $location")
+            Log.i("test","$lat $lon $y,$x")
             goToLatAndLonf(lat , lon , 17f)
         }
 

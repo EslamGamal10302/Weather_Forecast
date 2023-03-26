@@ -1,11 +1,17 @@
 package com.example.weatherforecast
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 
 object Constant{
    // const val API_KEY:String="416c3f7d60f73a4f8f76c658c93cf3b7"
    const val API_KEY:String="a2ea0afa8140452e429af957b34af036"
     const val My_LOCATION_PERMISSION_ID = 5005
 }
+
+@Entity(tableName = "locations")
+data class MyLocations constructor(@PrimaryKey var latitude:Double, var longitude:Double):java.io.Serializable
 
 
 

@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.weatherforecast.Constant
 import com.example.weatherforecast.R
+import com.example.weatherforecast.dataBase.LocalRepository
 import com.example.weatherforecast.databinding.FragmentHomeBinding
 import com.example.weatherforecast.generalRepository.Repository
 import com.example.weatherforecast.home.viewModel.HomeViewModel
@@ -72,7 +73,7 @@ class HomeFragment : Fragment() {
         factory = HomeViewModelFactory(
             GpsLocation(requireContext()),
             requireContext(),
-            Repository.getInstance(WeatherClient.getInstance())
+            Repository.getInstance(WeatherClient.getInstance(),LocalRepository.getInstance(requireContext()))
         )
         viewModel = ViewModelProvider(requireActivity(), factory).get(HomeViewModel::class.java)
         viewModel.getMyGpsLocation()
