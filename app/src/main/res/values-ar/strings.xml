@@ -13,5 +13,7 @@
     <string name="ultraviolet">فوق بنفسجي</string>
     <string name="visibility">الرؤية</string>
     <string name="hint_search">ابحث عن المكان </string>
-    <string name="addtofav">"اضافه الي المفضلة "</string>
+    <string name="addtofav">اضافة</string>
+    <string name="radio_Gps">"القمر الصناعي "</string>
+    <string name="radio_Map">الخريطة</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.weatherforecast
 
+import android.content.Context
 import android.location.Address
 import android.location.Geocoder
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.example.weatherforecast.databinding.FragmentMapsBinding
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -28,6 +30,7 @@ class MapsFragment : Fragment() {
     var lat :Double = 0.0
     var lon :Double = 0.0
     lateinit var location : LatLng
+    val args : MapsFragmentArgs by navArgs()
 
     private val callback = OnMapReadyCallback { googleMap ->
         /**
@@ -56,8 +59,21 @@ class MapsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
        binding=FragmentMapsBinding.inflate(inflater,container,false)
         binding.add.setOnClickListener {
-            var action = MapsFragmentDirections.actionMapsFragmentToFavoritesFragment(LatLng(lat,lon))
-            Navigation.findNavController(it).navigate(action)
+            when(args.status){
+                "home" -> {
+                    val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
+                    val editor = sharedPref.edit()
+                    editor.putString("location","mapResult")
+                    editor.putFloat("lat",lat.toFloat())
+                    editor.putFloat("lon",lon.toFloat())
+                    editor.apply()
+                var action = MapsFragmentDirections.actionMapsFragmentToHomeFragment()
+                    Navigation.findNavController(requireView()).navigate(action)
+
+                }
+                "fav"->{ var action = MapsFragmentDirections.actionMapsFragmentToFavoritesFragment(LatLng(lat,lon))
+                    Navigation.findNavController(it).navigate(action)}
+            }
         }
         return binding.root
     //inflater.inflate(R.layout.fragment_maps, container, false)

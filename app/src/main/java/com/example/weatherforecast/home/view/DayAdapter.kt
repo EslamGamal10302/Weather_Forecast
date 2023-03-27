@@ -33,15 +33,15 @@ class DayAdapter(var context: Context,var myDayWeather:List<Hourly>):RecyclerVie
         var sdf= SimpleDateFormat("hh:mm a")
         sdf.timeZone=TimeZone.getDefault()
         var formatedData=sdf.format(date)
-        binding.daillyDayTxt.text=formatedData
+       holder.binding.daillyDayTxt.text=formatedData
 
         var temp=weather.temp
         var intTemp = Math.ceil(temp).toInt()
 
         var tempCelucis= "$intTemp°C"
-        binding.daillyTempTxt.text=tempCelucis
+        holder.binding.daillyTempTxt.text=tempCelucis
         val url = "https://openweathermap.org/img/wn/${weather.weather.get(0).icon}@2x.png"
-        Glide.with(context).load(url).into(binding.dailyWeatherImg)
+        Glide.with(context).load(url).into(holder.binding.dailyWeatherImg)
 
     }
 }

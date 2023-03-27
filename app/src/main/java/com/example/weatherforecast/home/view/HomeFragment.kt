@@ -26,6 +26,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -55,6 +57,8 @@ class HomeFragment : Fragment() {
     lateinit var factory: HomeViewModelFactory
     lateinit var viewModel: HomeViewModel
     lateinit var loading: ProgressDialog
+
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         loading = ProgressDialog(context)
@@ -70,13 +74,35 @@ class HomeFragment : Fragment() {
         //medium_purple
 
         //  getLastLocation() call here
+        val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
+        val status = sharedPref.getString("location","")
         factory = HomeViewModelFactory(
             GpsLocation(requireContext()),
             requireContext(),
             Repository.getInstance(WeatherClient.getInstance(),LocalRepository.getInstance(requireContext()))
         )
         viewModel = ViewModelProvider(requireActivity(), factory).get(HomeViewModel::class.java)
-        viewModel.getMyGpsLocation()
+        when (status){
+            "map"-> {
+                loading.dismiss()
+                Toast.makeText(requireContext(),"please choose your location",Toast.LENGTH_LONG).show()
+                var action = HomeFragmentDirections.actionHomeFragmentToMapsFragment("home")
+                Navigation.findNavController(requireView()).navigate(action)
+            }
+            "gps" ->{
+                viewModel.getMyGpsLocation()
+            }
+            "mapResult"->{
+               var latitude = sharedPref.getFloat("lat",0f).toDouble()
+                var longitude = sharedPref.getFloat("lon",0f).toDouble()
+                viewModel.getMyWeatherStatus(latitude,longitude)
+
+            }
+        }
+
+       // viewModel.getMyGpsLocation()
+
+
         viewModel.finalWeather.observe(viewLifecycleOwner) {
             Log.i("test", "call view model")
             loading.dismiss()

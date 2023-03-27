@@ -37,15 +37,13 @@ class WeekAdapter(var context: Context,var myWeekWeather:List<Daily>):RecyclerVi
         calendar.set(Calendar.DAY_OF_MONTH,intDay)
         var format=SimpleDateFormat("EEEE")
         var day=format.format(calendar.time)
-        binding.daillyDayTxt.text=day
+        holder.binding.daillyDayTxt.text=day
 
         val url = "https://openweathermap.org/img/wn/${weather.weather.get(0).icon}@2x.png"
-        Glide.with(context).load(url).into(binding.dailyWeatherImg)
-        binding.weeklyWeatherStatusTxt.text=weather.weather.get(0).description
+        Glide.with(context).load(url).into(holder.binding.dailyWeatherImg)
+        holder.binding.weeklyWeatherStatusTxt.text=weather.weather.get(0).description
         var max = Math.ceil(weather.temp.max).toInt()
         var min = Math.ceil(weather.temp.min).toInt()
-        binding.daillyTempTxt.text="$max/$min°C"
-
-
+        holder.binding.daillyTempTxt.text="$max/$min°C"
     }
 }

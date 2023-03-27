@@ -1,5 +1,6 @@
 package com.example.weatherforecast.favorites.view
 
+import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
@@ -41,6 +42,7 @@ class FavoritesFragment : Fragment(),FavoriteOnClickListner{
 
 
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding=DataBindingUtil.inflate(inflater, R.layout.fragment_favorites, container, false)
@@ -64,7 +66,9 @@ class FavoritesFragment : Fragment(),FavoriteOnClickListner{
         }
 
         binding.floatingActionButton3.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_favoritesFragment_to_mapsFragment)
+           // Navigation.findNavController(it).navigate(R.id.action_favoritesFragment_to_mapsFragment)
+          var action = FavoritesFragmentDirections.actionFavoritesFragmentToMapsFragment("fav")
+            Navigation.findNavController(requireView()).navigate(action)
         }
         return binding.root
     }

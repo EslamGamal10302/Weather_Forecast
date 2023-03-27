@@ -19,7 +19,7 @@ class HomeViewModel(private val myGps: GpsLocation,private val context: Context,
     init {
 
     }
-    private fun getMyWeatherStatus(latitude:Double,longitude:Double){
+     fun getMyWeatherStatus(latitude:Double,longitude:Double){
         viewModelScope.launch(Dispatchers.IO) {
             myWeather.postValue(repo.getCurrentWeather(latitude,longitude))
         }
