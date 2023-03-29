@@ -16,4 +16,15 @@
     <string name="addtofav">اضافة</string>
     <string name="radio_Gps">"القمر الصناعي "</string>
     <string name="radio_Map">الخريطة</string>
+    <string name="language">اللغه</string>
+    <string name="location">الموقع</string>
+    <string name="units">"الوحدات "</string>
+    <string name="english">الانجليزية</string>
+    <string name="arabic">العربية</string>
+    <string name="gps">خاصية الموقع الحالي</string>
+    <string name="map">الخريطة</string>
+    <string name="standard">قياسي ( كيلفن - متر / ثانية )</string>
+    <string name="metric">ميترك (سيليزيس - متر / ثانية )</string>
+    <string name="imperial">امبريال ( فهرنهيت - ميل /ثانية )</string>
+    <string name="save">حفظ</string>
 </resources>

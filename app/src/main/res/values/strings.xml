@@ -16,4 +16,15 @@
     <string name="addtofav">"Add "</string>
     <string name="radio_Gps">GPS</string>
     <string name="radio_Map">Map</string>
+    <string name="language">Language</string>
+    <string name="location">Location</string>
+    <string name="units">Units</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="gps">Gps</string>
+    <string name="map">Map</string>
+    <string name="standard">Standard ( Kelvin - metre/sec )</string>
+    <string name="metric">Metric ( Celsius - metre/sec )</string>
+    <string name="imperial">Imperial ( Fahrenheit - miles/hour)</string>
+    <string name="save">Save</string>
 </resources>

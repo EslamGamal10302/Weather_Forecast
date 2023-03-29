@@ -1,21 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".settings.view.SettingsFragment">
+        android:background="@drawable/shape"
+        >
 
-        <!-- TODO: Update blank fragment layout -->
+        <RadioGroup
+            android:id="@+id/IntialradioGroup"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/settingselectors"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">>
+
+            <RadioButton
+                android:id="@+id/radio_gps"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:buttonTint="@color/white"
+                android:drawableEnd="@drawable/location"
+                android:drawablePadding="5dp"
+                android:layoutDirection="rtl"
+                android:paddingLeft="15dp"
+                android:text="@string/gps"
+                android:textColor="@color/white"
+                android:textStyle="bold"></RadioButton>
+
+            <RadioButton
+                android:id="@+id/radio_map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:buttonTint="@color/white"
+                android:drawableEnd="@drawable/location"
+                android:drawablePadding="5dp"
+                android:layoutDirection="rtl"
+                android:paddingLeft="15dp"
+                android:text="@string/map"
+                android:textColor="@color/white"
+                android:textStyle="bold"></RadioButton>
+        </RadioGroup>
+
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Settings" />
+            android:id="@+id/lang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="45dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/location"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/IntialradioGroup"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    </FrameLayout>
+        <RadioGroup
+            android:id="@+id/langGroup"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/settingselectors"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView10">
+
+            <RadioButton
+                android:id="@+id/radio_english"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:buttonTint="@color/white"
+                android:drawableEnd="@drawable/location"
+                android:drawablePadding="5dp"
+                android:layoutDirection="rtl"
+                android:paddingLeft="15dp"
+                android:text="@string/english"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/radio_arabic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:buttonTint="@color/white"
+                android:drawableEnd="@drawable/location"
+                android:drawablePadding="5dp"
+                android:layoutDirection="rtl"
+                android:paddingLeft="15dp"
+                android:text="@string/arabic"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/language"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/IntialradioGroup" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/units"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/langGroup" />
+
+        <RadioGroup
+            android:id="@+id/tempGroup"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/settingselectors"
+            app:layout_constraintTop_toBottomOf="@+id/textView14" >
+
+            <RadioButton
+                android:id="@+id/radio_standard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:buttonTint="@color/white"
+                android:drawableEnd="@drawable/location"
+                android:drawablePadding="5dp"
+                android:layoutDirection="rtl"
+                android:paddingLeft="15dp"
+                android:text="@string/standard"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/radio_metric"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:buttonTint="@color/white"
+                android:drawableEnd="@drawable/location"
+                android:drawablePadding="5dp"
+                android:layoutDirection="rtl"
+                android:paddingLeft="15dp"
+                android:text="@string/metric"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/radio_imperial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:buttonTint="@color/white"
+                android:drawableEnd="@drawable/location"
+                android:drawablePadding="5dp"
+                android:layoutDirection="rtl"
+                android:paddingLeft="15dp"
+                android:text="@string/imperial"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/medium_purple"
+            android:text="@string/save"
+            app:cornerRadius="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
