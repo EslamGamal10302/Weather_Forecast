@@ -15,6 +15,8 @@ import java.util.*
 
 class DayAdapter(var context: Context,var myDayWeather:List<Hourly>):RecyclerView.Adapter<DayAdapter.DayViewHolder>() {
     lateinit var binding: DayWeatherBinding
+    val sharedPref = context.getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
+    val units = sharedPref.getString("units","metric")
     class DayViewHolder(var binding: DayWeatherBinding):RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
@@ -37,9 +39,10 @@ class DayAdapter(var context: Context,var myDayWeather:List<Hourly>):RecyclerVie
 
         var temp=weather.temp
         var intTemp = Math.ceil(temp).toInt()
+        var finalTemp = if(units.equals("standard")) "$intTemp°K" else if (units.equals("metric")) "$intTemp°C" else "$intTemp°F"
+       // var tempCelucis= "$intTemp°C"
+        holder.binding.daillyTempTxt.text=finalTemp
 
-        var tempCelucis= "$intTemp°C"
-        holder.binding.daillyTempTxt.text=tempCelucis
         val url = "https://openweathermap.org/img/wn/${weather.weather.get(0).icon}@2x.png"
         Glide.with(context).load(url).into(holder.binding.dailyWeatherImg)
 

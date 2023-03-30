@@ -131,8 +131,9 @@ class HomeFragment : Fragment() {
             binding.weatherStatusTxt.text = it.current.weather.get(0).description
             var temp = it.current.temp
             var intTemp = Math.ceil(temp).toInt()
-            var tempCelucis = "$intTemp°C"
-            binding.weatherTempTxt.text = tempCelucis
+           // var tempCelucis = "$intTemp°C"
+            var finalTemp = if(units.equals("standard")) "$intTemp°K" else if (units.equals("metric")) "$intTemp°C" else "$intTemp°F"
+            binding.weatherTempTxt.text = finalTemp
             val url = "https://openweathermap.org/img/wn/${it.current.weather.get(0).icon}@2x.png"
             Glide.with(requireContext()).load(url).into(binding.weatherIconImg)
 
