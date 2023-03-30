@@ -27,4 +27,11 @@
     <string name="metric">Metric ( Celsius - metre/sec )</string>
     <string name="imperial">Imperial ( Fahrenheit - miles/hour)</string>
     <string name="save">Save</string>
+    <string name="answer_no">NO,GO BACK</string>
+    <string name="answer_yes">YES,I\'M SURE</string>
+    <string name="dialog_message">You will lose it from your favourite  locations list</string>
+    <string name="dialog_title">Wait ! Are You Sure You Want To Delete This location ?</string>
+    <string name="remove_fav">Removed from your favorite list</string>
+    <string name="choose_location">please choose your location</string>
+    <string name="loading">Loading............</string>
 </resources>

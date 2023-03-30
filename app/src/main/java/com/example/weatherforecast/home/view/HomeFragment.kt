@@ -62,20 +62,25 @@ class HomeFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         loading = ProgressDialog(context)
-        loading.setMessage("Loading.....")
-        loading.show()
+        loading.setMessage(getString(R.string.loading))
     }
 
     @SuppressLint("ResourceAsColor")
     override fun onResume() {
         super.onResume()
         (activity as AppCompatActivity?)?.supportActionBar?.show()
-        (activity as AppCompatActivity?)?.supportActionBar?.title = "Home"
+        (activity as AppCompatActivity?)?.supportActionBar?.title = requireActivity().getString(R.string.home)
         //medium_purple
+
 
         //  getLastLocation() call here
         val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
         val status = sharedPref.getString("location","")
+        val units = sharedPref.getString("units","metric")
+        val language = sharedPref.getString("language","en")
+        Log.i("milad","$units")
+        Log.i("milad","$language")
+
         factory = HomeViewModelFactory(
             GpsLocation(requireContext()),
             requireContext(),
@@ -85,17 +90,20 @@ class HomeFragment : Fragment() {
         when (status){
             "map"-> {
                 loading.dismiss()
-                Toast.makeText(requireContext(),"please choose your location",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), requireContext().getString(R.string.choose_location),Toast.LENGTH_LONG).show()
                 var action = HomeFragmentDirections.actionHomeFragmentToMapsFragment("home")
                 Navigation.findNavController(requireView()).navigate(action)
             }
             "gps" ->{
-                viewModel.getMyGpsLocation()
+                loading.show()
+                viewModel.getMyGpsLocation(language!!,units!!)
+                Log.i("milad","here gps")
             }
             "mapResult"->{
                var latitude = sharedPref.getFloat("lat",0f).toDouble()
                 var longitude = sharedPref.getFloat("lon",0f).toDouble()
-                viewModel.getMyWeatherStatus(latitude,longitude)
+                viewModel.getMyWeatherStatus(latitude,longitude,language!!,units!!)
+                Log.i("milad","here gps modified")
 
             }
         }

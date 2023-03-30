@@ -15,7 +15,7 @@ class AlertsFragment : Fragment() {
     lateinit var binding: FragmentAlertsBinding
     override fun onStart() {
         super.onStart()
-        (activity as AppCompatActivity?)?.supportActionBar?.title="Alerts"
+        (activity as AppCompatActivity?)?.supportActionBar?.title=requireActivity().getString(R.string.alerts)
     }
 
 

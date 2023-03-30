@@ -37,7 +37,7 @@ class FavoritesFragment : Fragment(),FavoriteOnClickListner{
 
     override fun onResume() {
         super.onResume()
-        (activity as AppCompatActivity?)?.supportActionBar?.title="Favorites"
+        (activity as AppCompatActivity?)?.supportActionBar?.title=requireActivity().getString(R.string.favorites)
     }
 
 

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -42,11 +43,14 @@ class FavoriteWeather : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.i("yarb","${args.location!!.latitude}  ${ args.location!!.longitude}")
-        factory= FavoriteWeatherViewModelFactory(  Repository.getInstance(
+        val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
+        val units = sharedPref.getString("units","metric")
+        val language = sharedPref.getString("language","en")
+        factory= FavoriteWeatherViewModelFactory( Repository.getInstance(
             WeatherClient.getInstance(),
             LocalRepository.getInstance(requireContext())))
         viewModel= ViewModelProvider(requireActivity(),factory).get(FavoriteWeatherViewModel::class.java)
-        viewModel.getMyWeatherStatus(args.location!!.latitude,args.location!!.longitude)
+        viewModel.getMyWeatherStatus(args.location!!.latitude,args.location!!.longitude,language!!,units!!)
         viewModel.finalWeather.observe(viewLifecycleOwner){
             loading.dismiss()
             binding.areaTxt.visibility = View.VISIBLE
@@ -59,17 +63,17 @@ class FavoriteWeather : Fragment() {
             binding.dateTxt.text = currentDate.toString()
 
 
-            binding.cardView.visibility=View.VISIBLE
+            binding.myFavcardView.visibility=View.VISIBLE
             binding.weatherTempTxt.visibility=View.VISIBLE
             binding.weatherStatusTxt.visibility=View.VISIBLE
-            binding.weatherIconImg.visibility=View.VISIBLE
+            binding.myFavWeatherIconImg.visibility=View.VISIBLE
             binding.weatherStatusTxt.text = it.current.weather.get(0).description
             var temp = it.current.temp
             var intTemp = Math.ceil(temp).toInt()
             var tempCelucis = "$intTemp°C"
             binding.weatherTempTxt.text = tempCelucis
             val url = "https://openweathermap.org/img/wn/${it.current.weather.get(0).icon}@2x.png"
-            Glide.with(requireContext()).load(url).into(binding.weatherIconImg)
+            Glide.with(requireContext()).load(url).into(binding.myFavWeatherIconImg)
 
             binding.detailsCard.visibility=View.VISIBLE
             binding.pressureTxt.text = it.current.pressure.toString()
@@ -96,7 +100,12 @@ class FavoriteWeather : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         loading = ProgressDialog(context)
-        loading.setMessage("Loading.....")
+        loading.setMessage(getString(R.string.loading))
         loading.show()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        (activity as AppCompatActivity?)?.supportActionBar?.title=requireActivity().getString(R.string.favorites)
     }
 }

@@ -50,13 +50,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/area_txt" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardView"
+                android:id="@+id/myFavcardView"
                 android:layout_width="350dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/medium_purple"
                 android:elevation="20dp"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:cardCornerRadius="35dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +75,7 @@
                         android:text="clear sky "
                         android:textColor="@color/white"
                         android:textSize="20sp"
-                        android:visibility="invisible"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -88,18 +88,19 @@
                         android:text="13°"
                         android:textColor="@color/white"
                         android:textSize="34sp"
-                        android:visibility="invisible"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="@+id/weather_status_txt"
                         app:layout_constraintStart_toStartOf="@+id/weather_status_txt"
                         app:layout_constraintTop_toBottomOf="@+id/weather_status_txt" />
 
                     <ImageView
-                        android:id="@+id/weatherIconImg"
+                        android:id="@+id/myFavWeatherIconImg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="50dp"
-                        android:visibility="invisible"
+                        android:layout_marginEnd="50dp"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/weather_temp_txt"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/apitest" />
@@ -115,7 +116,7 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView" />
+                app:layout_constraintTop_toBottomOf="@+id/myFavcardView" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/weekly_weather_rv"

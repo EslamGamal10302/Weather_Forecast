@@ -29,7 +29,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="15dp"
                 android:buttonTint="@color/white"
-                android:drawableEnd="@drawable/location"
+                android:drawableEnd="@drawable/gps"
                 android:drawablePadding="5dp"
                 android:layoutDirection="rtl"
                 android:paddingLeft="15dp"
@@ -43,7 +43,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="15dp"
                 android:buttonTint="@color/white"
-                android:drawableEnd="@drawable/location"
+                android:drawableEnd="@drawable/map"
                 android:drawablePadding="5dp"
                 android:layoutDirection="rtl"
                 android:paddingLeft="15dp"
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:buttonTint="@color/white"
-                android:drawableEnd="@drawable/location"
+                android:drawableEnd="@drawable/english"
                 android:drawablePadding="5dp"
                 android:layoutDirection="rtl"
                 android:paddingLeft="15dp"
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:buttonTint="@color/white"
-                android:drawableEnd="@drawable/location"
+                android:drawableEnd="@drawable/arabic"
                 android:drawablePadding="5dp"
                 android:layoutDirection="rtl"
                 android:paddingLeft="15dp"
@@ -143,7 +143,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:buttonTint="@color/white"
-                android:drawableEnd="@drawable/location"
+                android:drawableEnd="@drawable/kelvin"
                 android:drawablePadding="5dp"
                 android:layoutDirection="rtl"
                 android:paddingLeft="15dp"
@@ -157,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:buttonTint="@color/white"
-                android:drawableEnd="@drawable/location"
+                android:drawableEnd="@drawable/celsius"
                 android:drawablePadding="5dp"
                 android:layoutDirection="rtl"
                 android:paddingLeft="15dp"
@@ -171,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:buttonTint="@color/white"
-                android:drawableEnd="@drawable/location"
+                android:drawableEnd="@drawable/fahrenheit"
                 android:drawablePadding="5dp"
                 android:layoutDirection="rtl"
                 android:paddingLeft="15dp"
@@ -179,18 +179,6 @@
                 android:textColor="@color/white"
                 android:textStyle="bold" />
         </RadioGroup>
-
-        <Button
-            android:id="@+id/save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/medium_purple"
-            android:text="@string/save"
-            app:cornerRadius="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

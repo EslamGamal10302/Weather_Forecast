@@ -10,8 +10,8 @@ interface WeatherService {
     @GET("onecall")
     suspend fun getResponse(@Query("lat") lat:Double,
                             @Query("lon") lon:Double,
-                            @Query("lang")lang:String="en",
-                            @Query("units")units:String="metric",
+                            @Query("units")units:String,
+                            @Query("lang")lang:String,
                             @Query("exclude")exclude:String="minutely",
                             @Query("appid")appid:String=Constant.API_KEY): Response<Forecast>
 }

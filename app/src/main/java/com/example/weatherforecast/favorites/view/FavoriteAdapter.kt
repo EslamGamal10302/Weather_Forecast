@@ -49,18 +49,22 @@ class FavoriteAdapter (var context: Context, var myFavLocations:List<MyLocations
         }
         holder.binding.delete.setOnClickListener {
           //  listner.removeFromFavorite(myFavLocation)
-            val yes = "YES,I'M SURE"
-            val no = "NO,GO BACK"
+           // val yes = "YES,I'M SURE"
+           // val no = "NO,GO BACK"
+            val yes = context.getString(R.string.answer_yes)
+            val no = context.getString(R.string.answer_no)
+            val message = context.getString(R.string.dialog_message)
+            val title = context.getString(R.string.dialog_title)
             val builder = AlertDialog.Builder(context)
-            builder.setMessage("You will lose it from your favourite  locations list")
-            builder.setTitle("Wait ! Are You Sure You Want To Delete This location ?")
+            builder.setMessage(message)
+            builder.setTitle(title)
             builder.setCancelable(false)
             builder.setPositiveButton(Html.fromHtml("<font color='#0f4cbd'>$yes</font>"),
                 DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int ->
                     listner.removeFromFavorite(myFavLocation)
                     Toast.makeText(
                         context,
-                        "Removed from your favorite list",
+                        context.getString(R.string.remove_fav),
                         Toast.LENGTH_SHORT
                     ).show()
                 } as DialogInterface.OnClickListener)

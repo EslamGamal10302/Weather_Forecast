@@ -19,8 +19,13 @@ class Repository private constructor(var RS: RemoteSource,var LS:LocalSource):Re
         }
 
     }
-    override suspend fun getCurrentWeather(latitude: Double, longitude: Double): Forecast {
-        return RS.getCurrentWeather(latitude,longitude)
+    override suspend fun getCurrentWeather(
+        latitude: Double,
+        longitude: Double,
+        language: String,
+        units: String
+    ): Forecast {
+        return RS.getCurrentWeather(latitude,longitude,language,units)
     }
 
     override suspend fun getStoredLocations(): List<MyLocations> {
