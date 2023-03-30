@@ -34,4 +34,10 @@ class HomeViewModel(private val myGps: GpsLocation,private val context: Context,
         }
     }
 
+    fun addCurrentLocationToDataBase(data:Forecast){
+        viewModelScope.launch {
+            repo.insertMyCurrentLocation(data)
+        }
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.example.weatherforecast
 
+import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 
@@ -15,38 +17,50 @@ data class MyLocations constructor(@PrimaryKey var latitude:Double, var longitud
 
 
 
+
+@Entity(tableName = "backup")
 data class Forecast(
     // val place: String,
     //val alerts: List<Alert>,
-    val current: Current,
-    val daily: List<Daily>,
-    val hourly: List<Hourly>,
-    val lat: Double,
-    val lon: Double,
-    val minutely: List<Minutely>,
-    val timezone: String,
-    val timezone_offset: Int
-)
+    @Embedded
+    var current: Current,
+    var daily: List<Daily>,
+    var hourly: List<Hourly>,
+    var lat: Double,
+    var lon: Double,
+    @Ignore
+    var minutely: List<Minutely>,
+    @PrimaryKey
+    var timezone: String,
+    var timezone_offset: Int
+){
+    constructor():this(Current(), listOf(), listOf(),0.00,0.00, listOf(),"",0)
+}
 data class Current(
-    val clouds: Int,//need
-    val dew_point: Double,
-    val dt: Int,//need
-    val feels_like: Double,
-    val humidity: Int,//need
-    val pressure: Int,//need
-    val rain: Rain,
-    val sunrise: Int,
-    val sunset: Int,
-    val temp: Double,//need
-    val uvi: Double,
-    val visibility: Int,
-    val weather: List<Weather>,
-    val wind_deg: Int,
-    val wind_speed: Double//need
-)
+    var clouds: Int,//need
+    var dew_point: Double,
+    var dt: Int,//need
+    var feels_like: Double,
+    var humidity: Int,//need
+    var pressure: Int,//need
+    @Ignore
+    var rain: Rain,
+    var sunrise: Int,
+    var sunset: Int,
+    var temp: Double,//need
+    var uvi: Double,
+    var visibility: Int,
+    var weather: List<Weather>,
+    var wind_deg: Int,
+    var wind_speed: Double//need
+) {
+    constructor():this(0,0.0,0,0.0,0,0, Rain(),0,0,0.0,0.0,0, listOf(),
+    0,
+    0.0)
+}
 data class Daily(
-    val clouds: Int,//need
-    val dew_point: Double,
+    var clouds: Int,//need
+    var dew_point: Double,
     val dt: Int,
     val feels_like: FeelsLike,
     val humidity: Int,//need
@@ -99,7 +113,9 @@ data class Minutely(
 )
 data class Rain(
     val `1h`: Double
-)
+){
+    constructor():this(0.0)
+}
 data class RainX(
     val `1h`: Double
 )
@@ -119,4 +135,7 @@ data class Weather(
     val icon: String,
     val id: Int,
     val main: String
-)
+){
+    constructor():this("","",0,"")
+}
+

@@ -114,6 +114,7 @@ class HomeFragment : Fragment() {
         viewModel.finalWeather.observe(viewLifecycleOwner) {
             Log.i("test", "call view model")
             loading.dismiss()
+            viewModel.addCurrentLocationToDataBase(it)
             binding.areaTxt.visibility = View.VISIBLE
             binding.areaTxt.text = it.timezone
 

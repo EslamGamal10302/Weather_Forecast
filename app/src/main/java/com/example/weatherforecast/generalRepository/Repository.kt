@@ -39,4 +39,16 @@ class Repository private constructor(var RS: RemoteSource,var LS:LocalSource):Re
     override suspend fun delete(data: MyLocations) {
         LS.delete(data)
     }
+
+    override suspend fun getMyBackupLocation(): List<Forecast> {
+        return LS.getMyBackupLocation()
+    }
+
+    override suspend fun insertMyCurrentLocation(data: Forecast) {
+        LS.insertMyCurrentLocation(data)
+    }
+
+    override suspend fun deleteMyCurrentLocation(data: Forecast) {
+        LS.deleteMyCurrentLocation(data)
+    }
 }
