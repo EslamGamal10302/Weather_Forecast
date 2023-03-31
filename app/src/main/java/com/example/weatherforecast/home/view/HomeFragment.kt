@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -62,6 +63,10 @@ class HomeFragment : Fragment() {
     lateinit var viewModel: HomeViewModel
     lateinit var loading: ProgressDialog
     lateinit var layout :ConstraintLayout
+    lateinit var sharedPref :SharedPreferences
+    lateinit var status :String
+    lateinit var units : String
+    lateinit var language : String
 
 
     override fun onAttach(context: Context) {
@@ -79,10 +84,10 @@ class HomeFragment : Fragment() {
         //medium_purple
 
         //  getLastLocation() call here
-        val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
-        val status = sharedPref.getString("location", "")
-        val units = sharedPref.getString("units", "metric")
-        val language = sharedPref.getString("language", "en")
+         sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
+         status = sharedPref.getString("location", "").toString()
+         units = sharedPref.getString("units", "metric").toString()
+         language = sharedPref.getString("language", "en").toString()
         Log.i("milad", "$units")
         Log.i("milad", "$language")
 
@@ -97,39 +102,7 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity(), factory).get(HomeViewModel::class.java)
 
 
-        if (NetworkConnection.getConnectivity(requireContext())) {
-
-            when (status) {
-                "map" -> {
-                    Toast.makeText(
-                        requireContext(),
-                        requireContext().getString(R.string.choose_location),
-                        Toast.LENGTH_LONG
-                    ).show()
-                    var action = HomeFragmentDirections.actionHomeFragmentToMapsFragment("home")
-                    Navigation.findNavController(requireView()).navigate(action)
-                }
-                "gps" -> {
-                    loading.show()
-                    viewModel.getMyGpsLocation(language!!, units!!)
-                    Log.i("milad", "here gps")
-                }
-                "mapResult" -> {
-                    loading.show()
-                    var latitude = sharedPref.getFloat("lat", 0f).toDouble()
-                    var longitude = sharedPref.getFloat("lon", 0f).toDouble()
-                    viewModel.getMyWeatherStatus(latitude, longitude, language!!, units!!)
-                    Log.i("milad", "here gps modified")
-
-                }
-            }
-        } else{
-            viewModel.getMyBackupLocation()
-            layout= binding.homeConstrain
-            val snackbar=Snackbar.make(layout,getString(R.string.no_internet),Snackbar.ANIMATION_MODE_SLIDE)
-            snackbar.view.background= ContextCompat.getDrawable(requireContext(),R.drawable.settingselectors)
-            snackbar.show()
-        }
+         requestMyCurrentWeather()
 
         // viewModel.getMyGpsLocation()
 
@@ -182,6 +155,9 @@ class HomeFragment : Fragment() {
 
         }
 
+        binding.swipeRefreshLayout.setOnRefreshListener {
+           requestMyCurrentWeather()
+        }
 
     }
 
@@ -195,5 +171,41 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    fun requestMyCurrentWeather(){
+        if (NetworkConnection.getConnectivity(requireContext())) {
+            binding.swipeRefreshLayout.isRefreshing=false
 
+            when (status) {
+                "map" -> {
+                    Toast.makeText(
+                        requireContext(),
+                        requireContext().getString(R.string.choose_location),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    var action = HomeFragmentDirections.actionHomeFragmentToMapsFragment("home")
+                    Navigation.findNavController(requireView()).navigate(action)
+                }
+                "gps" -> {
+                    loading.show()
+                    viewModel.getMyGpsLocation(language!!, units!!)
+                    Log.i("milad", "here gps")
+                }
+                "mapResult" -> {
+                    loading.show()
+                    var latitude = sharedPref.getFloat("lat", 0f).toDouble()
+                    var longitude = sharedPref.getFloat("lon", 0f).toDouble()
+                    viewModel.getMyWeatherStatus(latitude, longitude, language!!, units!!)
+                    Log.i("milad", "here gps modified")
+
+                }
+            }
+        } else{
+            binding.swipeRefreshLayout.isRefreshing=false
+            viewModel.getMyBackupLocation()
+            layout= binding.homeConstrain
+            val snackbar=Snackbar.make(layout,getString(R.string.no_internet),Snackbar.ANIMATION_MODE_SLIDE)
+            snackbar.view.background= ContextCompat.getDrawable(requireContext(),R.drawable.settingselectors)
+            snackbar.show()
+        }
+    }
 }
