@@ -15,9 +15,9 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/home_constrain"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
 
             <TextView
@@ -56,7 +56,7 @@
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/medium_purple"
                 android:elevation="20dp"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:cardCornerRadius="35dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +75,7 @@
                         android:text="clear sky "
                         android:textColor="@color/white"
                         android:textSize="20sp"
-                        android:visibility="invisible"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -88,7 +88,7 @@
                         android:text="13°"
                         android:textColor="@color/white"
                         android:textSize="34sp"
-                        android:visibility="invisible"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="@+id/weather_status_txt"
                         app:layout_constraintStart_toStartOf="@+id/weather_status_txt"
                         app:layout_constraintTop_toBottomOf="@+id/weather_status_txt" />
@@ -97,9 +97,9 @@
                         android:id="@+id/weatherIconImg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="50dp"
-                        android:visibility="invisible"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/weather_temp_txt"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/apitest" />

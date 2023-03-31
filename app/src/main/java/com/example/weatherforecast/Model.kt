@@ -1,5 +1,7 @@
 package com.example.weatherforecast
 
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Ignore
@@ -139,3 +141,15 @@ data class Weather(
     constructor():this("","",0,"")
 }
 
+
+object NetworkConnection {
+    fun getConnectivity(context: Context): Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = cm.activeNetworkInfo
+        return if (activeNetwork != null) {
+            true
+        } else {
+            false
+        }
+    }
+}

@@ -34,4 +34,5 @@
     <string name="remove_fav">تم الحذف من قائمة المفضلة لديك</string>
     <string name="choose_location">من فضلك قم بأختيار موقعك</string>
     <string name="loading">جاري للتحميل ......</string>
+    <string name="no_internet">"لا يوجد اتصال بالانترنت , حاول اعادة الاتصال "</string>
 </resources>

@@ -23,7 +23,9 @@ class HomeViewModel(private val myGps: GpsLocation,private val context: Context,
      fun getMyWeatherStatus(latitude:Double,longitude:Double,language:String,units:String){
         viewModelScope.launch(Dispatchers.IO) {
             Log.i("milad","hit api ")
-            myWeather.postValue(repo.getCurrentWeather(latitude,longitude,language,units))
+            var locationData=repo.getCurrentWeather(latitude,longitude,language,units)
+            myWeather.postValue(locationData)
+            addCurrentLocationToDataBase(locationData)
         }
     }
      fun getMyGpsLocation(language:String,units:String){
@@ -37,6 +39,14 @@ class HomeViewModel(private val myGps: GpsLocation,private val context: Context,
     fun addCurrentLocationToDataBase(data:Forecast){
         viewModelScope.launch {
             repo.insertMyCurrentLocation(data)
+        }
+    }
+
+    fun getMyBackupLocation(){
+        viewModelScope.launch {
+            var backupDate = repo.getMyBackupLocation()
+            var size = backupDate.size
+            myWeather.postValue(backupDate.get(size-1))
         }
     }
 

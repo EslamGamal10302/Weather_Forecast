@@ -100,4 +100,7 @@ dependencies {
     //lottie Animation dependency
     def lottieVersion = "5.2.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
+
+    //snackbar
+    implementation 'com.google.android.material:material:1.5.0'
 }

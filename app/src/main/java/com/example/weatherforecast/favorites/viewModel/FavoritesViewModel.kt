@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherforecast.Forecast
 import com.example.weatherforecast.MyLocations
+import com.example.weatherforecast.NetworkConnection
 import com.example.weatherforecast.generalRepository.RepositoryInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
