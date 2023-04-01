@@ -83,7 +83,16 @@ class FavoritesFragment : Fragment(), FavoriteOnClickListner {
             var manger = LinearLayoutManager(requireContext())
             manger.orientation = RecyclerView.VERTICAL
             binding.favRv.layoutManager = manger
+            if(it.size>0){
+                binding.splashLottie.visibility=View.GONE
+                binding.message.visibility=View.GONE
+            } else{
+                binding.splashLottie.visibility=View.VISIBLE
+                binding.message.visibility=View.VISIBLE
+                binding.splashLottie.animate().setDuration(10000).setStartDelay(1500);
+            }
             binding.favRv.adapter = FavoriteAdapter(requireContext(), it, this)
+
         }
 
         binding.floatingActionButton3.setOnClickListener {
