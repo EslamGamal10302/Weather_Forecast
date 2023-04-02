@@ -73,6 +73,7 @@ class HomeFragment : Fragment() {
         super.onAttach(context)
         loading = ProgressDialog(context)
         loading.setMessage(getString(R.string.loading))
+        Log.i("lifecylce","attach")
     }
 
     @SuppressLint("ResourceAsColor")
@@ -82,6 +83,7 @@ class HomeFragment : Fragment() {
         (activity as AppCompatActivity?)?.supportActionBar?.title =
             requireActivity().getString(R.string.home)
         //medium_purple
+        Log.i("lifecylce","onResume")
 
         //  getLastLocation() call here
          sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
@@ -161,13 +163,10 @@ class HomeFragment : Fragment() {
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         binding.lifecycleOwner
+        Log.i("lifecylce","onCreateView")
         return binding.root
     }
 
@@ -215,5 +214,36 @@ class HomeFragment : Fragment() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("lifecylce","onDestroy")
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.i("lifecylce","onCreate")
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.i("lifecylce","onViewCreated")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.i("lifecylce","onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i("lifecylce","onStop")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.i("lifecylce","onDestroyView")
+
     }
 }
