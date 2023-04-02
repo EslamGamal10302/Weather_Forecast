@@ -83,4 +83,6 @@ class GpsLocation (var context:Context) {
     private fun stopObserve() {
         myFusedLocationClinet.removeLocationUpdates(myLocationCallBack)
     }
+
+
 }

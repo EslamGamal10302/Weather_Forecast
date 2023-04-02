@@ -206,6 +206,14 @@ class HomeFragment : Fragment() {
             val snackbar=Snackbar.make(layout,getString(R.string.no_internet),Snackbar.ANIMATION_MODE_SLIDE)
             snackbar.view.background= ContextCompat.getDrawable(requireContext(),R.drawable.settingselectors)
             snackbar.show()
-        }
+
+        } }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }
