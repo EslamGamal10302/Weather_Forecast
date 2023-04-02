@@ -4,16 +4,10 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.GradientDrawable.Orientation
 import android.location.*
 import android.os.Bundle
-import android.os.Looper
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,14 +17,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.pm.ActivityInfoCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -44,15 +34,9 @@ import com.example.weatherforecast.home.viewModel.HomeViewModel
 import com.example.weatherforecast.home.viewModel.HomeViewModelFactory
 import com.example.weatherforecast.network.GpsLocation
 import com.example.weatherforecast.network.WeatherClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.log
 
 
 class HomeFragment : Fragment() {
@@ -208,12 +192,11 @@ class HomeFragment : Fragment() {
 
         } }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Log.i("lifecylce","on request")
     }
 
     override fun onDestroy() {
@@ -224,6 +207,7 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.i("lifecylce","onCreate")
+        getLastLocation()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -246,4 +230,49 @@ class HomeFragment : Fragment() {
         Log.i("lifecylce","onDestroyView")
 
     }
+
+
+    @SuppressLint("MissingPermission")
+    fun getLastLocation() {
+        if (checkPermission()){
+         /*   if(isLocationEnabled()){
+
+            } else{
+                Toast.makeText(context,"please turn on location", Toast.LENGTH_LONG).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                requireContext().startActivity(intent)
+            }  */
+
+        }else {
+            requestPermission()
+        }
+
+    }
+    private fun checkPermission():Boolean{
+        return  (ActivityCompat.checkSelfPermission(requireContext(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) ==
+                PackageManager.PERMISSION_GRANTED)
+                ||
+                (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED)
+    }
+    private fun requestPermission() {
+      /*  ActivityCompat.requestPermissions(requireActivity(), arrayOf(
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ), Constant.My_LOCATION_PERMISSION_ID) */
+        requestPermissions(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+            ), Constant.My_LOCATION_PERMISSION_ID
+        )
+    }
+    private  fun isLocationEnabled():Boolean{
+
+        val locationManger : LocationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManger.isProviderEnabled(LocationManager.GPS_PROVIDER)|| locationManger.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER)
+    }
+
 }

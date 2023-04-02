@@ -30,7 +30,7 @@ class HomeViewModel(private val myGps: GpsLocation,private val context: Context,
     }
      fun getMyGpsLocation(language:String,units:String){
          myGps.mydata =MutableLiveData<Pair<Double,Double>>()
-        myGps.getLastLocation()
+        myGps.requestNewLocation()
         myGps.mydata.observe(context as LifecycleOwner){
             getMyWeatherStatus(it.first,it.second,language,units)
         }
