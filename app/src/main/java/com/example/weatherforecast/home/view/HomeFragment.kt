@@ -2,6 +2,7 @@ package com.example.weatherforecast.home.view
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
@@ -35,6 +36,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.weatherforecast.Constant
+import com.example.weatherforecast.Constant.My_LOCATION_PERMISSION_ID
 import com.example.weatherforecast.NetworkConnection
 import com.example.weatherforecast.R
 import com.example.weatherforecast.dataBase.LocalRepository
@@ -67,6 +69,7 @@ class HomeFragment : Fragment() {
     lateinit var status :String
     lateinit var units : String
     lateinit var language : String
+    var requestPermissionStatus = false
 
 
     override fun onAttach(context: Context) {
@@ -110,6 +113,7 @@ class HomeFragment : Fragment() {
 
 
         viewModel.finalWeather.observe(viewLifecycleOwner) {
+            binding.permissionCard.visibility=View.GONE
             Log.i("test", "call view model")
             loading.dismiss()
             binding.areaTxt.visibility = View.VISIBLE
@@ -160,6 +164,9 @@ class HomeFragment : Fragment() {
         binding.swipeRefreshLayout.setOnRefreshListener {
            requestMyCurrentWeather()
         }
+        binding.allow.setOnClickListener {
+            requestPermission()
+        }
 
     }
 
@@ -185,15 +192,16 @@ class HomeFragment : Fragment() {
                     Navigation.findNavController(requireView()).navigate(action)
                 }
                 "gps" -> {
-                    loading.show()
-                    viewModel.getMyGpsLocation(language!!, units!!)
-                    Log.i("milad", "here gps")
+                        checkPermissionStatus()
+                  /*  loading.show()
+                    viewModel.getMyGpsLocation(language, units)
+                    Log.i("milad", "here gps")  */
                 }
                 "mapResult" -> {
                     loading.show()
                     var latitude = sharedPref.getFloat("lat", 0f).toDouble()
                     var longitude = sharedPref.getFloat("lon", 0f).toDouble()
-                    viewModel.getMyWeatherStatus(latitude, longitude, language!!, units!!)
+                    viewModel.getMyWeatherStatus(latitude, longitude, language, units)
                     Log.i("milad", "here gps modified")
 
                 }
@@ -208,13 +216,6 @@ class HomeFragment : Fragment() {
 
         } }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -246,4 +247,90 @@ class HomeFragment : Fragment() {
         Log.i("lifecylce","onDestroyView")
 
     }
+
+
+
+
+    fun excudeGpsCall(){
+        loading.show()
+        viewModel.getMyGpsLocation(language, units)
+        Log.i("milad", "here gps")
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode==My_LOCATION_PERMISSION_ID){
+            Log.i("milad","inside first if onRequest")
+            if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                Log.i("milad","inside accept permision")
+                excudeGpsCall()
+                //getLastLocation()
+                // call my block of code
+            } else{
+                Log.i("milad","inside refuse permision ")
+                binding.permissionCard.visibility=View.VISIBLE
+                // call my another block
+            }
+        }
+
+    }
+
+
+    @SuppressLint("MissingPermission")
+    fun checkPermissionStatus() {
+        if (checkPermission()){
+
+            if(isLocationEnabled()){
+                excudeGpsCall()
+            } else{
+                Toast.makeText(requireContext(),"please turn on location", Toast.LENGTH_LONG).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                requireContext().startActivity(intent)
+            }
+
+        }else {
+            if(!requestPermissionStatus){
+                requestPermissionStatus =true
+                requestPermission()
+            }
+
+        }
+
+    }
+    private fun checkPermission():Boolean{
+        return  (ActivityCompat.checkSelfPermission(requireContext(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) ==
+                PackageManager.PERMISSION_GRANTED)
+                ||
+                (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED)
+    }
+    private fun requestPermission() {
+       requestPermissions( arrayOf(
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ), My_LOCATION_PERMISSION_ID)
+    }
+
+
+    private  fun isLocationEnabled():Boolean{
+        val locationManger : LocationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManger.isProviderEnabled(LocationManager.GPS_PROVIDER)|| locationManger.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER)
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -73,16 +73,16 @@ class SettingsFragment : Fragment() {
         binding.radioArabic.setOnClickListener {
             editor.putString("language","ar")
             editor.apply()
-            //changeLanguage("ar")
-            setLocale("ar")
-            activity?.recreate()
+            changeLanguage("ar")
+           // setLocale("ar")
+            //activity?.recreate()
         }
         binding.radioEnglish.setOnClickListener {
             editor.putString("language","en")
             editor.apply()
-            //changeLanguage("en")
-            setLocale("en")
-            activity?.recreate()
+            changeLanguage("en")
+            //setLocale("en")
+            //activity?.recreate()
         }
         binding.radioStandard.setOnClickListener {
             editor.putString("units","standard")
@@ -103,8 +103,6 @@ class SettingsFragment : Fragment() {
         var local = Locale(lang)
         var config : Configuration=resources.configuration
         config.setLocale(local)
-        var context = requireContext().createConfigurationContext(config)
-        var resources = context.resources
         var appContext = activity?.applicationContext
         var appResources=appContext?.resources
         appResources?.updateConfiguration(config,appResources.displayMetrics)
@@ -119,10 +117,6 @@ class SettingsFragment : Fragment() {
         var config = Configuration()
         config.setLocale(locale)
         context?.resources?.updateConfiguration(config,context?.resources?.displayMetrics)
-        var languageSettngs = activity?.getSharedPreferences("language",MODE_PRIVATE)?.edit()?.apply{
-            putString("My Lang",lang)
-            apply()
-        }
     }
 
 }
