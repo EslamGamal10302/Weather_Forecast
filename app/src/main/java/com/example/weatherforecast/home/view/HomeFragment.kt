@@ -263,6 +263,7 @@ class HomeFragment : Fragment() {
             Log.i("milad","inside first if onRequest")
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
                 Log.i("milad","inside accept permision")
+                binding.permissionCard.visibility=View.GONE
                 excudeGpsCall()
                 //getLastLocation()
                 // call my block of code
