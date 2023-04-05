@@ -65,21 +65,21 @@ class DialogAlertFragment : DialogFragment() {
         }
 
         binding.dateFrom.setOnClickListener {
-           DatePickerDialog(requireContext(),dateFromPicker,calendarDate.get(Calendar.YEAR),calendarDate.get(Calendar.MONTH),
+           DatePickerDialog(requireContext(),R.style.TimePickerTheme,dateFromPicker,calendarDate.get(Calendar.YEAR),calendarDate.get(Calendar.MONTH),
                calendarDate.get(Calendar.DAY_OF_MONTH)).show()
 
         }
         binding.dateTo.setOnClickListener {
-            DatePickerDialog(requireContext(),dateToPicker,calendarDate.get(Calendar.YEAR),calendarDate.get(Calendar.MONTH),
+            DatePickerDialog(requireContext(),R.style.TimePickerTheme,dateToPicker,calendarDate.get(Calendar.YEAR),calendarDate.get(Calendar.MONTH),
                 calendarDate.get(Calendar.DAY_OF_MONTH)).show()
         }
         binding.hourFrom.setOnClickListener {
-            TimePickerDialog(requireContext(),timeStartPicker,calendarTime.get(Calendar.HOUR_OF_DAY),calendarTime.get(Calendar.MINUTE),
+            TimePickerDialog(requireContext(),R.style.TimePickerTheme,timeStartPicker,calendarTime.get(Calendar.HOUR_OF_DAY),calendarTime.get(Calendar.MINUTE),
                 false
             ).show()
         }
         binding.hourTo.setOnClickListener {
-            TimePickerDialog(requireContext(),timeEndPicker,calendarTime.get(Calendar.HOUR_OF_DAY),calendarTime.get(Calendar.MINUTE),
+            TimePickerDialog(requireContext(),R.style.TimePickerTheme,timeEndPicker,calendarTime.get(Calendar.HOUR_OF_DAY),calendarTime.get(Calendar.MINUTE),
                 false
             ).show()
         }

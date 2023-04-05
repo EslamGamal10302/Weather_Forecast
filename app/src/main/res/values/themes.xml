@@ -24,8 +24,11 @@
 
     <style name="TimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/medium_purple</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColorPrimary">@color/text_purple</item>
+        <item name="android:textColorSecondary">@color/text_purple</item>
+        <item name="colorOnPrimary">@color/text_purple</item>
+        <item name="android:textColor">@color/text_purple</item>
+
     </style>
 
 
