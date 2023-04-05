@@ -9,6 +9,7 @@ import android.content.Context.ALARM_SERVICE
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,11 +26,36 @@ class AlertsFragment : Fragment() {
     lateinit var binding: FragmentAlertsBinding
     lateinit var alarmManager : AlarmManager
     lateinit var pending : PendingIntent
+    lateinit var alertDialog :DialogAlertFragment
+
+    companion object {
+        var test = 0;
+    }
     override fun onStart() {
         super.onStart()
         (activity as AppCompatActivity?)?.supportActionBar?.title=requireActivity().getString(R.string.alerts)
+        Log.i("lifecycle","onStart")
     }
 
+    override fun onPause() {
+        super.onPause()
+        Log.i("lifecycle","onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i("lifecycle","onStop")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i("lifecycle","onCResume")
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.i("lifecycle","onViewCreated")
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -37,6 +63,14 @@ class AlertsFragment : Fragment() {
         binding.lifecycleOwner
         createNotificationChannel()
         setAlarm()
+        alertDialog = DialogAlertFragment()
+        binding.floatingAlarmActionButton.setOnClickListener {
+            activity?.supportFragmentManager?.let { manger->alertDialog.show(manger,"dialog") }
+            println(test)
+        }
+        Log.i("lifecycle","onCreateView")
+
+
         return binding.root
     }
 
@@ -61,6 +95,5 @@ class AlertsFragment : Fragment() {
 
 
     }
-
 
 }

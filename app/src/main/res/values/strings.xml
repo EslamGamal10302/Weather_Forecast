@@ -36,4 +36,6 @@
     <string name="loading">Loading............</string>
     <string name="no_internet">No internet connection , Try to reconnect</string>
     <string name="no_fav_found">No favorite locations found</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
 </resources>

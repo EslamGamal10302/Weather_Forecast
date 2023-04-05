@@ -29,7 +29,7 @@
         android:layout_marginEnd="24dp"
         android:background="@drawable/searchbackground"
         android:drawableStart="@drawable/location"
-        android:drawablePadding="5dp"
+        android:drawablePadding="10dp"
         android:ems="10"
         android:hint="@string/hint_search"
         android:inputType="textPersonName"

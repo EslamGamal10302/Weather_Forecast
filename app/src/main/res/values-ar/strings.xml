@@ -36,4 +36,6 @@
     <string name="loading">جاري للتحميل ......</string>
     <string name="no_internet">"لا يوجد اتصال بالانترنت , حاول اعادة الاتصال "</string>
     <string name="no_fav_found">"لم يتم العثور علي مواقع مفضلة "</string>
+    <string name="from">من</string>
+    <string name="to">الي</string>
 </resources>
