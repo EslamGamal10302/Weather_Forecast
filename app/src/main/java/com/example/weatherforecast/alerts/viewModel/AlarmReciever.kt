@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.provider.Settings
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -82,6 +83,7 @@ class AlarmReciever: BroadcastReceiver() {
 
             }
             notificationManager.notify(alertId,builder.build())
+            Log.i("time","$alertId   notification id")
 
 
 
@@ -95,6 +97,18 @@ class AlarmReciever: BroadcastReceiver() {
         }
 
 
+    }
+
+}
+
+
+
+class DeleteAlarmReciever: BroadcastReceiver(){
+    override fun onReceive(context: Context?, intent: Intent?) {
+        val alertId=intent?.getIntExtra("alert",0)
+        Log.i("time","$alertId  id in reciver")
+        val notificationManager = NotificationManagerCompat.from(context!!)
+        notificationManager.cancel(alertId!!)
     }
 
 }

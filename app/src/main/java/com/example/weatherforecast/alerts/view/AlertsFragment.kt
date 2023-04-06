@@ -22,10 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherforecast.MyUserAlert
 import com.example.weatherforecast.R
-import com.example.weatherforecast.alerts.viewModel.AlarmReciever
-import com.example.weatherforecast.alerts.viewModel.AlertOnClickListner
-import com.example.weatherforecast.alerts.viewModel.AlertsViewModel
-import com.example.weatherforecast.alerts.viewModel.AlertsViewModelFactory
+import com.example.weatherforecast.alerts.viewModel.*
 import com.example.weatherforecast.dataBase.LocalRepository
 import com.example.weatherforecast.databinding.FragmentAlertsBinding
 import com.example.weatherforecast.favorites.view.FavoriteAdapter
@@ -38,14 +35,15 @@ import java.util.concurrent.TimeUnit
 
 class AlertsFragment : Fragment(),AlertOnClickListner {
     lateinit var binding: FragmentAlertsBinding
-    lateinit var alarmManager : AlarmManager
+    var alarmManager : AlarmManager? = null
     lateinit var pending : PendingIntent
     lateinit var alertDialog :DialogAlertFragment
     lateinit var factory: AlertsViewModelFactory
     lateinit var viewModel: AlertsViewModel
     var requestCode = 0
+    var days:Long = 0
    // var interval:Long = 24*60*60*1000
-   var interval:Long = 1*2*60*1000
+   var interval:Long = 1*3*60*1000
 
 
     override fun onStart() {
@@ -124,7 +122,7 @@ class AlertsFragment : Fragment(),AlertOnClickListner {
         alarmManager = activity?.getSystemService(ALARM_SERVICE) as AlarmManager
         val intent  = Intent(requireActivity(),AlarmReciever::class.java)
         val numberOfDaysInMillis=(data.dateTo)-(data.dateFrom)
-        val days=TimeUnit.MILLISECONDS.toDays(numberOfDaysInMillis)
+        days=TimeUnit.MILLISECONDS.toDays(numberOfDaysInMillis)
 
 
 
@@ -132,8 +130,8 @@ class AlertsFragment : Fragment(),AlertOnClickListner {
         //for loop
         for(i in 0..days) {
             requestCode=data.id+(i.toInt())
-            pending = getBroadcast(requireContext(), requestCode, intent, PendingIntent.FLAG_MUTABLE)
             intent.putExtra("alert",requestCode)
+            pending = getBroadcast(requireContext(), requestCode, intent, PendingIntent.FLAG_MUTABLE)
             var from = Calendar.getInstance()
             var current = Calendar.getInstance()
             current.timeInMillis = data.timeFrom
@@ -145,10 +143,22 @@ class AlertsFragment : Fragment(),AlertOnClickListner {
             from.set(Calendar.YEAR, current.get(Calendar.YEAR))
             var trigerTime = from.timeInMillis
             //start time
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, trigerTime+(i*interval), pending);
+            alarmManager!!.setExact(AlarmManager.RTC_WAKEUP, trigerTime+(i*interval), pending);
+            deleteCompletedNotification(data,i,trigerTime+(i*interval))
         }
 
 
+    }
+
+    private fun deleteCompletedNotification(data: MyUserAlert, i: Long,trigerTime:Long) {
+        var hoursDelay=data.timeTo-data.timeFrom
+        Log.i("time","$hoursDelay")
+        var finalTrigger=hoursDelay+trigerTime
+        val delteIntent  = Intent(requireActivity(), DeleteAlarmReciever::class.java)
+        delteIntent.putExtra("alert",data.id+i.toInt())
+        val deletePending = getBroadcast(requireContext(), data.id+i.toInt(), delteIntent, PendingIntent.FLAG_MUTABLE)
+        Log.i("time","${data.id+i.toInt()}   id in fragment")
+        alarmManager!!.setExact(AlarmManager.RTC_WAKEUP, finalTrigger, deletePending);
     }
 
     override fun onDialogSave(data: MyUserAlert) {
@@ -160,6 +170,19 @@ class AlertsFragment : Fragment(),AlertOnClickListner {
 
     override fun deleteAlert(data: MyUserAlert) {
         viewModel.deleteAlert(data)
+        cancelAlarm(data.id)
+    }
+
+    fun cancelAlarm(request:Int){
+            if(alarmManager==null) {
+                alarmManager = activity?.getSystemService(ALARM_SERVICE) as AlarmManager
+            }
+
+        val intent  = Intent(requireActivity(),AlarmReciever::class.java)
+        for(i in 0..days) {
+            pending = getBroadcast(requireContext(), request+i.toInt(), intent, PendingIntent.FLAG_MUTABLE)
+            alarmManager!!.cancel(pending)
+        }
     }
 
 }

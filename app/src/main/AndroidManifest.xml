@@ -52,6 +52,7 @@
         </activity>
 
         <receiver android:name=".alerts.viewModel.AlarmReciever" />
+        <receiver android:name=".alerts.viewModel.DeleteAlarmReciever" />
     </application>
 
 </manifest>
