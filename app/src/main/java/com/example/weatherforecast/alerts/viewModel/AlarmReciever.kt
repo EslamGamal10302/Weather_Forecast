@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 class AlarmReciever: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
 
-        var repo =   Repository.getInstance(
+        val repo =   Repository.getInstance(
             WeatherClient.getInstance(),
             LocalRepository.getInstance(context!!)
         )
@@ -30,9 +30,10 @@ class AlarmReciever: BroadcastReceiver() {
 
             val i = Intent(context,AlertsFragment::class.java)
             intent!!.flags=Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            val pendingIntent = PendingIntent.getActivity(context,0,i,PendingIntent.FLAG_MUTABLE)
+            val alertId=intent.getIntExtra("alert",0)
+            val pendingIntent = PendingIntent.getActivity(context,alertId,i,PendingIntent.FLAG_MUTABLE)
 
-            val builder = NotificationCompat.Builder(context!!,"myChannel")
+            val builder = NotificationCompat.Builder(context,"myChannel")
                 .setSmallIcon(R.drawable.icon)
                 .setContentTitle(response.timezone)
                 .setContentText(response.current.weather.get(0).description)
@@ -71,7 +72,7 @@ class AlarmReciever: BroadcastReceiver() {
                 // for ActivityCompat#requestPermissions for more details.
 
             }
-            notificationManager.notify(123,builder.build())
+            notificationManager.notify(alertId,builder.build())
         }
 
 

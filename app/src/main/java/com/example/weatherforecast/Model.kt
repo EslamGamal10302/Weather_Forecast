@@ -18,8 +18,12 @@ object Constant{
 data class MyLocations constructor(@PrimaryKey var latitude:Double, var longitude:Double):java.io.Serializable
 
 
-
-
+// new table here and primary id
+@Entity(tableName = "userAlerts")
+data class MyUserAlert(var dateFrom:Long,var dateTo:Long
+,var timeFrom:Long,var timeTo:Long,var type:String,var event:String,@PrimaryKey var id:Int){
+    constructor():this(0,0,0,0,"","",0)
+}
 @Entity(tableName = "backup")
 data class Forecast(
     // val place: String,

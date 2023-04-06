@@ -9,14 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import com.example.weatherforecast.MyUserAlert
 import com.example.weatherforecast.R
+import com.example.weatherforecast.alerts.viewModel.AlertOnClickListner
 import com.example.weatherforecast.databinding.FragmentDialogAlertBinding
+import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DialogAlertFragment : DialogFragment() {
+class DialogAlertFragment(var listner : AlertOnClickListner) : DialogFragment() {
 
     lateinit var binding: FragmentDialogAlertBinding
+    lateinit var myListner: AlertOnClickListner
+    var selectedAlert = MyUserAlert()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,57 +36,81 @@ class DialogAlertFragment : DialogFragment() {
         binding.lifecycleOwner
         binding.floatingDialogButton.setOnClickListener {
             dialog?.cancel()
-            AlertsFragment.test=20
+            myListner=listner
+            selectedAlert.id=generateUniqueIntValue(selectedAlert.dateFrom,selectedAlert.dateTo,"","")
+            println(selectedAlert)
+            myListner.onDialogSave(selectedAlert)
+
         }
 
-        val calendarDate = Calendar.getInstance()
+
+
+
+        val calendarDateFrom = Calendar.getInstance()
         val dateFromPicker=DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-            calendarDate.set(Calendar.YEAR,year)
-            calendarDate.set(Calendar.MONDAY,month)
-            calendarDate.set(Calendar.DAY_OF_MONTH,dayOfMonth)
-            updateStartDateText(calendarDate)
-
+            calendarDateFrom.set(Calendar.YEAR,year)
+            calendarDateFrom.set(Calendar.MONTH,month)
+            calendarDateFrom.set(Calendar.DAY_OF_MONTH,dayOfMonth)
+            updateStartDateText(calendarDateFrom)
+            var dateFromInMillisecond= calendarDateFrom.timeInMillis
+            selectedAlert.dateFrom=dateFromInMillisecond
         }
 
+        val calendarDateTo = Calendar.getInstance()
         val dateToPicker=DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-            calendarDate.set(Calendar.YEAR,year)
-            calendarDate.set(Calendar.MONDAY,month)
-            calendarDate.set(Calendar.DAY_OF_MONTH,dayOfMonth)
-            updateEndDateText(calendarDate)
+            calendarDateTo.set(Calendar.YEAR,year)
+            calendarDateTo.set(Calendar.MONTH,month)
+            calendarDateTo.set(Calendar.DAY_OF_MONTH,dayOfMonth)
+            updateEndDateText(calendarDateTo)
+            var dateToInMillisecond= calendarDateTo.timeInMillis
+            selectedAlert.dateTo=dateToInMillisecond
 
         }
 
-        val calendarTime = Calendar.getInstance()
+        val calendarTimeStart = Calendar.getInstance()
         val timeStartPicker = TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
-            calendarTime.set(Calendar.HOUR_OF_DAY,hourOfDay)
-            calendarTime.set(Calendar.MINUTE,minute)
-            calendarTime.timeZone= TimeZone.getDefault()
-            updateStartTimeText(calendarTime)
+            calendarTimeStart.set(Calendar.HOUR_OF_DAY,hourOfDay)
+            calendarTimeStart.set(Calendar.MINUTE,minute)
+            calendarTimeStart.timeZone= TimeZone.getDefault()
+            updateStartTimeText(calendarTimeStart)
+            var timeStartInMillisecond= calendarTimeStart.timeInMillis
+            selectedAlert.timeFrom=timeStartInMillisecond
         }
 
+
+        val calendarTimeEnd = Calendar.getInstance()
         val timeEndPicker = TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
-            calendarTime.set(Calendar.HOUR_OF_DAY,hourOfDay)
-            calendarTime.set(Calendar.MINUTE,minute)
-            calendarTime.timeZone= TimeZone.getDefault()
-            updateEndTimeText(calendarTime)
+            calendarTimeEnd.set(Calendar.HOUR_OF_DAY,hourOfDay)
+            calendarTimeEnd.set(Calendar.MINUTE,minute)
+            calendarTimeEnd.timeZone= TimeZone.getDefault()
+            updateEndTimeText(calendarTimeEnd)
+            var timeEndInMillisecond= calendarTimeEnd.timeInMillis
+            selectedAlert.timeTo=timeEndInMillisecond
         }
+
+
+
 
         binding.dateFrom.setOnClickListener {
-           DatePickerDialog(requireContext(),R.style.TimePickerTheme,dateFromPicker,calendarDate.get(Calendar.YEAR),calendarDate.get(Calendar.MONTH),
-               calendarDate.get(Calendar.DAY_OF_MONTH)).show()
+           DatePickerDialog(requireContext(),R.style.TimePickerTheme,dateFromPicker,calendarDateFrom.get(Calendar.YEAR)
+               ,calendarDateFrom.get(Calendar.MONTH),
+               calendarDateFrom.get(Calendar.DAY_OF_MONTH)).show()
 
         }
         binding.dateTo.setOnClickListener {
-            DatePickerDialog(requireContext(),R.style.TimePickerTheme,dateToPicker,calendarDate.get(Calendar.YEAR),calendarDate.get(Calendar.MONTH),
-                calendarDate.get(Calendar.DAY_OF_MONTH)).show()
+            DatePickerDialog(requireContext(),R.style.TimePickerTheme,dateToPicker,
+                calendarDateTo.get(Calendar.YEAR),calendarDateTo.get(Calendar.MONTH),
+                calendarDateTo.get(Calendar.DAY_OF_MONTH)).show()
         }
         binding.hourFrom.setOnClickListener {
-            TimePickerDialog(requireContext(),R.style.TimePickerTheme,timeStartPicker,calendarTime.get(Calendar.HOUR_OF_DAY),calendarTime.get(Calendar.MINUTE),
+            TimePickerDialog(requireContext(),R.style.TimePickerTheme,timeStartPicker,
+                calendarTimeStart.get(Calendar.HOUR_OF_DAY),calendarTimeStart.get(Calendar.MINUTE),
                 false
             ).show()
         }
         binding.hourTo.setOnClickListener {
-            TimePickerDialog(requireContext(),R.style.TimePickerTheme,timeEndPicker,calendarTime.get(Calendar.HOUR_OF_DAY),calendarTime.get(Calendar.MINUTE),
+            TimePickerDialog(requireContext(),R.style.TimePickerTheme,timeEndPicker,
+                calendarTimeEnd.get(Calendar.HOUR_OF_DAY),calendarTimeEnd.get(Calendar.MINUTE),
                 false
             ).show()
         }
@@ -113,6 +144,14 @@ class DialogAlertFragment : DialogFragment() {
         val year=SimpleDateFormat("yyyy").format(calendarDate.time)
 
         binding.dateTo.text="$day/$month/$year"
+    }
+
+    fun generateUniqueIntValue(a: Long, b: Long, str: String, strType:String): Int {
+        val input = "$a$b$str$strType"
+        val digest = MessageDigest.getInstance("SHA-256")
+        val hash = digest.digest(input.toByteArray(StandardCharsets.UTF_8))
+        val truncatedHash = hash.copyOfRange(0, 4) // Truncate hash to 4 bytes
+        return truncatedHash.fold(0) { acc, byte -> (acc shl 8) + (byte.toInt() and 0xff) }
     }
 
 }

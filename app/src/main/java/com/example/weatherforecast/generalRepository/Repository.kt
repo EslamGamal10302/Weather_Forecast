@@ -2,6 +2,7 @@ package com.example.weatherforecast.generalRepository
 
 import com.example.weatherforecast.Forecast
 import com.example.weatherforecast.MyLocations
+import com.example.weatherforecast.MyUserAlert
 import com.example.weatherforecast.dataBase.LocalSource
 import com.example.weatherforecast.network.RemoteSource
 
@@ -38,6 +39,18 @@ class Repository private constructor(var RS: RemoteSource,var LS:LocalSource):Re
 
     override suspend fun delete(data: MyLocations) {
         LS.delete(data)
+    }
+
+    override suspend fun getStoredAlerts(): List<MyUserAlert> {
+       return LS.getStoredAlerts()
+    }
+
+    override suspend fun insertAlert(data: MyUserAlert) {
+       LS.insertAlert(data)
+    }
+
+    override suspend fun deleteAlert(data: MyUserAlert) {
+        LS.deleteAlert(data)
     }
 
     override suspend fun getMyBackupLocation(): List<Forecast> {

@@ -138,15 +138,15 @@ class Converters {
 
 
 
-    /* @TypeConverter
+  /*   @TypeConverter
  fun stringToAlertList(value: String?): List<Alert?>? {
      val listType = object : TypeToken<ArrayList<Alert?>?>() {}.type
      return Gson().fromJson(value, listType)
- } */
+ }
 
-    /*  @TypeConverter
+      @TypeConverter
       fun AlertListToString(list: List<Alert?>?): String? {
           val gson = Gson()
           return gson.toJson(list)
-      }*/
+      }  */
 }

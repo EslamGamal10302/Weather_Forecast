@@ -3,18 +3,21 @@ package com.example.weatherforecast.dataBase
 import android.content.Context
 import com.example.weatherforecast.Forecast
 import com.example.weatherforecast.MyLocations
+import com.example.weatherforecast.MyUserAlert
 
 class LocalRepository private constructor(val context: Context):LocalSource {
     private val weatherDAO :WeatherDao
 
     private val backupDAO :BackupDao
 
+    private val alertDAO :AlertsDao
+
 
     init {
         val db: WeatherDataBase = WeatherDataBase.getInstance(context.applicationContext)
         weatherDAO = db.getWeatherDao()
         backupDAO=db.getBackupDao()
-
+        alertDAO=db.getAlertDao()
     }
 
     companion object {
@@ -42,6 +45,18 @@ class LocalRepository private constructor(val context: Context):LocalSource {
 
     override suspend fun delete(data: MyLocations) {
         weatherDAO.delete(data)
+    }
+
+    override suspend fun getStoredAlerts(): List<MyUserAlert> {
+        return alertDAO.getAllAlerts()
+    }
+
+    override suspend fun insertAlert(data: MyUserAlert) {
+        alertDAO.insert(data)
+    }
+
+    override suspend fun deleteAlert(data: MyUserAlert) {
+       alertDAO.delete(data)
     }
 
     override suspend fun getMyBackupLocation(): List<Forecast> {
