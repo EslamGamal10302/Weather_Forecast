@@ -22,7 +22,7 @@ data class MyLocations constructor(@PrimaryKey var latitude:Double, var longitud
 @Entity(tableName = "userAlerts")
 data class MyUserAlert(var dateFrom:Long,var dateTo:Long
 ,var timeFrom:Long,var timeTo:Long,var type:String,var event:String,@PrimaryKey var id:Int){
-    constructor():this(0,0,0,0,"","",0)
+    constructor():this(0,0,0,0,"Heat Advisory","Heat Advisory",0)
 }
 @Entity(tableName = "backup")
 data class Forecast(
@@ -38,9 +38,20 @@ data class Forecast(
     var minutely: List<Minutely>,
     @PrimaryKey
     var timezone: String,
-    var timezone_offset: Int
+    var timezone_offset: Int,
+    var alerts:List<Alerts>
 ){
-    constructor():this(Current(), listOf(), listOf(),0.00,0.00, listOf(),"",0)
+    constructor():this(Current(), listOf(), listOf(),0.00,0.00, listOf(),"",0, listOf())
+}
+data class Alerts(
+    var senderName: String? = null,
+    var event: String? = null,
+    var start: Int? = null,
+    var end: Int? = null,
+    var description: String? = null,
+    var tags: ArrayList<String> = arrayListOf()
+){
+    constructor():this("","",0,0,"")
 }
 data class Current(
     var clouds: Int,//need

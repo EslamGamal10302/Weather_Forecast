@@ -10,7 +10,7 @@ import com.example.weatherforecast.Forecast
 import com.example.weatherforecast.MyLocations
 import com.example.weatherforecast.MyUserAlert
 
-@Database(entities = arrayOf(MyLocations::class, Forecast::class,MyUserAlert::class), version = 6, exportSchema = false )
+@Database(entities = arrayOf(MyLocations::class, Forecast::class,MyUserAlert::class), version = 7, exportSchema = false )
 @TypeConverters(Converters::class)
 abstract class WeatherDataBase : RoomDatabase(){
     abstract fun getWeatherDao(): WeatherDao
@@ -25,7 +25,7 @@ abstract class WeatherDataBase : RoomDatabase(){
         fun getInstance (ctx: Context): WeatherDataBase{
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    ctx.applicationContext, WeatherDataBase::class.java, "weather_database_v4")
+                    ctx.applicationContext, WeatherDataBase::class.java, "weather_database_v5")
                     .build()
                 INSTANCE = instance
 // return instance

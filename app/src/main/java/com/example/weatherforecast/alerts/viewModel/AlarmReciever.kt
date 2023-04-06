@@ -6,6 +6,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.MediaPlayer
+import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -28,6 +30,13 @@ class AlarmReciever: BroadcastReceiver() {
         CoroutineScope(Dispatchers.IO).launch{
           val response = repo.RS.getCurrentWeather(31.0,31.0,"en","metric")
 
+
+
+
+
+
+
+            //notification
             val i = Intent(context,AlertsFragment::class.java)
             intent!!.flags=Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             val alertId=intent.getIntExtra("alert",0)
@@ -73,6 +82,16 @@ class AlarmReciever: BroadcastReceiver() {
 
             }
             notificationManager.notify(alertId,builder.build())
+
+
+
+
+            //alert
+            /*var mp = MediaPlayer.create(context, Settings.System.DEFAULT_ALARM_ALERT_URI)
+            mp.isLooping = true
+            mp.start() */
+
+
         }
 
 

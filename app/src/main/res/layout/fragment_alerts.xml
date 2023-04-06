@@ -25,7 +25,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:lottie_autoPlay="true"
-            app:lottie_rawRes="@raw/fav" />
+            app:lottie_rawRes="@raw/alert_two" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingAlarmActionButton"
@@ -51,8 +51,8 @@
             android:id="@+id/message_alert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="220dp"
-            android:text="@string/no_fav_found"
+            android:layout_marginBottom="180dp"
+            android:text="@string/no_alert_found"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"

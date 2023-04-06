@@ -38,4 +38,8 @@
     <string name="no_fav_found">No favorite locations found</string>
     <string name="from">From</string>
     <string name="to">To</string>
+    <string name="alert_dialog_message">you will lose it from your stored alert list</string>
+    <string name="alert_dialog_title">Wait ! are you sure you want to delete this alert from your list ?</string>
+    <string name="remove_alert">Removed from your alert list</string>
+    <string name="no_alert_found">No saved Alerts found</string>
 </resources>

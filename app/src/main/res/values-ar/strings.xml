@@ -38,4 +38,8 @@
     <string name="no_fav_found">"لم يتم العثور علي مواقع مفضلة "</string>
     <string name="from">من</string>
     <string name="to">الي</string>
+    <string name="alert_dialog_message">سوف تفقدها من قائمة التنبيهات المسجلة لديك</string>
+    <string name="alert_dialog_title">انتظر هل انت متأكد من انك تريد ان تحذف هذا التنبيه من القائمة لديك</string>
+    <string name="remove_alert">تم الحذف من قائمه التنبيهات</string>
+    <string name="no_alert_found">لم يتم العثور علي تنبيهات مسجلة</string>
 </resources>
