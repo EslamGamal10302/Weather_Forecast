@@ -83,8 +83,10 @@ class AlertsFragment : Fragment(),AlertOnClickListner {
         viewModel=ViewModelProvider(requireActivity(), factory).get(AlertsViewModel::class.java)
         createNotificationChannel()
         //setAlarm()
-        alertDialog = DialogAlertFragment(this)
+
+
         binding.floatingAlarmActionButton.setOnClickListener {
+            alertDialog = DialogAlertFragment(this)
             activity?.supportFragmentManager?.let { manger->alertDialog.show(manger,"dialog") }
         }
         Log.i("lifecycle","onCreateView")
@@ -127,10 +129,10 @@ class AlertsFragment : Fragment(),AlertOnClickListner {
 
 
 
-        //for loop
         for(i in 0..days) {
             requestCode=data.id+(i.toInt())
             intent.putExtra("alert",requestCode)
+            intent.putExtra("type",data.type)
             pending = getBroadcast(requireContext(), requestCode, intent, PendingIntent.FLAG_MUTABLE)
             var from = Calendar.getInstance()
             var current = Calendar.getInstance()
@@ -142,9 +144,16 @@ class AlertsFragment : Fragment(),AlertOnClickListner {
             from.set(Calendar.MONTH, current.get(Calendar.MONTH))
             from.set(Calendar.YEAR, current.get(Calendar.YEAR))
             var trigerTime = from.timeInMillis
-            //start time
+
             alarmManager!!.setExact(AlarmManager.RTC_WAKEUP, trigerTime+(i*interval), pending);
-            deleteCompletedNotification(data,i,trigerTime+(i*interval))
+            if(data.type.equals("Notification")){
+                deleteCompletedNotification(data,i,trigerTime+(i*interval))
+            } else{
+                deleteCompletedAlarmNotification(data,i,trigerTime+(i*interval))
+            }
+
+
+
         }
 
 
@@ -161,11 +170,22 @@ class AlertsFragment : Fragment(),AlertOnClickListner {
         alarmManager!!.setExact(AlarmManager.RTC_WAKEUP, finalTrigger, deletePending);
     }
 
+    private fun deleteCompletedAlarmNotification(data: MyUserAlert, i: Long,trigerTime:Long) {
+        var hoursDelay=data.timeTo-data.timeFrom
+        Log.i("time","$hoursDelay")
+        var finalTrigger=hoursDelay+trigerTime
+        val delteIntent  = Intent(requireActivity(), DeleteAlarmNotificationReciever::class.java)
+        delteIntent.putExtra("alert",data.id+i.toInt())
+        val deletePending = getBroadcast(requireContext(), data.id+i.toInt(), delteIntent, PendingIntent.FLAG_MUTABLE)
+        Log.i("time","${data.id+i.toInt()}   id in fragment")
+        alarmManager!!.setExact(AlarmManager.RTC_WAKEUP, finalTrigger, deletePending);
+    }
+
     override fun onDialogSave(data: MyUserAlert) {
-        //view model call to insert in data base
+
         viewModel.addAlert(data)
         setAlarm(data)
-        //call to set alarm
+
     }
 
     override fun deleteAlert(data: MyUserAlert) {

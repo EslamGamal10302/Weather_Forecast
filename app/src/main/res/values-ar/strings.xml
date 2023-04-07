@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">" تطبيق الطقس "</string>
+    <string name="app_name"> تطبيق الطقس </string>
     <string name="hello_blank_fragment">فارغ</string>
     <string name="home">الرئيسية</string>
-    <string name="favorites">"المفضلة "</string>
-    <string name="settings">"الاعدادات "</string>
+    <string name="favorites">المفضلة </string>
+    <string name="settings">الاعدادات </string>
     <string name="alerts">التنبيهات</string>
     <string name="pressure">الضغط</string>
     <string name="humidity">الرطوبة</string>
@@ -14,11 +14,11 @@
     <string name="visibility">الرؤية</string>
     <string name="hint_search">ابحث عن المكان </string>
     <string name="addtofav">اضافة</string>
-    <string name="radio_Gps">"القمر الصناعي "</string>
+    <string name="radio_Gps">القمر الصناعي </string>
     <string name="radio_Map">الخريطة</string>
     <string name="language">اللغه</string>
     <string name="location">الموقع</string>
-    <string name="units">"الوحدات "</string>
+    <string name="units">الوحدات </string>
     <string name="english">الانجليزية</string>
     <string name="arabic">العربية</string>
     <string name="gps">خاصية الموقع الحالي</string>
@@ -28,18 +28,23 @@
     <string name="imperial">امبريال ( فهرنهيت - ميل /ثانية )</string>
     <string name="save">حفظ</string>
     <string name="answer_no">لا , العودة للخلف</string>
-    <string name="answer_yes">"نعم , انا متأكد "</string>
+    <string name="answer_yes">نعم , انا متأكد </string>
     <string name="dialog_message">سوف تفقدها من قائمة الاماكن المفضلة لديك</string>
-    <string name="dialog_title">"انتظر ! هل انت متأكد من انك تريد ان تحذف هذا الموقع "</string>
+    <string name="dialog_title">انتظر ! هل انت متأكد من انك تريد ان تحذف هذا الموقع </string>
     <string name="remove_fav">تم الحذف من قائمة المفضلة لديك</string>
     <string name="choose_location">من فضلك قم بأختيار موقعك</string>
     <string name="loading">جاري للتحميل ......</string>
-    <string name="no_internet">"لا يوجد اتصال بالانترنت , حاول اعادة الاتصال "</string>
-    <string name="no_fav_found">"لم يتم العثور علي مواقع مفضلة "</string>
+    <string name="no_internet">لا يوجد اتصال بالانترنت , حاول اعادة الاتصال </string>
+    <string name="no_fav_found">لم يتم العثور علي مواقع مفضلة </string>
     <string name="from">من</string>
     <string name="to">الي</string>
     <string name="alert_dialog_message">سوف تفقدها من قائمة التنبيهات المسجلة لديك</string>
     <string name="alert_dialog_title">انتظر هل انت متأكد من انك تريد ان تحذف هذا التنبيه من القائمة لديك</string>
     <string name="remove_alert">تم الحذف من قائمه التنبيهات</string>
     <string name="no_alert_found">لم يتم العثور علي تنبيهات مسجلة</string>
+    <string name="alert_notif_title">تنبيه طقس </string>
+    <string name="dimiss">ازاله</string>
+    <string name="alert_dialogg_message">الطقس جيد و لا يوجد تنبيهات للوقت المحدد</string>
+    <string name="notification">اشعارات</string>
+    <string name="alarm">تنبيهات</string>
 </resources>

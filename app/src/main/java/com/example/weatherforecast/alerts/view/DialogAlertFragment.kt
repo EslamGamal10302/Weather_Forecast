@@ -2,11 +2,14 @@ package com.example.weatherforecast.alerts.view
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.weatherforecast.MyUserAlert
@@ -35,16 +38,62 @@ class DialogAlertFragment(var listner : AlertOnClickListner) : DialogFragment() 
         binding= DataBindingUtil.inflate(inflater, R.layout.fragment_dialog_alert, container, false)
         binding.lifecycleOwner
         binding.floatingDialogButton.setOnClickListener {
-            dialog?.cancel()
-            myListner=listner
-            selectedAlert.id=generateUniqueIntValue(selectedAlert.dateFrom,selectedAlert.dateTo,"","")
-            println(selectedAlert)
-            myListner.onDialogSave(selectedAlert)
+            if(selectedAlert.dateFrom == 0L||selectedAlert.dateTo==0L||selectedAlert.timeFrom==0L||
+                    selectedAlert.timeTo==0L){
+                Toast.makeText(requireContext(),"you must fill all fields for date and time",Toast.LENGTH_LONG).show()
+            }else if(binding.alertTypeGroup.checkedRadioButtonId==-1){
+                Toast.makeText(requireContext(),"you must choose type of alert",Toast.LENGTH_LONG).show()
+            }
+
+
+            /*
+            else if(selectedAlert.dateFrom<Calendar.getInstance().timeInMillis||selectedAlert.dateTo<Calendar.getInstance().timeInMillis){
+                Toast.makeText(requireContext(),"please enter a vaid start and end date both must start from today",Toast.LENGTH_LONG).show()
+            }else if (selectedAlert.dateFrom==Calendar.getInstance().timeInMillis){
+                if(selectedAlert.timeFrom<Calendar.getInstance().timeInMillis||selectedAlert.timeTo<Calendar.getInstance().timeInMillis){
+                    Toast.makeText(requireContext(),"please enter a vaid start and end time , both must start from minimun from today's current hour",Toast.LENGTH_LONG).show()
+                } else{
+                    dialog?.cancel()
+                    if (!Settings.canDrawOverlays(requireContext())){
+                        requestOverAppPermission()
+                    }
+                    myListner=listner
+                    selectedAlert.id=generateUniqueIntValue(selectedAlert.dateFrom,selectedAlert.dateTo,"","")
+                    var selectedItem = binding.alertTypeGroup.checkedRadioButtonId
+                    if(selectedItem == R.id.alarm){
+                        selectedAlert.type="alarm"
+                    }else{
+                        selectedAlert.type="notification"
+                    }
+                    println(selectedAlert)
+                    myListner.onDialogSave(selectedAlert)
+                }
+            } */
+
+
+            else{
+                dialog?.cancel()
+                if (!Settings.canDrawOverlays(requireContext())){
+                    requestOverAppPermission()
+                }
+                myListner=listner
+                selectedAlert.id=generateUniqueIntValue(selectedAlert.dateFrom,selectedAlert.dateTo,"","")
+                var selectedItem = binding.alertTypeGroup.checkedRadioButtonId
+                if(selectedItem == R.id.alarm){
+                    selectedAlert.type="Alarm"
+                }else{
+                    selectedAlert.type="Notification"
+                }
+                println(selectedAlert)
+                myListner.onDialogSave(selectedAlert)
+            }
+
 
         }
 
-
-
+        binding.close.setOnClickListener{
+            dialog?.dismiss()
+        }
 
         val calendarDateFrom = Calendar.getInstance()
         val dateFromPicker=DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
@@ -118,6 +167,9 @@ class DialogAlertFragment(var listner : AlertOnClickListner) : DialogFragment() 
         return binding.root
     }
 
+    private fun requestOverAppPermission() {
+        startActivityForResult(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION),20)
+    }
 
 
     private fun updateStartTimeText(calendarTime: Calendar) {

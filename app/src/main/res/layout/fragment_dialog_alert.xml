@@ -14,26 +14,27 @@
 
         <!-- TODO: Update blank fragment layout -->
 
+
         <Button
             android:id="@+id/floatingDialogButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
             android:backgroundTint="@color/medium_purple"
             android:text="@string/save"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/hour_to" />
+            app:layout_constraintTop_toBottomOf="@+id/alertTypeGroup" />
 
         <TextView
             android:id="@+id/date_from"
             android:layout_width="150dp"
             android:layout_height="30dp"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="65dp"
             android:layout_marginEnd="70dp"
             android:background="@drawable/searchbackground"
             android:drawableEnd="@drawable/baseline_calendar_month_24"
@@ -49,7 +50,7 @@
             android:id="@+id/date_to"
             android:layout_width="150dp"
             android:layout_height="30dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="65dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/searchbackground"
             android:drawableEnd="@drawable/baseline_calendar_month_24"
@@ -97,7 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="35dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="40dp"
             android:text="@string/from"
             android:textColor="@color/white"
             android:textStyle="bold"
@@ -109,7 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="150dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="40dp"
             android:text="@string/to"
             android:textColor="@color/white"
             android:textStyle="bold"
@@ -139,6 +140,48 @@
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView18"
             app:layout_constraintTop_toBottomOf="@+id/date_to" />
+
+        <RadioGroup
+            android:id="@+id/alertTypeGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hour_to"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/alarm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/alarm"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:buttonTint="@color/medium_purple"
+                />
+
+            <RadioButton
+                android:id="@+id/notification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/notification"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginStart="30dp"
+                android:buttonTint="@color/medium_purple"
+                />
+        </RadioGroup>
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/exit_24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

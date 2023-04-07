@@ -58,7 +58,7 @@ class AlertAdapter(var context: Context,var listner:AlertOnClickListner,var user
         val timeTo = SimpleDateFormat("hh:mm aa").format(calendar.time)
         holder.binding.hourTo.text=timeTo
 
-        holder.binding.alertEventTxt.text=alert.event
+        holder.binding.alertEventTxt.text=alert.type
 
         holder.binding.delete.setOnClickListener {
             val yes = context.getString(R.string.answer_yes)

@@ -34,6 +34,11 @@ class HomeViewModel(private val myGps: GpsLocation,private val context: Context,
          myGps.requestNewLocation()
         myGps.mydata.observe(context as LifecycleOwner){
             getMyWeatherStatus(it.first,it.second,language,units)
+            val sharedPref = context.getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
+            val editor = sharedPref.edit()
+            editor.putFloat("lat",it.first.toFloat())
+            editor.putFloat("lon",it.second.toFloat())
+            editor.apply()
         }
     }
 
