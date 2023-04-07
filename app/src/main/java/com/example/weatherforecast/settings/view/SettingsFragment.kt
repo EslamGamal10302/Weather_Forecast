@@ -5,6 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -38,6 +39,7 @@ class SettingsFragment : Fragment() {
         val status = sharedPref.getString("location","")
         val units = sharedPref.getString("units","metric")
         val language = sharedPref.getString("language","en")
+        val notificatioStatus=sharedPref.getString("notification_status","on")
         val editor = sharedPref.edit()
 
         if(status.equals("mapResult")){
@@ -60,6 +62,14 @@ class SettingsFragment : Fragment() {
         } else{
             binding.radioEnglish.isChecked=true
         }
+
+        if(notificatioStatus.equals("on")){
+            binding.toggleSwitch.isChecked=true
+        }else{
+            binding.toggleSwitch.isChecked=false
+        }
+
+
 
 
         binding.radioMap.setOnClickListener {
@@ -95,6 +105,19 @@ class SettingsFragment : Fragment() {
         binding.radioImperial.setOnClickListener {
             editor.putString("units","imperial")
             editor.apply()
+        }
+        binding.toggleSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                editor.putString("notification_status","on")
+                editor.apply()
+                Log.i("noti",sharedPref.getString("notification_status","on").toString())
+                // Do something when the switch is toggled on
+            } else {
+                editor.putString("notification_status","off")
+                editor.apply()
+                Log.i("noti",sharedPref.getString("notification_status","on").toString())
+                // Do something when the switch is toggled off
+            }
         }
 
     }

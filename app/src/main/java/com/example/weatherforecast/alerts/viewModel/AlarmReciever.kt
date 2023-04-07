@@ -43,77 +43,83 @@ class AlarmReciever: BroadcastReceiver() {
             WeatherClient.getInstance(),
             LocalRepository.getInstance(context!!)
         )
-        CoroutineScope(Dispatchers.IO).launch{
-            val sharedPref = context.getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
-            var latitude = sharedPref.getFloat("lat", 0f).toDouble()
-            var longitude = sharedPref.getFloat("lon", 0f).toDouble()
-            var units = sharedPref.getString("units", "metric").toString()
-            var language = sharedPref.getString("language", "en").toString()
-            val response = repo.RS.getCurrentWeather(latitude,longitude,language,units)
-            if(response.alerts.isEmpty()||response.alerts.size.equals(0)){
-                description=context.getString(R.string.alert_dialogg_message)
-            }else{
-                description= response.alerts.get(0).description.toString()
-            }
-            val alertType=intent?.getStringExtra("type")
-            if (alertType.equals("Alarm")){
-                setAlarm(context,description)
-            } else {
+        val sharedPref = context.getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
+        val latitude = sharedPref.getFloat("lat", 0f).toDouble()
+        val longitude = sharedPref.getFloat("lon", 0f).toDouble()
+        val units = sharedPref.getString("units", "metric").toString()
+        val language = sharedPref.getString("language", "en").toString()
+        val notificatioStatus=sharedPref.getString("notification_status","on").toString()
+        Log.i("noti",notificatioStatus)
+        if(notificatioStatus.equals("on")) {
+            Log.i("noti","inside corotuine")
+            CoroutineScope(Dispatchers.IO).launch {
+                val response = repo.RS.getCurrentWeather(latitude, longitude, language, units)
+                if (response.alerts.isEmpty() || response.alerts.size.equals(0)) {
+                    description = context.getString(R.string.alert_dialogg_message)
+                } else {
+                    description = response.alerts.get(0).description.toString()
+                }
+                val alertType = intent?.getStringExtra("type")
+                if (alertType.equals("Alarm")) {
+                    setAlarm(context, description)
+                } else {
 
-                //notification
-                val i = Intent(context,AlertsFragment::class.java)
-                intent!!.flags=Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                val alertId=intent.getIntExtra("alert",0)
-                val pendingIntent = PendingIntent.getActivity(context,alertId,i,PendingIntent.FLAG_MUTABLE)
+                    //notification
+                    val i = Intent(context, AlertsFragment::class.java)
+                    intent!!.flags =
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    val alertId = intent.getIntExtra("alert", 0)
+                    val pendingIntent =
+                        PendingIntent.getActivity(context, alertId, i, PendingIntent.FLAG_MUTABLE)
 
-                val builder = NotificationCompat.Builder(context,"myChannel")
-                    .setSmallIcon(R.drawable.icon)
-                    .setContentTitle(response.timezone)
-                    .setContentText(description)
-                    .setAutoCancel(true)
-                    .setDefaults(NotificationCompat.DEFAULT_ALL)
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setContentIntent(pendingIntent)
+                    val builder = NotificationCompat.Builder(context, "myChannel")
+                        .setSmallIcon(R.drawable.icon)
+                        .setContentTitle(response.timezone)
+                        .setContentText(description)
+                        .setAutoCancel(true)
+                        .setDefaults(NotificationCompat.DEFAULT_ALL)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setContentIntent(pendingIntent)
 
 
-                val notificationManager = NotificationManagerCompat.from(context)
-                if (ActivityCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.POST_NOTIFICATIONS
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
+                    val notificationManager = NotificationManagerCompat.from(context)
+                    if (ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.POST_NOTIFICATIONS
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+
+                    }
+                    if (ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.POST_NOTIFICATIONS
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+
+                    }
+                    notificationManager.notify(alertId, builder.build())
+                    Log.i("time", "$alertId   notification id")
 
                 }
-                if (ActivityCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.POST_NOTIFICATIONS
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
 
-                }
-                notificationManager.notify(alertId,builder.build())
-                Log.i("time","$alertId   notification id")
 
             }
-
-
-
-
-
+        } else{
+            Log.i("noti","outside corotuine")
         }
 
 
