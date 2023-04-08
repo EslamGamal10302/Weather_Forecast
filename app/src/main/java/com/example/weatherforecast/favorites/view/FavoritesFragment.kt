@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
@@ -31,6 +32,8 @@ import com.example.weatherforecast.home.view.DayAdapter
 import com.example.weatherforecast.network.WeatherClient
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 class FavoritesFragment : Fragment(), FavoriteOnClickListner {
@@ -78,22 +81,27 @@ class FavoritesFragment : Fragment(), FavoriteOnClickListner {
             viewModel.getAllFavLocations()
 
         }
-        viewModel.finalWeather.observe(viewLifecycleOwner) {
-            Log.i("data", it.toString())
-            var manger = LinearLayoutManager(requireContext())
-            manger.orientation = RecyclerView.VERTICAL
-            binding.favRv.layoutManager = manger
-            if(it.size>0){
-                binding.splashLottie.visibility=View.GONE
-                binding.message.visibility=View.GONE
-            } else{
-                binding.splashLottie.visibility=View.VISIBLE
-                binding.message.visibility=View.VISIBLE
-                binding.splashLottie.animate().setDuration(10000).setStartDelay(1500);
-            }
-            binding.favRv.adapter = FavoriteAdapter(requireContext(), it, this)
 
+
+        lifecycleScope.launch {
+            viewModel.finalWeather.collectLatest{
+                Log.i("data", it.toString())
+                var manger = LinearLayoutManager(requireContext())
+                manger.orientation = RecyclerView.VERTICAL
+                binding.favRv.layoutManager = manger
+                if(it.size>0){
+                    binding.splashLottie.visibility=View.GONE
+                    binding.message.visibility=View.GONE
+                } else{
+                    binding.splashLottie.visibility=View.VISIBLE
+                    binding.message.visibility=View.VISIBLE
+                    binding.splashLottie.animate().setDuration(10000).setStartDelay(1500);
+                }
+                binding.favRv.adapter = FavoriteAdapter(requireContext(), it, this@FavoritesFragment)
+
+            }
         }
+
 
         binding.floatingActionButton3.setOnClickListener {
             // Navigation.findNavController(it).navigate(R.id.action_favoritesFragment_to_mapsFragment)

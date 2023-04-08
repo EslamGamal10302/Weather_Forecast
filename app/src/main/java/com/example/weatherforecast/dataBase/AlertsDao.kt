@@ -3,11 +3,12 @@ package com.example.weatherforecast.dataBase
 import androidx.room.*
 import com.example.weatherforecast.MyLocations
 import com.example.weatherforecast.MyUserAlert
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AlertsDao {
     @Query("SELECT * FROM userAlerts")
-    suspend fun getAllAlerts(): List <MyUserAlert>
+    fun getAllAlerts(): Flow<List<MyUserAlert>>
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(alert: MyUserAlert)
     @Delete

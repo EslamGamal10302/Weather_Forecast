@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherforecast.MyUserAlert
@@ -30,6 +31,8 @@ import com.example.weatherforecast.favorites.view.FavoriteAdapter
 import com.example.weatherforecast.favorites.viewModel.FavoritesViewModel
 import com.example.weatherforecast.generalRepository.Repository
 import com.example.weatherforecast.network.WeatherClient
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
@@ -92,20 +95,23 @@ class AlertsFragment : Fragment(),AlertOnClickListner {
         }
         Log.i("lifecycle","onCreateView")
 
-        viewModel.finalAlerts.observe(viewLifecycleOwner){
-            var manger = LinearLayoutManager(requireContext())
-            manger.orientation = RecyclerView.VERTICAL
-            binding.alertRv.layoutManager=manger
-            if(it.size>0){
-                binding.alrtSplashLottie.visibility=View.GONE
-                binding.messageAlert.visibility=View.GONE
-            } else{
-                binding.alrtSplashLottie.visibility=View.VISIBLE
-                binding.messageAlert.visibility=View.VISIBLE
-                binding.alrtSplashLottie.animate().setDuration(10000).setStartDelay(1500);
+        lifecycleScope.launch {
+            viewModel.finalAlerts.collectLatest{
+                var manger = LinearLayoutManager(requireContext())
+                manger.orientation = RecyclerView.VERTICAL
+                binding.alertRv.layoutManager=manger
+                if(it.size>0){
+                    binding.alrtSplashLottie.visibility=View.GONE
+                    binding.messageAlert.visibility=View.GONE
+                } else{
+                    binding.alrtSplashLottie.visibility=View.VISIBLE
+                    binding.messageAlert.visibility=View.VISIBLE
+                    binding.alrtSplashLottie.animate().setDuration(10000).setStartDelay(1500);
+                }
+                binding.alertRv.adapter = AlertAdapter(requireContext(), this@AlertsFragment, it)
             }
-            binding.alertRv.adapter = AlertAdapter(requireContext(), this, it)
         }
+
 
         return binding.root
     }

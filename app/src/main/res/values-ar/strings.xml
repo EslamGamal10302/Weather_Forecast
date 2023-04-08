@@ -47,4 +47,5 @@
     <string name="alert_dialogg_message">الطقس جيد و لا يوجد تنبيهات للوقت المحدد</string>
     <string name="notification">اشعارات</string>
     <string name="alarm">تنبيهات</string>
+    <string name="api_error">عذرا حدث خطأ غير متوقع, من فضلك حاول في وقت لاحق</string>
 </resources>

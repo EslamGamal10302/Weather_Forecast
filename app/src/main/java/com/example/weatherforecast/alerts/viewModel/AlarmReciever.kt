@@ -31,12 +31,14 @@ import com.example.weatherforecast.generalRepository.Repository
 import com.example.weatherforecast.network.WeatherClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class AlarmReciever: BroadcastReceiver() {
     var LAYOUT_FLAG = 0
     lateinit var description:String
+    lateinit var area:String
     @SuppressLint("SuspiciousIndentation")
     override fun onReceive(context: Context?, intent: Intent?) {
 
@@ -56,12 +58,14 @@ class AlarmReciever: BroadcastReceiver() {
             if (NetworkConnection.getConnectivity(context)) {
                 Log.i("noti", "inside corotuine")
                 CoroutineScope(Dispatchers.IO).launch {
-                    val response = repo.RS.getCurrentWeather(latitude, longitude, language, units)
-                    if (response.alerts.isEmpty() || response.alerts.size.equals(0)) {
-                        description = context.getString(R.string.alert_dialogg_message)
-                    } else {
-                        description = response.alerts.get(0).description.toString()
-                    }
+                     repo.RS.getCurrentWeather(latitude, longitude, language, units).collect{
+                         if (it.alerts.isEmpty() || it.alerts.size.equals(0)) {
+                             description = context.getString(R.string.alert_dialogg_message)
+                         } else {
+                             description = it.alerts.get(0).description.toString()
+                         }
+                         area=it.timezone
+                     }
                     val alertType = intent?.getStringExtra("type")
                     if (alertType.equals("Alarm")) {
                         setAlarm(context, description)
@@ -82,7 +86,7 @@ class AlarmReciever: BroadcastReceiver() {
 
                         val builder = NotificationCompat.Builder(context, "myChannel")
                             .setSmallIcon(R.drawable.icon)
-                            .setContentTitle(response.timezone)
+                            .setContentTitle(area)
                             .setContentText(description)
                             .setAutoCancel(true)
                             .setDefaults(NotificationCompat.DEFAULT_ALL)

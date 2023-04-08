@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.weatherforecast.Forecast
 import com.example.weatherforecast.MyLocations
 import com.example.weatherforecast.MyUserAlert
+import kotlinx.coroutines.flow.Flow
 
 class LocalRepository private constructor(val context: Context):LocalSource {
     private val weatherDAO :WeatherDao
@@ -35,7 +36,7 @@ class LocalRepository private constructor(val context: Context):LocalSource {
     }
 
 
-    override suspend fun getStoredLocations(): List<MyLocations> {
+    override  fun getStoredLocations(): Flow<List<MyLocations>> {
         return weatherDAO.getAllFavorites()
     }
 
@@ -47,7 +48,7 @@ class LocalRepository private constructor(val context: Context):LocalSource {
         weatherDAO.delete(data)
     }
 
-    override suspend fun getStoredAlerts(): List<MyUserAlert> {
+    override  fun getStoredAlerts(): Flow<List<MyUserAlert>> {
         return alertDAO.getAllAlerts()
     }
 
@@ -59,7 +60,7 @@ class LocalRepository private constructor(val context: Context):LocalSource {
        alertDAO.delete(data)
     }
 
-    override suspend fun getMyBackupLocation(): List<Forecast> {
+    override  fun getMyBackupLocation(): Flow<List<Forecast>> {
         return backupDAO.getBackupForMyLocation()
     }
 

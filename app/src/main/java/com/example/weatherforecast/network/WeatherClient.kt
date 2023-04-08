@@ -37,12 +37,16 @@ class WeatherClient private constructor():RemoteSource {
         longitude: Double,
         language: String,
         units: String
-    ): Forecast{
+    ): Flow<Forecast>{
         val myResponser = MyApi.service.getResponse(lat = latitude, lon = longitude, lang = language, units = units)
         if (myResponser.isSuccessful) {
             myData  = myResponser.body()!!
         }
+        var flowData= flow {
+            //for(i in myData)
+            emit(myData)
+        }
 
-        return myData
+        return flowData
     }
 }

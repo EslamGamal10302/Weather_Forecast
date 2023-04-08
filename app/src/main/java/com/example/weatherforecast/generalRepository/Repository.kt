@@ -26,11 +26,11 @@ class Repository private constructor(var RS: RemoteSource,var LS:LocalSource):Re
         longitude: Double,
         language: String,
         units: String
-    ): Forecast {
+    ): Flow<Forecast> {
         return RS.getCurrentWeather(latitude,longitude,language,units)
     }
 
-    override suspend fun getStoredLocations(): List<MyLocations> {
+    override  fun getStoredLocations(): Flow<List<MyLocations>> {
        return LS.getStoredLocations()
     }
 
@@ -42,7 +42,7 @@ class Repository private constructor(var RS: RemoteSource,var LS:LocalSource):Re
         LS.delete(data)
     }
 
-    override suspend fun getStoredAlerts(): List<MyUserAlert> {
+    override  fun getStoredAlerts(): Flow<List<MyUserAlert>> {
        return LS.getStoredAlerts()
     }
 
@@ -54,7 +54,7 @@ class Repository private constructor(var RS: RemoteSource,var LS:LocalSource):Re
         LS.deleteAlert(data)
     }
 
-    override suspend fun getMyBackupLocation(): List<Forecast> {
+    override  fun getMyBackupLocation(): Flow<List<Forecast>> {
         return LS.getMyBackupLocation()
     }
 

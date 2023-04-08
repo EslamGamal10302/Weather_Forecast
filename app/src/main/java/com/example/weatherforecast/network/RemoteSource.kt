@@ -4,5 +4,5 @@ import com.example.weatherforecast.Forecast
 import kotlinx.coroutines.flow.Flow
 
 interface RemoteSource {
-    suspend fun getCurrentWeather(latitude:Double,longitude:Double,language:String,units:String):Forecast
+    suspend fun getCurrentWeather(latitude:Double,longitude:Double,language:String,units:String):Flow<Forecast>
 }
