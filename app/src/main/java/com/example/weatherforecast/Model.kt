@@ -168,3 +168,9 @@ object NetworkConnection {
         }
     }
 }
+
+sealed class ApiState{
+    class Success(val data :Forecast):ApiState()
+    class Failure(val msg :Throwable):ApiState()
+    object Loading :ApiState()
+}

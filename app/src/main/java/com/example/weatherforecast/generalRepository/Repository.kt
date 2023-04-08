@@ -5,6 +5,7 @@ import com.example.weatherforecast.MyLocations
 import com.example.weatherforecast.MyUserAlert
 import com.example.weatherforecast.dataBase.LocalSource
 import com.example.weatherforecast.network.RemoteSource
+import kotlinx.coroutines.flow.Flow
 
 class Repository private constructor(var RS: RemoteSource,var LS:LocalSource):RepositoryInterface {
     companion object {

@@ -2,6 +2,8 @@ package com.example.weatherforecast.network
 
 import com.example.weatherforecast.Forecast
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -35,11 +37,12 @@ class WeatherClient private constructor():RemoteSource {
         longitude: Double,
         language: String,
         units: String
-    ): Forecast {
+    ): Forecast{
         val myResponser = MyApi.service.getResponse(lat = latitude, lon = longitude, lang = language, units = units)
         if (myResponser.isSuccessful) {
             myData  = myResponser.body()!!
         }
+
         return myData
     }
 }

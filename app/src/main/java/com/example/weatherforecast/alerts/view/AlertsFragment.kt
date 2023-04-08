@@ -1,5 +1,6 @@
 package com.example.weatherforecast.alerts.view
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -190,17 +191,20 @@ class AlertsFragment : Fragment(),AlertOnClickListner {
 
     override fun deleteAlert(data: MyUserAlert) {
         viewModel.deleteAlert(data)
-        cancelAlarm(data.id)
+        cancelAlarm(data)
     }
 
-    fun cancelAlarm(request:Int){
+    @SuppressLint("SuspiciousIndentation")
+    fun cancelAlarm(data: MyUserAlert){
+        val numberOfDaysInMillisForDelete=(data.dateTo)-(data.dateFrom)
+        val daysToDelete=TimeUnit.MILLISECONDS.toDays(numberOfDaysInMillisForDelete)
             if(alarmManager==null) {
                 alarmManager = activity?.getSystemService(ALARM_SERVICE) as AlarmManager
             }
 
         val intent  = Intent(requireActivity(),AlarmReciever::class.java)
-        for(i in 0..days) {
-            pending = getBroadcast(requireContext(), request+i.toInt(), intent, PendingIntent.FLAG_MUTABLE)
+        for(i in 0..daysToDelete) {
+            pending = getBroadcast(requireContext(), data.id+(i.toInt()), intent, PendingIntent.FLAG_MUTABLE)
             alarmManager!!.cancel(pending)
         }
     }

@@ -11,15 +11,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
+import com.example.weatherforecast.NetworkConnection
 import com.example.weatherforecast.R
 import com.example.weatherforecast.databinding.FragmentSettingsBinding
+import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 
 class SettingsFragment : Fragment() {
     lateinit var binding: FragmentSettingsBinding
+    lateinit var snackbar: Snackbar
     override fun onStart() {
         super.onStart()
         (activity as AppCompatActivity?)?.supportActionBar?.title=requireActivity().getString(R.string.settings)
@@ -41,6 +45,11 @@ class SettingsFragment : Fragment() {
         val language = sharedPref.getString("language","en")
         val notificatioStatus=sharedPref.getString("notification_status","on")
         val editor = sharedPref.edit()
+        val layout = binding.settingsConstrain
+        snackbar =
+            Snackbar.make(layout, getString(R.string.no_internet), Snackbar.ANIMATION_MODE_SLIDE)
+        // snackbar.setBackgroundTint(ContextCompat.getColor(requireContext(),R.color.medium_purple))
+        snackbar.view.background= ContextCompat.getDrawable(requireContext(),R.drawable.settingselector2)
 
         if(status.equals("mapResult")){
             binding.radioMap.isChecked=true
@@ -73,12 +82,21 @@ class SettingsFragment : Fragment() {
 
 
         binding.radioMap.setOnClickListener {
+            if (NetworkConnection.getConnectivity(requireContext())) {
             editor.putString("location","map")
             editor.apply()
+            }else{
+                snackbar.show()
+            }
+
         }
         binding.radioGps.setOnClickListener {
+            if (NetworkConnection.getConnectivity(requireContext())) {
             editor.putString("location","gps")
             editor.apply()
+            }else{
+                snackbar.show()
+            }
         }
         binding.radioArabic.setOnClickListener {
             editor.putString("language","ar")
