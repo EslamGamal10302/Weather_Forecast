@@ -34,7 +34,7 @@ class DayAdapter(var context: Context,var myDayWeather:List<Hourly>):RecyclerVie
     override fun onBindViewHolder(holder: DayViewHolder, position: Int) {
         val weather=myDayWeather[position]
         var date=Date(weather.dt*1000L)
-        var sdf= SimpleDateFormat("hh:mm a")
+        var sdf= SimpleDateFormat("hh:mm a",Locale.forLanguageTag(language))
         sdf.timeZone=TimeZone.getDefault()
         var formatedData=sdf.format(date)
        holder.binding.daillyDayTxt.text=formatedData

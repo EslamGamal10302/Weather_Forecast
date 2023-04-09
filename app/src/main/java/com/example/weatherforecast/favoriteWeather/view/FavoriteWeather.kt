@@ -79,7 +79,7 @@ class FavoriteWeather : Fragment() {
                         loading.dismiss()
                         binding.areaTxt.visibility = View.VISIBLE
                         try{
-                            val geocoder = Geocoder(requireContext(), Locale.getDefault())
+                            val geocoder = Geocoder(requireContext(), Locale.forLanguageTag(language))
                             var addressList:List<Address> = geocoder.getFromLocation(it.data.lat,it.data.lon,1) as List<Address>
                             if (addressList.size != 0){
                                 var area = addressList.get(0).countryName
@@ -94,7 +94,7 @@ class FavoriteWeather : Fragment() {
                             binding.areaTxt.text = it.data.timezone
                         }
 
-                        var simpleDate = SimpleDateFormat("dd/M/yyyy - hh:mm:a ")
+                        var simpleDate = SimpleDateFormat("dd/M/yyyy - hh:mm:a ",Locale.forLanguageTag(language))
                         var currentDate = simpleDate.format(it.data.current.dt.times(1000L))
                         binding.dateTxt.visibility = View.VISIBLE
                         binding.dateTxt.text = currentDate.toString()

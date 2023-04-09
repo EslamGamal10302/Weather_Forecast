@@ -33,13 +33,13 @@ class WeekAdapter(var context: Context,var myWeekWeather:List<Daily>):RecyclerVi
     override fun onBindViewHolder(holder: WeekViewHolder, position: Int) {
         val weather = myWeekWeather[position]
         var date= Date(weather.dt*1000L)
-        var sdf= SimpleDateFormat("d")
+        var sdf= SimpleDateFormat("d",Locale.forLanguageTag(language))
         sdf.timeZone= TimeZone.getDefault()
         var formatedData=sdf.format(date)
         var intDay=formatedData.toInt()
         var calendar=Calendar.getInstance()
         calendar.set(Calendar.DAY_OF_MONTH,intDay)
-        var format=SimpleDateFormat("EEEE")
+        var format=SimpleDateFormat("EEEE",Locale.forLanguageTag(language))
         var day=format.format(calendar.time)
         holder.binding.daillyDayTxt.text=day
 

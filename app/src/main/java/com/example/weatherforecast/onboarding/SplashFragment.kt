@@ -29,10 +29,10 @@ class SplashFragment : Fragment() {
         binding.splashLottie.animate().setDuration(10000).setStartDelay(1500);
         Handler().postDelayed({
             if (onBoardingFinished()) {
-                //setLocale()
+                setLocale()
                 findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
             } else {
-               // setLocale()
+                setLocale()
                 findNavController().navigate(R.id.action_splashFragment_to_viewPagerFragment)
             }
 
@@ -52,16 +52,10 @@ class SplashFragment : Fragment() {
     private fun setLocale() {
         val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
         var lang = sharedPref.getString("language", "en").toString()
-       /* var locale = Locale(lang)
-        Locale.setDefault(locale)
-        var config = Configuration()
-        config.setLocale(locale)
-        context?.resources?.updateConfiguration(config,context?.resources?.displayMetrics) */
         var local = Locale(lang)
         var config : Configuration=resources.configuration
         config.setLocale(local)
-        var appContext = activity?.applicationContext
-        var appResources=appContext?.resources
+        var appResources=requireContext()?.resources
         appResources?.updateConfiguration(config,appResources.displayMetrics)
     }
 }

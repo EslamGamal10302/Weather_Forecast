@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -101,16 +102,18 @@ class SettingsFragment : Fragment() {
         binding.radioArabic.setOnClickListener {
             editor.putString("language","ar")
             editor.apply()
+            //setLocale("ar",requireContext())
             changeLanguage("ar")
-           // setLocale("ar")
-            //activity?.recreate()
+            //setLocale("ar")
+           // activity?.recreate()
         }
         binding.radioEnglish.setOnClickListener {
             editor.putString("language","en")
             editor.apply()
+           // setLocale("en",requireContext())
             changeLanguage("en")
-            //setLocale("en")
-            //activity?.recreate()
+           // setLocale("en")
+           // activity?.recreate()
         }
         binding.radioStandard.setOnClickListener {
             editor.putString("units","standard")
@@ -144,8 +147,8 @@ class SettingsFragment : Fragment() {
         var local = Locale(lang)
         var config : Configuration=resources.configuration
         config.setLocale(local)
-        var appContext = activity?.applicationContext
-        var appResources=appContext?.resources
+        //var appContext = activity?.applicationContext
+        var appResources=requireContext()?.resources
         appResources?.updateConfiguration(config,appResources.displayMetrics)
         var intent = activity?.intent
         activity?.finish()
@@ -159,6 +162,21 @@ class SettingsFragment : Fragment() {
         config.setLocale(locale)
         context?.resources?.updateConfiguration(config,context?.resources?.displayMetrics)
     }
+
+
+  /* fun setLocale(lng: String, context: Context) {
+       val localeNew = Locale(lng)
+       Locale.setDefault(localeNew)
+       val res: Resources = context.getResources()
+       val newConfig = Configuration(res.getConfiguration())
+       newConfig.locale = localeNew
+       newConfig.setLayoutDirection(localeNew)
+       res.updateConfiguration(newConfig, res.getDisplayMetrics())
+       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+           newConfig.setLocale(localeNew)
+           context.createConfigurationContext(newConfig)
+       }
+   }*/
 
 }
 

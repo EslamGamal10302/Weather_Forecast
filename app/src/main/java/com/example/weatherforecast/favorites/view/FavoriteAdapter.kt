@@ -19,6 +19,8 @@ import java.util.*
 
 class FavoriteAdapter (var context: Context, var myFavLocations:List<MyLocations>,var listner: FavoriteOnClickListner): RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
     lateinit var binding: FavLocationsBinding
+    var sharedPref = context.getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
+   var language = sharedPref.getString("language", "en").toString()
     class FavoriteViewHolder(var binding: FavLocationsBinding):RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
@@ -35,7 +37,7 @@ class FavoriteAdapter (var context: Context, var myFavLocations:List<MyLocations
         var myFavLocation=myFavLocations[position]
 
         try {
-            var geoCoder: Geocoder = Geocoder(context, Locale.getDefault())
+            var geoCoder: Geocoder = Geocoder(context, Locale.forLanguageTag(language))
             var list :List<Address> = listOf()
             list = geoCoder.getFromLocation(myFavLocation.latitude,myFavLocation.longitude , 1) as List<Address>
 
