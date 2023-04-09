@@ -83,6 +83,8 @@ class AlertAdapter(var context: Context,var listner:AlertOnClickListner,var user
 
             val alertDialog = builder.create()
 
+            alertDialog.window?.setBackgroundDrawableResource(R.drawable.settingselectors)
+
             alertDialog.show()
         }
     }

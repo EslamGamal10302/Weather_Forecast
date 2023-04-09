@@ -85,6 +85,8 @@ class FavoriteAdapter (var context: Context, var myFavLocations:List<MyLocations
 
             val alertDialog = builder.create()
 
+            alertDialog.window?.setBackgroundDrawableResource(R.drawable.settingselectors)
+
             alertDialog.show()
 
         }
