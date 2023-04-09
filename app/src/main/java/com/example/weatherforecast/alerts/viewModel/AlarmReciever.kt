@@ -23,17 +23,15 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.example.weatherforecast.MyUserAlert
 import com.example.weatherforecast.NetworkConnection
 import com.example.weatherforecast.R
 import com.example.weatherforecast.alerts.view.AlertsFragment
 import com.example.weatherforecast.dataBase.LocalRepository
 import com.example.weatherforecast.generalRepository.Repository
 import com.example.weatherforecast.network.WeatherClient
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class AlarmReciever: BroadcastReceiver() {
     var LAYOUT_FLAG = 0
@@ -204,6 +202,13 @@ class AlarmReciever: BroadcastReceiver() {
 
         } else{
             Log.i("noti","outside corotuine")
+        }
+
+        var id=intent?.getIntExtra("id",0)
+        if (id!=0){
+            CoroutineScope(Dispatchers.IO).launch{
+                repo.LS.deleteAlert(MyUserAlert(10L,10L,20L,20L,"","",id!!))
+            }
         }
 
 

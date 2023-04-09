@@ -140,6 +140,9 @@ class AlertsFragment : Fragment(),AlertOnClickListner {
             requestCode=data.id+(i.toInt())
             intent.putExtra("alert",requestCode)
             intent.putExtra("type",data.type)
+            if(i==days){
+                intent.putExtra("id",data.id)
+            }
             pending = getBroadcast(requireContext(), requestCode, intent, PendingIntent.FLAG_MUTABLE)
             var from = Calendar.getInstance()
             var current = Calendar.getInstance()
