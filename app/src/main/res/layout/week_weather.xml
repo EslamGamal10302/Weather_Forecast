@@ -24,9 +24,9 @@
 
             <ImageView
                 android:id="@+id/dailyWeatherImg"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="140dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="110dp"
                 android:elevation="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +45,7 @@
                 android:text="Sat"
                 android:textAlignment="gravity"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -75,7 +75,7 @@
                 android:text="Clear sky"
                 android:textAlignment="gravity"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/dailyWeatherImg"
                 app:layout_constraintTop_toTopOf="parent" />

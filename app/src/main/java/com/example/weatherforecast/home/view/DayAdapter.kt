@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.weatherforecast.Forecast
 import com.example.weatherforecast.Hourly
+import com.example.weatherforecast.MyWeatherIcons
 import com.example.weatherforecast.R
 import com.example.weatherforecast.databinding.DayWeatherBinding
 import java.text.SimpleDateFormat
@@ -43,8 +44,9 @@ class DayAdapter(var context: Context,var myDayWeather:List<Hourly>):RecyclerVie
        // var tempCelucis= "$intTemp°C"
         holder.binding.daillyTempTxt.text=finalTemp
 
-        val url = "https://openweathermap.org/img/wn/${weather.weather.get(0).icon}@2x.png"
-        Glide.with(context).load(url).into(holder.binding.dailyWeatherImg)
+       /* val url = "https://openweathermap.org/img/wn/${weather.weather.get(0).icon}@2x.png"
+        Glide.with(context).load(url).into(holder.binding.dailyWeatherImg) */
+        holder.binding.dailyWeatherImg.setImageResource(MyWeatherIcons.mapIcon[weather.weather.get(0).icon]!!)
 
     }
 }

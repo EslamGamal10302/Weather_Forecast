@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/material_dynamic_primary90"
+    android:background="@color/medium_purple"
 
 
 
@@ -31,7 +31,7 @@
         android:layout_marginStart="110dp"
         android:layout_marginEnd="16dp"
         android:text="@string/app_name"
-        android:textColor="@color/dark_blue"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/profile_iv"

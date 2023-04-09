@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.weatherforecast.ApiState
+import com.example.weatherforecast.MyWeatherIcons
 import com.example.weatherforecast.R
 import com.example.weatherforecast.dataBase.LocalRepository
 import com.example.weatherforecast.databinding.FragmentFavoriteWeatherBinding
@@ -110,9 +111,10 @@ class FavoriteWeather : Fragment() {
                         var finalTemp =
                             if (units.equals("standard")) "$intTemp°K" else if (units.equals("metric")) "$intTemp°C" else "$intTemp°F"
                         binding.weatherTempTxt.text = finalTemp
-                        val url =
+                       /* val url =
                             "https://openweathermap.org/img/wn/${it.data.current.weather.get(0).icon}@2x.png"
-                        Glide.with(requireContext()).load(url).into(binding.myFavWeatherIconImg)
+                        Glide.with(requireContext()).load(url).into(binding.myFavWeatherIconImg)*/
+                        binding.myFavWeatherIconImg.setImageResource(MyWeatherIcons.mapIcon[it.data.current.weather.get(0).icon]!!)
 
                         binding.detailsCard.visibility = View.VISIBLE
                         binding.pressureTxt.text = it.data.current.pressure.toString()
