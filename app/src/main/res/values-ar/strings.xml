@@ -48,4 +48,5 @@
     <string name="notification">اشعارات</string>
     <string name="alarm">تنبيهات</string>
     <string name="api_error">عذرا حدث خطأ غير متوقع, من فضلك حاول في وقت لاحق</string>
+    <string name="unknown">مكان غير معروف</string>
 </resources>

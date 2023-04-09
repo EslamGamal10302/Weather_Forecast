@@ -18,6 +18,7 @@ class DayAdapter(var context: Context,var myDayWeather:List<Hourly>):RecyclerVie
     lateinit var binding: DayWeatherBinding
     val sharedPref = context.getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
     val units = sharedPref.getString("units","metric")
+    val language = sharedPref.getString("language", "en").toString()
     class DayViewHolder(var binding: DayWeatherBinding):RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
@@ -40,8 +41,17 @@ class DayAdapter(var context: Context,var myDayWeather:List<Hourly>):RecyclerVie
 
         var temp=weather.temp
         var intTemp = Math.ceil(temp).toInt()
-        var finalTemp = if(units.equals("standard")) "$intTemp°K" else if (units.equals("metric")) "$intTemp°C" else "$intTemp°F"
-       // var tempCelucis= "$intTemp°C"
+
+        var finalTemp=""
+        if(language.equals("en")) {
+             finalTemp =
+                if (units.equals("standard")) "$intTemp°K" else if (units.equals("metric")) "$intTemp°C" else "$intTemp°F"
+            // var tempCelucis= "$intTemp°C"
+        }else{
+            finalTemp=if (units.equals("standard")) "$intTemp°ك " else if (units.equals("metric")) "$intTemp°س " else "$intTemp°ف "
+        }
+
+
         holder.binding.daillyTempTxt.text=finalTemp
 
        /* val url = "https://openweathermap.org/img/wn/${weather.weather.get(0).icon}@2x.png"

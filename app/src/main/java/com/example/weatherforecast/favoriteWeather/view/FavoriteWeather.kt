@@ -108,9 +108,21 @@ class FavoriteWeather : Fragment() {
                         var temp = it.data.current.temp
                         var intTemp = Math.ceil(temp).toInt()
                         // var tempCelucis = "$intTemp°C"
-                        var finalTemp =
-                            if (units.equals("standard")) "$intTemp°K" else if (units.equals("metric")) "$intTemp°C" else "$intTemp°F"
+
+
+                        var finalTemp=""
+
+                        if(language.equals("en")) {
+                            finalTemp =
+                                if (units.equals("standard")) "$intTemp°K" else if (units.equals("metric")) "$intTemp°C" else "$intTemp°F"
+                        }else{
+                            finalTemp=  if (units.equals("standard")) "$intTemp°ك " else if (units.equals("metric")) "$intTemp°س " else "$intTemp°ف "
+                        }
                         binding.weatherTempTxt.text = finalTemp
+
+
+
+
                        /* val url =
                             "https://openweathermap.org/img/wn/${it.data.current.weather.get(0).icon}@2x.png"
                         Glide.with(requireContext()).load(url).into(binding.myFavWeatherIconImg)*/

@@ -17,6 +17,7 @@ class WeekAdapter(var context: Context,var myWeekWeather:List<Daily>):RecyclerVi
     lateinit var binding: WeekWeatherBinding
     val sharedPref = context.getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
     val units = sharedPref.getString("units","metric")
+    val language = sharedPref.getString("language", "en").toString()
     class WeekViewHolder(var binding: WeekWeatherBinding):RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeekViewHolder {
@@ -49,7 +50,14 @@ class WeekAdapter(var context: Context,var myWeekWeather:List<Daily>):RecyclerVi
         var max = Math.ceil(weather.temp.max).toInt()
         var min = Math.ceil(weather.temp.min).toInt()
         //"$max/$min°C"
-        var finalTemp = if(units.equals("standard")) "$max/$min°K" else if (units.equals("metric")) "$max/$min°C" else "$max/$min°F"
+        var finalTemp=""
+        if(language.equals("en")) {
+            finalTemp =
+                if (units.equals("standard")) "$max/$min°K" else if (units.equals("metric")) "$max/$min°C" else "$max/$min°F"
+        }else{
+            finalTemp= if (units.equals("standard")) "$max/$min °ك " else if (units.equals("metric")) "$max/$min°س " else "$max/$min°ف "
+        }
+
         holder.binding.daillyTempTxt.text=finalTemp
     }
 }

@@ -33,20 +33,30 @@ class FavoriteAdapter (var context: Context, var myFavLocations:List<MyLocations
 
     override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
         var myFavLocation=myFavLocations[position]
-        var geoCoder: Geocoder = Geocoder(context, Locale.getDefault())
-        var list :List<Address> = listOf()
+
         try {
+            var geoCoder: Geocoder = Geocoder(context, Locale.getDefault())
+            var list :List<Address> = listOf()
             list = geoCoder.getFromLocation(myFavLocation.latitude,myFavLocation.longitude , 1) as List<Address>
-        }catch(e: IOException){
-            e.printStackTrace()
-        }
+
         if (list.size >0) {
             var adress: Address = list.get(0)
             var k = adress.subAdminArea
             var y = adress.adminArea
             var x = adress.countryName
             holder.binding.weeklyWeatherStatusTxt.text="$k ,$x"
+        }else{
+            holder.binding.weeklyWeatherStatusTxt.text=context.getString(R.string.unknown)
         }
+
+        }catch(e: IOException){
+            holder.binding.weeklyWeatherStatusTxt.text=context.getString(R.string.unknown)
+        }
+
+
+
+
+
         holder.binding.delete.setOnClickListener {
           //  listner.removeFromFavorite(myFavLocation)
            // val yes = "YES,I'M SURE"

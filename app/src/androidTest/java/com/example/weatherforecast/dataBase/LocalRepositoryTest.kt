@@ -11,6 +11,8 @@ import com.example.weatherforecast.Forecast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
+import org.assertj.core.api.Assertions
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
@@ -20,6 +22,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+
 
 
 @ExperimentalCoroutinesApi
@@ -60,7 +63,7 @@ class LocalRepositoryTest{
     }
 
     @Test
-    fun insertMyCurrentLocation_insertThreeLocation_getListOfthreeLocations() = runBlocking {
+    fun insertMyCurrentLocation_insertOneLocation_getListContainsThisLocations() = runBlockingTest {
         // Given
         localDataSource.insertMyCurrentLocation(firstWeather)
 
@@ -70,6 +73,45 @@ class LocalRepositoryTest{
 
         // Then
         MatcherAssert.assertThat(result, CoreMatchers.not(CoreMatchers.nullValue()))
+       Assertions.assertThat(result).contains(firstWeather)
     }
+
+    @Test
+    fun getMyBackupLocation_insertThreeBackupLocations_getListContainsAllLocations() = runBlockingTest {
+        // Given
+        localDataSource.insertMyCurrentLocation(firstWeather)
+        localDataSource.insertMyCurrentLocation(secondWeather)
+        localDataSource.insertMyCurrentLocation(thirdWeather)
+
+
+        // When
+        val result = localDataSource.getMyBackupLocation().getOrAwaitValue {  }
+
+        // Then
+        MatcherAssert.assertThat(result, CoreMatchers.not(CoreMatchers.nullValue()))
+
+    }
+
+    @Test
+    fun deleteMyCurrentLocation_deleteOneBackupLocations_getListDontContainsDeleteLocation() = runBlockingTest {
+        // Given
+        localDataSource.insertMyCurrentLocation(firstWeather)
+        localDataSource.insertMyCurrentLocation(secondWeather)
+        localDataSource.insertMyCurrentLocation(thirdWeather)
+        localDataSource.deleteMyCurrentLocation(secondWeather)
+        // When
+        val result = localDataSource.getMyBackupLocation().getOrAwaitValue {  }
+
+        // Then
+        MatcherAssert.assertThat(result, CoreMatchers.not(CoreMatchers.nullValue()))
+        Assertions.assertThat(result).doesNotContain(secondWeather)
+
+    }
+
+
+
+
+
+
 
 }

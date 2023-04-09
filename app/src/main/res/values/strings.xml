@@ -48,4 +48,5 @@
     <string name="notification">Notification</string>
     <string name="alarm">Alarm</string>
     <string name="api_error">An Expected Error happen,Please try again later</string>
+    <string name="unknown">unknown place</string>
 </resources>
