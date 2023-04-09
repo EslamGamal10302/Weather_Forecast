@@ -174,3 +174,31 @@ sealed class ApiState{
     class Failure(val msg :Throwable):ApiState()
     object Loading :ApiState()
 }
+
+class MyWeatherIcons{
+    companion object{
+        var mapIcon = HashMap<String, Int>()
+        init {
+            mapIcon["01d"]=R.drawable.d01
+            mapIcon["02d"]=R.drawable.d02
+            mapIcon["03d"]=R.drawable.d03
+            mapIcon["04d"]=R.drawable.d04
+            mapIcon["09d"]=R.drawable.d09
+            mapIcon["10d"]=R.drawable.d10
+            mapIcon["11d"]=R.drawable.d11
+            mapIcon["13d"]=R.drawable.d13
+            mapIcon["50d"]=R.drawable.d50
+
+            mapIcon["01n"]=R.drawable.n01
+            mapIcon["02n"]=R.drawable.n02
+            mapIcon["03n"]=R.drawable.n03
+            mapIcon["04n"]=R.drawable.n04
+            mapIcon["09n"]=R.drawable.n09
+            mapIcon["10n"]=R.drawable.n10
+            mapIcon["11n"]=R.drawable.n11
+            mapIcon["13n"]=R.drawable.n13
+            mapIcon["50n"]=R.drawable.n50
+        }
+
+    }
+}
