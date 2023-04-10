@@ -13,21 +13,18 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class FavoriteWeatherViewModel(private val repo: RepositoryInterface):ViewModel() {
-    /*private var myWeather: MutableLiveData<Forecast> = MutableLiveData<Forecast>()
-    val finalWeather: LiveData<Forecast> = myWeather*/
+class FavoriteWeatherViewModel(private val repo: RepositoryInterface) : ViewModel() {
     private val myWeather: MutableStateFlow<ApiState> = MutableStateFlow(ApiState.Loading)
     val finalWeather = myWeather.asStateFlow()
-    fun getMyWeatherStatus(latitude:Double,longitude:Double,language:String,units:String){
+    fun getMyWeatherStatus(latitude: Double, longitude: Double, language: String, units: String) {
         viewModelScope.launch(Dispatchers.IO) {
-          //  myWeather.postValue(repo.getCurrentWeather(latitude,longitude,language,units))
-            repo.getCurrentWeather(latitude,longitude,language,units)
+            repo.getCurrentWeather(latitude, longitude, language, units)
                 .catch {
-                    myWeather.value=ApiState.Failure(it)
+                    myWeather.value = ApiState.Failure(it)
                 }
-                .collect(){
-                    myWeather.value=ApiState.Success(it)
-            }
+                .collect() {
+                    myWeather.value = ApiState.Success(it)
+                }
         }
     }
 }

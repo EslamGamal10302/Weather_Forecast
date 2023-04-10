@@ -17,48 +17,54 @@ import com.example.weatherforecast.favorites.view.FavoriteAdapter
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
-class AlertAdapter(var context: Context,var listner:AlertOnClickListner,var userAlerts:List<MyUserAlert>): RecyclerView.Adapter<AlertAdapter.AlertViewHolder>() {
+class AlertAdapter(
+    var context: Context,
+    var listner: AlertOnClickListner,
+    var userAlerts: List<MyUserAlert>
+) : RecyclerView.Adapter<AlertAdapter.AlertViewHolder>() {
     lateinit var binding: UserAlertListBinding
-    class AlertViewHolder(var binding: UserAlertListBinding):RecyclerView.ViewHolder(binding.root)
+
+    class AlertViewHolder(var binding: UserAlertListBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlertViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        binding= DataBindingUtil.inflate(inflater, R.layout.user_alert_list,parent,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.user_alert_list, parent, false)
         return AlertViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
-       return userAlerts.size
+        return userAlerts.size
     }
 
     override fun onBindViewHolder(holder: AlertViewHolder, position: Int) {
-        var alert=userAlerts[position]
-        var calendar=Calendar.getInstance()
+        var alert = userAlerts[position]
+        var calendar = Calendar.getInstance()
 
 
 
-        calendar.timeInMillis=alert.dateFrom
+        calendar.timeInMillis = alert.dateFrom
         val dayFrom = SimpleDateFormat("dd").format(calendar.time)
-        val monthFrom= SimpleDateFormat("MM").format(calendar.time)
-        val yearFrom= SimpleDateFormat("yyyy").format(calendar.time)
-        holder.binding.dateFrom.text="$dayFrom/$monthFrom/$yearFrom"
+        val monthFrom = SimpleDateFormat("MM").format(calendar.time)
+        val yearFrom = SimpleDateFormat("yyyy").format(calendar.time)
+        holder.binding.dateFrom.text = "$dayFrom/$monthFrom/$yearFrom"
 
-        calendar.timeInMillis=alert.dateTo
+        calendar.timeInMillis = alert.dateTo
         val dayTo = SimpleDateFormat("dd").format(calendar.time)
-        val monthTo= SimpleDateFormat("MM").format(calendar.time)
-        val yearTo= SimpleDateFormat("yyyy").format(calendar.time)
-        holder.binding.dateTo.text="$dayTo/$monthTo/$yearTo"
+        val monthTo = SimpleDateFormat("MM").format(calendar.time)
+        val yearTo = SimpleDateFormat("yyyy").format(calendar.time)
+        holder.binding.dateTo.text = "$dayTo/$monthTo/$yearTo"
 
 
-        calendar.timeInMillis=alert.timeFrom
+        calendar.timeInMillis = alert.timeFrom
         val timeFrom = SimpleDateFormat("hh:mm aa").format(calendar.time)
-        holder.binding.hourFrom.text=timeFrom
+        holder.binding.hourFrom.text = timeFrom
 
-        calendar.timeInMillis=alert.timeTo
+        calendar.timeInMillis = alert.timeTo
         val timeTo = SimpleDateFormat("hh:mm aa").format(calendar.time)
-        holder.binding.hourTo.text=timeTo
+        holder.binding.hourTo.text = timeTo
 
-        holder.binding.alertEventTxt.text=alert.type
+        var type=if(alert.type.equals("Notification")) context.getString(R.string.notification) else context.getString(R.string.alarm)
+        holder.binding.alertEventTxt.text = type
 
         holder.binding.delete.setOnClickListener {
             val yes = context.getString(R.string.answer_yes)

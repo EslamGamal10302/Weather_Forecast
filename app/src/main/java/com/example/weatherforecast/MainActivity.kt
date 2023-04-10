@@ -20,12 +20,11 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=DataBindingUtil.setContentView(this,R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         navController = findNavController(R.id.fragmentNavHost)
         setUpActionBar()
-        NavigationUI.setupWithNavController(binding.navigationView,navController)
+        NavigationUI.setupWithNavController(binding.navigationView, navController)
     }
-
 
 
     private fun setUpActionBar() {

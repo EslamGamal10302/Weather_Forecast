@@ -15,7 +15,7 @@ class Converters {
             return null
         }
         val type = object : TypeToken<List<Weather?>?>() {}.type
-        return Gson().fromJson<List<Weather>>(data,type )
+        return Gson().fromJson<List<Weather>>(data, type)
     }
 
     @TypeConverter
@@ -23,9 +23,9 @@ class Converters {
         if (someObjects == null) {
             return null
         }
-        val type= object :
+        val type = object :
             TypeToken<List<Weather?>?>() {}.type
-        return Gson().toJson(someObjects,type)
+        return Gson().toJson(someObjects, type)
     }
 
 
@@ -49,6 +49,7 @@ class Converters {
     fun currentToString(value: Current): String? {
         return Gson().toJson(value)
     }
+
     @TypeConverter
     fun stringToDaily(value: String?): Daily? {
         return Gson().fromJson(value, Daily::class.java)
@@ -58,6 +59,7 @@ class Converters {
     fun DailyToString(value: Daily): String? {
         return Gson().toJson(value)
     }
+
     @TypeConverter
     fun stringToHourly(value: String?): Hourly? {
         return Gson().fromJson(value, Hourly::class.java)
@@ -74,7 +76,7 @@ class Converters {
             return null
         }
         val gson = Gson()
-        val type= object :
+        val type = object :
             TypeToken<List<Current?>?>() {}.type
         return gson.toJson(list, type)
     }
@@ -97,7 +99,7 @@ class Converters {
             return null
         }
         val gson = Gson()
-        val type= object :
+        val type = object :
             TypeToken<List<Daily?>?>() {}.type
         return gson.toJson(list, type)
     }
@@ -119,7 +121,7 @@ class Converters {
             return null
         }
         val gson = Gson()
-        val type= object :
+        val type = object :
             TypeToken<List<Hourly?>?>() {}.type
         return gson.toJson(list, type)
     }
@@ -136,17 +138,15 @@ class Converters {
     }
 
 
-
+    @TypeConverter
+    fun stringToAlertList(value: String?): List<Alerts?>? {
+        val listType = object : TypeToken<ArrayList<Alerts?>?>() {}.type
+        return Gson().fromJson(value, listType)
+    }
 
     @TypeConverter
- fun stringToAlertList(value: String?): List<Alerts?>? {
-     val listType = object : TypeToken<ArrayList<Alerts?>?>() {}.type
-     return Gson().fromJson(value, listType)
- }
-
-      @TypeConverter
-      fun AlertListToString(list: List<Alerts?>?): String? {
-          val gson = Gson()
-          return gson.toJson(list)
-      }
+    fun AlertListToString(list: List<Alerts?>?): String? {
+        val gson = Gson()
+        return gson.toJson(list)
+    }
 }

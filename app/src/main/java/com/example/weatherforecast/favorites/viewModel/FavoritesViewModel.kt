@@ -15,36 +15,34 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class FavoritesViewModel (private val repo: RepositoryInterface): ViewModel() {
-    /*private var myWeather: MutableLiveData<List<MyLocations>> = MutableLiveData<List<MyLocations>>()
-    val finalWeather: LiveData<List<MyLocations>> = myWeather*/
+class FavoritesViewModel(private val repo: RepositoryInterface) : ViewModel() {
+
 
     private val myWeather: MutableStateFlow<List<MyLocations>> = MutableStateFlow(listOf())
     val finalWeather = myWeather.asStateFlow()
+
     init {
     }
 
-    fun getAllFavLocations(){
+    fun getAllFavLocations() {
         viewModelScope.launch(Dispatchers.IO) {
-          // myWeather.postValue(repo.getStoredLocations())
-            repo.getStoredLocations().collect{
-                myWeather.value=it
+
+            repo.getStoredLocations().collect {
+                myWeather.value = it
             }
         }
     }
 
 
-
-
-    fun addToFavorites(data:MyLocations){
-        viewModelScope.launch (Dispatchers.IO){
+    fun addToFavorites(data: MyLocations) {
+        viewModelScope.launch(Dispatchers.IO) {
             repo.insert(data)
-             getAllFavLocations()
+            getAllFavLocations()
         }
     }
 
-    fun deleteFromFavorites(data:MyLocations){
-        viewModelScope.launch (Dispatchers.IO){
+    fun deleteFromFavorites(data: MyLocations) {
+        viewModelScope.launch(Dispatchers.IO) {
             repo.delete(data)
             getAllFavLocations()
         }

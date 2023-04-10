@@ -46,7 +46,7 @@ class DayAdapter(var context: Context,var myDayWeather:List<Hourly>):RecyclerVie
         if(language.equals("en")) {
              finalTemp =
                 if (units.equals("standard")) "$intTemp°K" else if (units.equals("metric")) "$intTemp°C" else "$intTemp°F"
-            // var tempCelucis= "$intTemp°C"
+
         }else{
             finalTemp=if (units.equals("standard")) "$intTemp°ك " else if (units.equals("metric")) "$intTemp°س " else "$intTemp°ف "
         }
@@ -54,8 +54,7 @@ class DayAdapter(var context: Context,var myDayWeather:List<Hourly>):RecyclerVie
 
         holder.binding.daillyTempTxt.text=finalTemp
 
-       /* val url = "https://openweathermap.org/img/wn/${weather.weather.get(0).icon}@2x.png"
-        Glide.with(context).load(url).into(holder.binding.dailyWeatherImg) */
+
         holder.binding.dailyWeatherImg.setImageResource(MyWeatherIcons.mapIcon[weather.weather.get(0).icon]!!)
 
     }

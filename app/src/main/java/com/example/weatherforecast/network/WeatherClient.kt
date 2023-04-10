@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.flow
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class WeatherClient private constructor():RemoteSource {
-    lateinit var myData : Forecast
+class WeatherClient private constructor() : RemoteSource {
+    lateinit var myData: Forecast
 
-    companion object{
+    companion object {
         var repo = WeatherClient()
         fun getInstance(): WeatherClient {
             if (repo == null) {
@@ -20,30 +20,36 @@ class WeatherClient private constructor():RemoteSource {
         }
     }
 
-    object RetrofitHelper{
+    object RetrofitHelper {
         val gson = GsonBuilder().create()
         val myRetrofit = Retrofit.Builder().baseUrl("https://api.openweathermap.org/data/2.5/")
             .addConverterFactory(GsonConverterFactory.create(gson)).build()
     }
 
-    object MyApi{
-        val service:WeatherService by lazy {
+    object MyApi {
+        val service: WeatherService by lazy {
             RetrofitHelper.myRetrofit.create(WeatherService::class.java)
         }
 
     }
+
     override suspend fun getCurrentWeather(
         latitude: Double,
         longitude: Double,
         language: String,
         units: String
-    ): Flow<Forecast>{
-        val myResponser = MyApi.service.getResponse(lat = latitude, lon = longitude, lang = language, units = units)
+    ): Flow<Forecast> {
+        val myResponser = MyApi.service.getResponse(
+            lat = latitude,
+            lon = longitude,
+            lang = language,
+            units = units
+        )
         if (myResponser.isSuccessful) {
-            myData  = myResponser.body()!!
+            myData = myResponser.body()!!
         }
-        var flowData= flow {
-            //for(i in myData)
+        var flowData = flow {
+
             emit(myData)
         }
 

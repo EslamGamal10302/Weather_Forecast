@@ -14,9 +14,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class AlertsViewModel (private val repo: RepositoryInterface): ViewModel() {
-   /* private var myAlerts: MutableLiveData<List<MyUserAlert>> = MutableLiveData<List<MyUserAlert>>()
-    val finalAlerts: LiveData<List<MyUserAlert>> = myAlerts */
+class AlertsViewModel(private val repo: RepositoryInterface) : ViewModel() {
+
 
     private val myAlerts: MutableStateFlow<List<MyUserAlert>> = MutableStateFlow(listOf())
     val finalAlerts = myAlerts.asStateFlow()
@@ -24,24 +23,25 @@ class AlertsViewModel (private val repo: RepositoryInterface): ViewModel() {
     init {
         getAllAlerts()
     }
-    fun getAllAlerts(){
+
+    fun getAllAlerts() {
         viewModelScope.launch(Dispatchers.IO) {
-           // myAlerts.postValue(repo.getStoredAlerts())
-            repo.getStoredAlerts().collect{
-                myAlerts.value=it
+
+            repo.getStoredAlerts().collect {
+                myAlerts.value = it
             }
         }
     }
 
-    fun addAlert(data : MyUserAlert){
-         viewModelScope.launch (Dispatchers.IO){
-             repo.insertAlert(data)
-             getAllAlerts()
-         }
+    fun addAlert(data: MyUserAlert) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.insertAlert(data)
+            getAllAlerts()
+        }
     }
 
-    fun deleteAlert(data : MyUserAlert){
-        viewModelScope.launch (Dispatchers.IO){
+    fun deleteAlert(data: MyUserAlert) {
+        viewModelScope.launch(Dispatchers.IO) {
             repo.deleteAlert(data)
             getAllAlerts()
         }

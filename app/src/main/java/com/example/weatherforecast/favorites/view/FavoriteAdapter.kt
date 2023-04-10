@@ -17,15 +17,21 @@ import com.example.weatherforecast.databinding.FavLocationsBinding
 import java.io.IOException
 import java.util.*
 
-class FavoriteAdapter (var context: Context, var myFavLocations:List<MyLocations>,var listner: FavoriteOnClickListner): RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
+class FavoriteAdapter(
+    var context: Context,
+    var myFavLocations: List<MyLocations>,
+    var listner: FavoriteOnClickListner
+) : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
     lateinit var binding: FavLocationsBinding
     var sharedPref = context.getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
-   var language = sharedPref.getString("language", "en").toString()
-    class FavoriteViewHolder(var binding: FavLocationsBinding):RecyclerView.ViewHolder(binding.root)
+    var language = sharedPref.getString("language", "en").toString()
+
+    class FavoriteViewHolder(var binding: FavLocationsBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        binding= DataBindingUtil.inflate(inflater, R.layout.fav_locations,parent,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fav_locations, parent, false)
         return FavoriteViewHolder(binding)
     }
 
@@ -34,25 +40,29 @@ class FavoriteAdapter (var context: Context, var myFavLocations:List<MyLocations
     }
 
     override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
-        var myFavLocation=myFavLocations[position]
+        var myFavLocation = myFavLocations[position]
 
         try {
             var geoCoder: Geocoder = Geocoder(context, Locale.forLanguageTag(language))
-            var list :List<Address> = listOf()
-            list = geoCoder.getFromLocation(myFavLocation.latitude,myFavLocation.longitude , 1) as List<Address>
+            var list: List<Address> = listOf()
+            list = geoCoder.getFromLocation(
+                myFavLocation.latitude,
+                myFavLocation.longitude,
+                1
+            ) as List<Address>
 
-        if (list.size >0) {
-            var adress: Address = list.get(0)
-            var k = adress.subAdminArea
-            var y = adress.adminArea
-            var x = adress.countryName
-            holder.binding.weeklyWeatherStatusTxt.text="$k ,$x"
-        }else{
-            holder.binding.weeklyWeatherStatusTxt.text=context.getString(R.string.unknown)
-        }
+            if (list.size > 0) {
+                var adress: Address = list.get(0)
+                var k = adress.subAdminArea
+                var y = adress.adminArea
+                var x = adress.countryName
+                holder.binding.weeklyWeatherStatusTxt.text = "$k ,$x"
+            } else {
+                holder.binding.weeklyWeatherStatusTxt.text = context.getString(R.string.unknown)
+            }
 
-        }catch(e: IOException){
-            holder.binding.weeklyWeatherStatusTxt.text=context.getString(R.string.unknown)
+        } catch (e: IOException) {
+            holder.binding.weeklyWeatherStatusTxt.text = context.getString(R.string.unknown)
         }
 
 
@@ -60,9 +70,6 @@ class FavoriteAdapter (var context: Context, var myFavLocations:List<MyLocations
 
 
         holder.binding.delete.setOnClickListener {
-          //  listner.removeFromFavorite(myFavLocation)
-           // val yes = "YES,I'M SURE"
-           // val no = "NO,GO BACK"
             val yes = context.getString(R.string.answer_yes)
             val no = context.getString(R.string.answer_no)
             val message = context.getString(R.string.dialog_message)
@@ -91,11 +98,11 @@ class FavoriteAdapter (var context: Context, var myFavLocations:List<MyLocations
 
         }
         holder.binding.dailyConstrain.setOnClickListener {
-            listner.showFavoriteLocationWeather(myFavLocation.latitude,myFavLocation.longitude)
+            listner.showFavoriteLocationWeather(myFavLocation.latitude, myFavLocation.longitude)
         }
-        }
-
-
     }
+
+
+}
 
 

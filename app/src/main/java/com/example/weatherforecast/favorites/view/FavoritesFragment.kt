@@ -69,7 +69,6 @@ class FavoritesFragment : Fragment(), FavoriteOnClickListner {
         viewModel =
             ViewModelProvider(requireActivity(), factory).get(FavoritesViewModel::class.java)
         if (args.location != null) {
-            Log.i("result", "${args.location!!.latitude}  ${args.location!!.longitude}")
             viewModel.addToFavorites(
                 MyLocations(
                     args.location!!.latitude,
@@ -84,27 +83,27 @@ class FavoritesFragment : Fragment(), FavoriteOnClickListner {
 
 
         lifecycleScope.launch {
-            viewModel.finalWeather.collectLatest{
-                Log.i("data", it.toString())
+            viewModel.finalWeather.collectLatest {
                 var manger = LinearLayoutManager(requireContext())
                 manger.orientation = RecyclerView.VERTICAL
                 binding.favRv.layoutManager = manger
-                if(it.size>0){
-                    binding.splashLottie.visibility=View.GONE
-                    binding.message.visibility=View.GONE
-                } else{
-                    binding.splashLottie.visibility=View.VISIBLE
-                    binding.message.visibility=View.VISIBLE
+                if (it.size > 0) {
+                    binding.splashLottie.visibility = View.GONE
+                    binding.message.visibility = View.GONE
+                } else {
+                    binding.splashLottie.visibility = View.VISIBLE
+                    binding.message.visibility = View.VISIBLE
                     binding.splashLottie.animate().setDuration(10000).setStartDelay(1500);
                 }
-                binding.favRv.adapter = FavoriteAdapter(requireContext(), it, this@FavoritesFragment)
+                binding.favRv.adapter =
+                    FavoriteAdapter(requireContext(), it, this@FavoritesFragment)
 
             }
         }
 
 
         binding.floatingActionButton3.setOnClickListener {
-            // Navigation.findNavController(it).navigate(R.id.action_favoritesFragment_to_mapsFragment)
+
 
             if (NetworkConnection.getConnectivity(requireContext())) {
                 var action =
@@ -124,8 +123,8 @@ class FavoritesFragment : Fragment(), FavoriteOnClickListner {
         layout = binding.favConstrain
         snackbar =
             Snackbar.make(layout, getString(R.string.no_internet), Snackbar.ANIMATION_MODE_SLIDE)
-       // snackbar.setBackgroundTint(ContextCompat.getColor(requireContext(),R.color.medium_purple))
-        snackbar.view.background=ContextCompat.getDrawable(requireContext(),R.drawable.settingselector2)
+        snackbar.view.background =
+            ContextCompat.getDrawable(requireContext(), R.drawable.settingselector2)
     }
 
     override fun removeFromFavorite(data: MyLocations) {
@@ -142,7 +141,7 @@ class FavoritesFragment : Fragment(), FavoriteOnClickListner {
             )
             Navigation.findNavController(requireView()).navigate(action)
         } else {
-           snackbar.show()
+            snackbar.show()
         }
     }
 

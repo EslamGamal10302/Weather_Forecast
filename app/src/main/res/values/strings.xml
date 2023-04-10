@@ -49,4 +49,7 @@
     <string name="alarm">Alarm</string>
     <string name="api_error">An Expected Error happen,Please try again later</string>
     <string name="unknown">unknown place</string>
+    <string name="fields_empty">You must fill all fields for date and time</string>
+    <string name="alert_type_empty">You must choose type of alert</string>
+    <string name="passed_date">Please enter a vaid start and end date both must start from today</string>
 </resources>

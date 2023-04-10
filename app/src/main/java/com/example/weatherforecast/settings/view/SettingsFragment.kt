@@ -27,12 +27,17 @@ class SettingsFragment : Fragment() {
     lateinit var snackbar: Snackbar
     override fun onStart() {
         super.onStart()
-        (activity as AppCompatActivity?)?.supportActionBar?.title=requireActivity().getString(R.string.settings)
+        (activity as AppCompatActivity?)?.supportActionBar?.title =
+            requireActivity().getString(R.string.settings)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
-        binding=DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
         binding.lifecycleOwner
 
         return binding.root
@@ -41,42 +46,42 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
-        val status = sharedPref.getString("location","")
-        val units = sharedPref.getString("units","metric")
-        val language = sharedPref.getString("language","en")
-        val notificatioStatus=sharedPref.getString("notification_status","on")
+        val status = sharedPref.getString("location", "")
+        val units = sharedPref.getString("units", "metric")
+        val language = sharedPref.getString("language", "en")
+        val notificatioStatus = sharedPref.getString("notification_status", "on")
         val editor = sharedPref.edit()
         val layout = binding.settingsConstrain
         snackbar =
             Snackbar.make(layout, getString(R.string.no_internet), Snackbar.ANIMATION_MODE_SLIDE)
-        // snackbar.setBackgroundTint(ContextCompat.getColor(requireContext(),R.color.medium_purple))
-        snackbar.view.background= ContextCompat.getDrawable(requireContext(),R.drawable.settingselector2)
+        snackbar.view.background =
+            ContextCompat.getDrawable(requireContext(), R.drawable.settingselector2)
 
-        if(status.equals("mapResult")){
-            binding.radioMap.isChecked=true
-        }else{
-            binding.radioGps.isChecked=true
+        if (status.equals("mapResult")) {
+            binding.radioMap.isChecked = true
+        } else {
+            binding.radioGps.isChecked = true
         }
 
 
-        if(units.equals("standard")){
-            binding.radioStandard.isChecked=true
-        }else if (units.equals("imperial")){
-            binding.radioImperial.isChecked=true
-        } else{
-            binding.radioMetric.isChecked=true
+        if (units.equals("standard")) {
+            binding.radioStandard.isChecked = true
+        } else if (units.equals("imperial")) {
+            binding.radioImperial.isChecked = true
+        } else {
+            binding.radioMetric.isChecked = true
         }
 
-        if(language.equals("ar")){
-            binding.radioArabic.isChecked=true
-        } else{
-            binding.radioEnglish.isChecked=true
+        if (language.equals("ar")) {
+            binding.radioArabic.isChecked = true
+        } else {
+            binding.radioEnglish.isChecked = true
         }
 
-        if(notificatioStatus.equals("on")){
-            binding.toggleSwitch.isChecked=true
-        }else{
-            binding.toggleSwitch.isChecked=false
+        if (notificatioStatus.equals("on")) {
+            binding.toggleSwitch.isChecked = true
+        } else {
+            binding.toggleSwitch.isChecked = false
         }
 
 
@@ -84,99 +89,87 @@ class SettingsFragment : Fragment() {
 
         binding.radioMap.setOnClickListener {
             if (NetworkConnection.getConnectivity(requireContext())) {
-            editor.putString("location","map")
-            editor.apply()
-            }else{
+                editor.putString("location", "map")
+                editor.apply()
+            } else {
                 snackbar.show()
             }
 
         }
         binding.radioGps.setOnClickListener {
             if (NetworkConnection.getConnectivity(requireContext())) {
-            editor.putString("location","gps")
-            editor.apply()
-            }else{
+                editor.putString("location", "gps")
+                editor.apply()
+            } else {
                 snackbar.show()
             }
         }
         binding.radioArabic.setOnClickListener {
-            editor.putString("language","ar")
+            editor.putString("language", "ar")
             editor.apply()
-            //setLocale("ar",requireContext())
+
             changeLanguage("ar")
-            //setLocale("ar")
-           // activity?.recreate()
+
         }
         binding.radioEnglish.setOnClickListener {
-            editor.putString("language","en")
+            editor.putString("language", "en")
             editor.apply()
-           // setLocale("en",requireContext())
+
             changeLanguage("en")
-           // setLocale("en")
-           // activity?.recreate()
+
         }
         binding.radioStandard.setOnClickListener {
-            editor.putString("units","standard")
-            editor.apply()
+            if (NetworkConnection.getConnectivity(requireContext())) {
+                editor.putString("units", "standard")
+                editor.apply()
+            } else {
+                snackbar.show()
+            }
         }
         binding.radioMetric.setOnClickListener {
-            editor.putString("units","metric")
-            editor.apply()
+            if (NetworkConnection.getConnectivity(requireContext())) {
+                editor.putString("units", "metric")
+                editor.apply()
+            } else {
+                snackbar.show()
+            }
         }
         binding.radioImperial.setOnClickListener {
-            editor.putString("units","imperial")
-            editor.apply()
+            if (NetworkConnection.getConnectivity(requireContext())) {
+                editor.putString("units", "imperial")
+                editor.apply()
+            } else {
+                snackbar.show()
+            }
         }
         binding.toggleSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                editor.putString("notification_status","on")
+                editor.putString("notification_status", "on")
                 editor.apply()
-                Log.i("noti",sharedPref.getString("notification_status","on").toString())
-                // Do something when the switch is toggled on
+                Log.i("noti", sharedPref.getString("notification_status", "on").toString())
+
             } else {
-                editor.putString("notification_status","off")
+                editor.putString("notification_status", "off")
                 editor.apply()
-                Log.i("noti",sharedPref.getString("notification_status","on").toString())
-                // Do something when the switch is toggled off
+                Log.i("noti", sharedPref.getString("notification_status", "on").toString())
+
             }
         }
 
     }
 
-    fun changeLanguage(lang:String) {
+    fun changeLanguage(lang: String) {
         var local = Locale(lang)
-        var config : Configuration=resources.configuration
+        var config: Configuration = resources.configuration
         config.setLocale(local)
         //var appContext = activity?.applicationContext
-        var appResources=requireContext()?.resources
-        appResources?.updateConfiguration(config,appResources.displayMetrics)
+        var appResources = requireContext()?.resources
+        appResources?.updateConfiguration(config, appResources.displayMetrics)
         var intent = activity?.intent
         activity?.finish()
         startActivity(intent)
     }
 
-    private fun setLocale(lang: String?) {
-        var locale = Locale(lang)
-        Locale.setDefault(locale)
-        var config = Configuration()
-        config.setLocale(locale)
-        context?.resources?.updateConfiguration(config,context?.resources?.displayMetrics)
-    }
-
-
-  /* fun setLocale(lng: String, context: Context) {
-       val localeNew = Locale(lng)
-       Locale.setDefault(localeNew)
-       val res: Resources = context.getResources()
-       val newConfig = Configuration(res.getConfiguration())
-       newConfig.locale = localeNew
-       newConfig.setLayoutDirection(localeNew)
-       res.updateConfiguration(newConfig, res.getDisplayMetrics())
-       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-           newConfig.setLocale(localeNew)
-           context.createConfigurationContext(newConfig)
-       }
-   }*/
 
 }
 
@@ -186,22 +179,3 @@ class SettingsFragment : Fragment() {
 
 
 
-
-/*  var local = Locale("ar")
-        var resources : Resources = requireActivity().resources
-        var config : Configuration=resources.configuration
-        config.setLocale(local)
-        resources.updateConfiguration(config,resources.displayMetrics)
-        Navigation.findNavController(requireView()).navigate(R.id.action_settingsFragment_to_homeFragment) */
-
-
-
-
-
-/* val local = Locale("ar")
-           Locale.setDefault(local)
-           val resources : Resources= requireContext().resources
-           val config = Configuration(resources.configuration)
-           config.locale=local
-           config.setLayoutDirection(local)
-           resources.updateConfiguration(config,resources.displayMetrics) */

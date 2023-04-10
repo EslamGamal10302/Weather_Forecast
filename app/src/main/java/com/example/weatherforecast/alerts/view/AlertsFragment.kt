@@ -37,75 +37,64 @@ import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
 
-class AlertsFragment : Fragment(),AlertOnClickListner {
+class AlertsFragment : Fragment(), AlertOnClickListner {
     lateinit var binding: FragmentAlertsBinding
-    var alarmManager : AlarmManager? = null
-    lateinit var pending : PendingIntent
-    lateinit var alertDialog :DialogAlertFragment
+    var alarmManager: AlarmManager? = null
+    lateinit var pending: PendingIntent
+    lateinit var alertDialog: DialogAlertFragment
     lateinit var factory: AlertsViewModelFactory
     lateinit var viewModel: AlertsViewModel
     var requestCode = 0
-    var days:Long = 0
-   // var interval:Long = 24*60*60*1000
-   var interval:Long = 1*3*60*1000
+    var days: Long = 0
+
+    // var interval:Long = 24*60*60*1000
+    var interval: Long = 1 * 3 * 60 * 1000
 
 
     override fun onStart() {
         super.onStart()
-        (activity as AppCompatActivity?)?.supportActionBar?.title=requireActivity().getString(R.string.alerts)
-        Log.i("lifecycle","onStart")
+        (activity as AppCompatActivity?)?.supportActionBar?.title =
+            requireActivity().getString(R.string.alerts)
+
     }
 
-    override fun onPause() {
-        super.onPause()
-        Log.i("lifecycle","onPause")
-    }
 
-    override fun onStop() {
-        super.onStop()
-        Log.i("lifecycle","onStop")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.i("lifecycle","onCResume")
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        Log.i("lifecycle","onViewCreated")
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
-        binding=DataBindingUtil.inflate(inflater, R.layout.fragment_alerts, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_alerts, container, false)
         binding.lifecycleOwner
-        factory= AlertsViewModelFactory( Repository.getInstance(
-            WeatherClient.getInstance(),
-            LocalRepository.getInstance(requireContext())
-        ))
-        viewModel=ViewModelProvider(requireActivity(), factory).get(AlertsViewModel::class.java)
+        factory = AlertsViewModelFactory(
+            Repository.getInstance(
+                WeatherClient.getInstance(),
+                LocalRepository.getInstance(requireContext())
+            )
+        )
+        viewModel = ViewModelProvider(requireActivity(), factory).get(AlertsViewModel::class.java)
         createNotificationChannel()
-        //setAlarm()
+
 
 
         binding.floatingAlarmActionButton.setOnClickListener {
             alertDialog = DialogAlertFragment(this)
-            activity?.supportFragmentManager?.let { manger->alertDialog.show(manger,"dialog") }
+            activity?.supportFragmentManager?.let { manger -> alertDialog.show(manger, "dialog") }
         }
-        Log.i("lifecycle","onCreateView")
+
 
         lifecycleScope.launch {
-            viewModel.finalAlerts.collectLatest{
+            viewModel.finalAlerts.collectLatest {
                 var manger = LinearLayoutManager(requireContext())
                 manger.orientation = RecyclerView.VERTICAL
-                binding.alertRv.layoutManager=manger
-                if(it.size>0){
-                    binding.alrtSplashLottie.visibility=View.GONE
-                    binding.messageAlert.visibility=View.GONE
-                } else{
-                    binding.alrtSplashLottie.visibility=View.VISIBLE
-                    binding.messageAlert.visibility=View.VISIBLE
+                binding.alertRv.layoutManager = manger
+                if (it.size > 0) {
+                    binding.alrtSplashLottie.visibility = View.GONE
+                    binding.messageAlert.visibility = View.GONE
+                } else {
+                    binding.alrtSplashLottie.visibility = View.VISIBLE
+                    binding.messageAlert.visibility = View.VISIBLE
                     binding.alrtSplashLottie.animate().setDuration(10000).setStartDelay(1500);
                 }
                 binding.alertRv.adapter = AlertAdapter(requireContext(), this@AlertsFragment, it)
@@ -116,34 +105,36 @@ class AlertsFragment : Fragment(),AlertOnClickListner {
         return binding.root
     }
 
-   fun createNotificationChannel(){
-       if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-           val name : CharSequence = "MyFirstChannel"
-           val description = "Channel for notification"
-           val importance =NotificationManager.IMPORTANCE_HIGH
-           val channel = NotificationChannel("myChannel",name,importance)
-           channel.description=description
-           val notificationManager = activity?.getSystemService(NotificationManager::class.java)
-           notificationManager?.createNotificationChannel(channel)
-       }
-   }
-    fun setAlarm(data: MyUserAlert){
+    fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name: CharSequence = "MyFirstChannel"
+            val description = "Channel for notification"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel("myChannel", name, importance)
+            channel.description = description
+            val notificationManager = activity?.getSystemService(NotificationManager::class.java)
+            notificationManager?.createNotificationChannel(channel)
+        }
+    }
+
+    fun setAlarm(data: MyUserAlert) {
         alarmManager = activity?.getSystemService(ALARM_SERVICE) as AlarmManager
-        val intent  = Intent(requireActivity(),AlarmReciever::class.java)
-        val numberOfDaysInMillis=(data.dateTo)-(data.dateFrom)
-        days=TimeUnit.MILLISECONDS.toDays(numberOfDaysInMillis)
+        val intent = Intent(requireActivity(), AlarmReciever::class.java)
+        val numberOfDaysInMillis = (data.dateTo) - (data.dateFrom)
+        days = TimeUnit.MILLISECONDS.toDays(numberOfDaysInMillis)
 
 
 
 
-        for(i in 0..days) {
-            requestCode=data.id+(i.toInt())
-            intent.putExtra("alert",requestCode)
-            intent.putExtra("type",data.type)
-            if(i==days){
-                intent.putExtra("id",data.id)
+        for (i in 0..days) {
+            requestCode = data.id + (i.toInt())
+            intent.putExtra("alert", requestCode)
+            intent.putExtra("type", data.type)
+            if (i == days) {
+                intent.putExtra("id", data.id)
             }
-            pending = getBroadcast(requireContext(), requestCode, intent, PendingIntent.FLAG_MUTABLE)
+            pending =
+                getBroadcast(requireContext(), requestCode, intent, PendingIntent.FLAG_MUTABLE)
             var from = Calendar.getInstance()
             var current = Calendar.getInstance()
             current.timeInMillis = data.timeFrom
@@ -155,13 +146,12 @@ class AlertsFragment : Fragment(),AlertOnClickListner {
             from.set(Calendar.YEAR, current.get(Calendar.YEAR))
             var trigerTime = from.timeInMillis
 
-            alarmManager!!.setExact(AlarmManager.RTC_WAKEUP, trigerTime+(i*interval), pending);
-            if(data.type.equals("Notification")){
-                deleteCompletedNotification(data,i,trigerTime+(i*interval))
-            } else{
-                deleteCompletedAlarmNotification(data,i,trigerTime+(i*interval))
+            alarmManager!!.setExact(AlarmManager.RTC_WAKEUP, trigerTime + (i * interval), pending);
+            if (data.type.equals("Notification")) {
+                deleteCompletedNotification(data, i, trigerTime + (i * interval))
+            } else {
+                deleteCompletedAlarmNotification(data, i, trigerTime + (i * interval))
             }
-
 
 
         }
@@ -169,25 +159,32 @@ class AlertsFragment : Fragment(),AlertOnClickListner {
 
     }
 
-    private fun deleteCompletedNotification(data: MyUserAlert, i: Long,trigerTime:Long) {
-        var hoursDelay=data.timeTo-data.timeFrom
-        Log.i("time","$hoursDelay")
-        var finalTrigger=hoursDelay+trigerTime
-        val delteIntent  = Intent(requireActivity(), DeleteAlarmReciever::class.java)
-        delteIntent.putExtra("alert",data.id+i.toInt())
-        val deletePending = getBroadcast(requireContext(), data.id+i.toInt(), delteIntent, PendingIntent.FLAG_MUTABLE)
-        Log.i("time","${data.id+i.toInt()}   id in fragment")
+    private fun deleteCompletedNotification(data: MyUserAlert, i: Long, trigerTime: Long) {
+        var hoursDelay = data.timeTo - data.timeFrom
+        var finalTrigger = hoursDelay + trigerTime
+        val delteIntent = Intent(requireActivity(), DeleteAlarmReciever::class.java)
+        delteIntent.putExtra("alert", data.id + i.toInt())
+        val deletePending = getBroadcast(
+            requireContext(),
+            data.id + i.toInt(),
+            delteIntent,
+            PendingIntent.FLAG_MUTABLE
+        )
+
         alarmManager!!.setExact(AlarmManager.RTC_WAKEUP, finalTrigger, deletePending);
     }
 
-    private fun deleteCompletedAlarmNotification(data: MyUserAlert, i: Long,trigerTime:Long) {
-        var hoursDelay=data.timeTo-data.timeFrom
-        Log.i("time","$hoursDelay")
-        var finalTrigger=hoursDelay+trigerTime
-        val delteIntent  = Intent(requireActivity(), DeleteAlarmNotificationReciever::class.java)
-        delteIntent.putExtra("alert",data.id+i.toInt())
-        val deletePending = getBroadcast(requireContext(), data.id+i.toInt(), delteIntent, PendingIntent.FLAG_MUTABLE)
-        Log.i("time","${data.id+i.toInt()}   id in fragment")
+    private fun deleteCompletedAlarmNotification(data: MyUserAlert, i: Long, trigerTime: Long) {
+        var hoursDelay = data.timeTo - data.timeFrom
+        var finalTrigger = hoursDelay + trigerTime
+        val delteIntent = Intent(requireActivity(), DeleteAlarmNotificationReciever::class.java)
+        delteIntent.putExtra("alert", data.id + i.toInt())
+        val deletePending = getBroadcast(
+            requireContext(),
+            data.id + i.toInt(),
+            delteIntent,
+            PendingIntent.FLAG_MUTABLE
+        )
         alarmManager!!.setExact(AlarmManager.RTC_WAKEUP, finalTrigger, deletePending);
     }
 
@@ -204,16 +201,21 @@ class AlertsFragment : Fragment(),AlertOnClickListner {
     }
 
     @SuppressLint("SuspiciousIndentation")
-    fun cancelAlarm(data: MyUserAlert){
-        val numberOfDaysInMillisForDelete=(data.dateTo)-(data.dateFrom)
-        val daysToDelete=TimeUnit.MILLISECONDS.toDays(numberOfDaysInMillisForDelete)
-            if(alarmManager==null) {
-                alarmManager = activity?.getSystemService(ALARM_SERVICE) as AlarmManager
-            }
+    fun cancelAlarm(data: MyUserAlert) {
+        val numberOfDaysInMillisForDelete = (data.dateTo) - (data.dateFrom)
+        val daysToDelete = TimeUnit.MILLISECONDS.toDays(numberOfDaysInMillisForDelete)
+        if (alarmManager == null) {
+            alarmManager = activity?.getSystemService(ALARM_SERVICE) as AlarmManager
+        }
 
-        val intent  = Intent(requireActivity(),AlarmReciever::class.java)
-        for(i in 0..daysToDelete) {
-            pending = getBroadcast(requireContext(), data.id+(i.toInt()), intent, PendingIntent.FLAG_MUTABLE)
+        val intent = Intent(requireActivity(), AlarmReciever::class.java)
+        for (i in 0..daysToDelete) {
+            pending = getBroadcast(
+                requireContext(),
+                data.id + (i.toInt()),
+                intent,
+                PendingIntent.FLAG_MUTABLE
+            )
             alarmManager!!.cancel(pending)
         }
     }

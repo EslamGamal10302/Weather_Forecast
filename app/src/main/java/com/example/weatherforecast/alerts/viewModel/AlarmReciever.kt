@@ -33,14 +33,15 @@ import com.example.weatherforecast.network.WeatherClient
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 
-class AlarmReciever: BroadcastReceiver() {
+class AlarmReciever : BroadcastReceiver() {
     var LAYOUT_FLAG = 0
-    lateinit var description:String
-    lateinit var area:String
+    lateinit var description: String
+    lateinit var area: String
+
     @SuppressLint("SuspiciousIndentation")
     override fun onReceive(context: Context?, intent: Intent?) {
 
-        val repo =   Repository.getInstance(
+        val repo = Repository.getInstance(
             WeatherClient.getInstance(),
             LocalRepository.getInstance(context!!)
         )
@@ -49,21 +50,20 @@ class AlarmReciever: BroadcastReceiver() {
         val longitude = sharedPref.getFloat("lon", 0f).toDouble()
         val units = sharedPref.getString("units", "metric").toString()
         val language = sharedPref.getString("language", "en").toString()
-        val notificatioStatus=sharedPref.getString("notification_status","on").toString()
-        Log.i("noti",notificatioStatus)
-        if(notificatioStatus.equals("on")) {
+        val notificatioStatus = sharedPref.getString("notification_status", "on").toString()
+        if (notificatioStatus.equals("on")) {
 
             if (NetworkConnection.getConnectivity(context)) {
-                Log.i("noti", "inside corotuine")
+
                 CoroutineScope(Dispatchers.IO).launch {
-                     repo.RS.getCurrentWeather(latitude, longitude, language, units).collect{
-                         if (it.alerts.isEmpty() || it.alerts.size.equals(0)) {
-                             description = context.getString(R.string.alert_dialogg_message)
-                         } else {
-                             description = it.alerts.get(0).description.toString()
-                         }
-                         area=it.timezone
-                     }
+                    repo.RS.getCurrentWeather(latitude, longitude, language, units).collect {
+                        if (it.alerts.isEmpty() || it.alerts.size.equals(0)) {
+                            description = context.getString(R.string.alert_dialogg_message)
+                        } else {
+                            description = it.alerts.get(0).description.toString()
+                        }
+                        area = it.timezone
+                    }
                     val alertType = intent?.getStringExtra("type")
                     if (alertType.equals("Alarm")) {
                         setAlarm(context, description)
@@ -122,13 +122,13 @@ class AlarmReciever: BroadcastReceiver() {
 
                         }
                         notificationManager.notify(alertId, builder.build())
-                        Log.i("time", "$alertId   notification id")
+
 
                     }
 
 
                 }
-            }else{
+            } else {
 
                 CoroutineScope(Dispatchers.IO).launch {
 
@@ -190,7 +190,7 @@ class AlarmReciever: BroadcastReceiver() {
 
                         }
                         notificationManager.notify(alertId, builder.build())
-                        Log.i("time", "$alertId   notification id")
+
 
                     }
 
@@ -198,23 +198,20 @@ class AlarmReciever: BroadcastReceiver() {
             }
 
 
-
-
-        } else{
-            Log.i("noti","outside corotuine")
         }
 
-        var id=intent?.getIntExtra("id",0)
-        if (id!=0){
-            CoroutineScope(Dispatchers.IO).launch{
-                repo.LS.deleteAlert(MyUserAlert(10L,10L,20L,20L,"","",id!!))
+        var id = intent?.getIntExtra("id", 0)
+        if (id != 0) {
+            CoroutineScope(Dispatchers.IO).launch {
+                repo.LS.deleteAlert(MyUserAlert(10L, 10L, 20L, 20L, "", "", id!!))
             }
         }
 
 
     }
+
     @SuppressLint("MissingInflatedId")
-    private suspend fun setAlarm(context: Context, description : String) {
+    private suspend fun setAlarm(context: Context, description: String) {
         LAYOUT_FLAG = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         else
@@ -223,7 +220,8 @@ class AlarmReciever: BroadcastReceiver() {
 
         val mp = MediaPlayer.create(context, Settings.System.DEFAULT_ALARM_ALERT_URI)
 
-        val view: View = LayoutInflater.from(context).inflate(R.layout.alert_dialog_layout, null, false)
+        val view: View =
+            LayoutInflater.from(context).inflate(R.layout.alert_dialog_layout, null, false)
         val dismissBtn = view.findViewById(R.id.alarm_button) as Button
         val textView = view.findViewById(R.id.alarm_text) as TextView
         val layoutParams =
@@ -256,12 +254,9 @@ class AlarmReciever: BroadcastReceiver() {
 }
 
 
-
-
-class DeleteAlarmReciever: BroadcastReceiver(){
+class DeleteAlarmReciever : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        val alertId=intent?.getIntExtra("alert",0)
-        Log.i("time","$alertId  id in reciver")
+        val alertId = intent?.getIntExtra("alert", 0)
         val notificationManager = NotificationManagerCompat.from(context!!)
         notificationManager.cancel(alertId!!)
     }
@@ -269,11 +264,12 @@ class DeleteAlarmReciever: BroadcastReceiver(){
 }
 
 
-class DeleteAlarmNotificationReciever:BroadcastReceiver(){
+class DeleteAlarmNotificationReciever : BroadcastReceiver() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onReceive(context: Context?, intent: Intent?) {
-        val view: View = LayoutInflater.from(context).inflate(R.layout.alert_dialog_layout, null, false)
-        val windowManager=context?.getSystemService(WINDOW_SERVICE) as WindowManager
+        val view: View =
+            LayoutInflater.from(context).inflate(R.layout.alert_dialog_layout, null, false)
+        val windowManager = context?.getSystemService(WINDOW_SERVICE) as WindowManager
         windowManager.removeView(view)
     }
 

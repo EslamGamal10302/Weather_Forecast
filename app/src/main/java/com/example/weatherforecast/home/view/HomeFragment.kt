@@ -65,11 +65,11 @@ class HomeFragment : Fragment() {
     lateinit var factory: HomeViewModelFactory
     lateinit var viewModel: HomeViewModel
     lateinit var loading: ProgressDialog
-    lateinit var layout :ConstraintLayout
-    lateinit var sharedPref :SharedPreferences
-    lateinit var status :String
-    lateinit var units : String
-    lateinit var language : String
+    lateinit var layout: ConstraintLayout
+    lateinit var sharedPref: SharedPreferences
+    lateinit var status: String
+    lateinit var units: String
+    lateinit var language: String
     var requestPermissionStatus = false
 
 
@@ -77,7 +77,7 @@ class HomeFragment : Fragment() {
         super.onAttach(context)
         loading = ProgressDialog(context)
         loading.setMessage(getString(R.string.loading))
-        Log.i("lifecylce","attach")
+        Log.i("lifecylce", "attach")
     }
 
     @SuppressLint("ResourceAsColor")
@@ -86,16 +86,13 @@ class HomeFragment : Fragment() {
         (activity as AppCompatActivity?)?.supportActionBar?.show()
         (activity as AppCompatActivity?)?.supportActionBar?.title =
             requireActivity().getString(R.string.home)
-        //medium_purple
-        Log.i("lifecylce","onResume")
 
-        //  getLastLocation() call here
-         sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
-         status = sharedPref.getString("location", "").toString()
-         units = sharedPref.getString("units", "metric").toString()
-         language = sharedPref.getString("language", "en").toString()
-        Log.i("milad", "$units")
-        Log.i("milad", "$language")
+
+        sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
+        status = sharedPref.getString("location", "").toString()
+        units = sharedPref.getString("units", "metric").toString()
+        language = sharedPref.getString("language", "en").toString()
+
 
         factory = HomeViewModelFactory(
             GpsLocation(requireContext()),
@@ -108,9 +105,9 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity(), factory).get(HomeViewModel::class.java)
 
 
-         requestMyCurrentWeather()
+        requestMyCurrentWeather()
 
-        // viewModel.getMyGpsLocation()
+
 
 
 
@@ -118,37 +115,43 @@ class HomeFragment : Fragment() {
 
         lifecycleScope.launch {
             viewModel.finalWeather.collectLatest {
-                when (it){
-                    is ApiState.Loading ->{
+                when (it) {
+                    is ApiState.Loading -> {
                         //loading.show()
                     }
-                    is ApiState.Success ->{
+                    is ApiState.Success -> {
 
                         binding.permissionCard.visibility = View.GONE
                         Log.i("test", "call view model")
                         loading.dismiss()
                         binding.areaTxt.visibility = View.VISIBLE
-                       // binding.areaTxt.text = it.data.timezone
-                        try{
-                            val geocoder = Geocoder(requireContext(), Locale.forLanguageTag(language))
-                            var addressList:List<Address> = geocoder.getFromLocation(it.data.lat,it.data.lon,1) as List<Address>
-                            if (addressList.size != 0){
+
+                        try {
+                            val geocoder =
+                                Geocoder(requireContext(), Locale.forLanguageTag(language))
+                            var addressList: List<Address> = geocoder.getFromLocation(
+                                it.data.lat,
+                                it.data.lon,
+                                1
+                            ) as List<Address>
+                            if (addressList.size != 0) {
                                 var area = addressList.get(0).countryName
                                 var country = addressList.get(0).adminArea
-                                binding.areaTxt.text = country +" , "+ area
-                            }else{
-                                binding.areaTxt.text =it.data.timezone
+                                binding.areaTxt.text = country + " , " + area
+                            } else {
+                                binding.areaTxt.text = it.data.timezone
                             }
-                        }catch (e : IOException){
+                        } catch (e: IOException) {
                             binding.areaTxt.text = it.data.timezone
-                        }catch (e: RemoteException){
+                        } catch (e: RemoteException) {
                             binding.areaTxt.text = it.data.timezone
                         }
 
 
-
-
-                        var simpleDate = SimpleDateFormat("dd/M/yyyy - hh:mm:a ",Locale.forLanguageTag(language))
+                        var simpleDate = SimpleDateFormat(
+                            "dd/M/yyyy - hh:mm:a ",
+                            Locale.forLanguageTag(language)
+                        )
                         var currentDate = simpleDate.format(it.data.current.dt.times(1000L))
                         binding.dateTxt.visibility = View.VISIBLE
                         binding.dateTxt.text = currentDate.toString()
@@ -161,23 +164,26 @@ class HomeFragment : Fragment() {
                         binding.weatherStatusTxt.text = it.data.current.weather.get(0).description
                         var temp = it.data.current.temp
                         var intTemp = Math.ceil(temp).toInt()
-                        // var tempCelucis = "$intTemp°C"
+
                         var finalTemp = ""
-                        if(language.equals("en")) {
-                             finalTemp =
+                        if (language.equals("en")) {
+                            finalTemp =
                                 if (units.equals("standard")) "$intTemp°K" else if (units.equals("metric")) "$intTemp°C" else "$intTemp°F"
-                        } else{
-                           finalTemp= if (units.equals("standard")) "$intTemp°ك " else if (units.equals("metric")) "$intTemp°س " else "$intTemp°ف "
+                        } else {
+                            finalTemp =
+                                if (units.equals("standard")) "$intTemp°ك " else if (units.equals("metric")) "$intTemp°س " else "$intTemp°ف "
                         }
 
 
                         binding.weatherTempTxt.text = finalTemp
 
 
-                       /* val url =
-                            "https://openweathermap.org/img/wn/${it.data.current.weather.get(0).icon}@2x.png"
-                        Glide.with(requireContext()).load(url).into(binding.weatherIconImg)*/
-                        binding.weatherIconImg.setImageResource(MyWeatherIcons.mapIcon[it.data.current.weather.get(0).icon]!!)
+
+                        binding.weatherIconImg.setImageResource(
+                            MyWeatherIcons.mapIcon[it.data.current.weather.get(
+                                0
+                            ).icon]!!
+                        )
 
 
                         binding.detailsCard.visibility = View.VISIBLE
@@ -193,18 +199,25 @@ class HomeFragment : Fragment() {
                         var manger = LinearLayoutManager(requireContext())
                         manger.orientation = RecyclerView.HORIZONTAL
                         binding.hourlyWeatherRv.layoutManager = manger
-                        binding.hourlyWeatherRv.adapter = DayAdapter(requireContext(), it.data.hourly)
+                        binding.hourlyWeatherRv.adapter =
+                            DayAdapter(requireContext(), it.data.hourly)
                         var mangerVertical = LinearLayoutManager(requireContext())
                         mangerVertical.orientation = RecyclerView.VERTICAL
                         binding.weeklyWeatherRv.layoutManager = mangerVertical
-                        binding.weeklyWeatherRv.adapter = WeekAdapter(requireContext(), it.data.daily)
+                        binding.weeklyWeatherRv.adapter =
+                            WeekAdapter(requireContext(), it.data.daily)
 
                     }
-                    else ->{
+                    else -> {
                         loading.dismiss()
-                        layout= binding.homeConstrain
-                        val snackbar=Snackbar.make(layout,getString(R.string.api_error),Snackbar.ANIMATION_MODE_SLIDE)
-                        snackbar.view.background= ContextCompat.getDrawable(requireContext(),R.drawable.settingselectors)
+                        layout = binding.homeConstrain
+                        val snackbar = Snackbar.make(
+                            layout,
+                            getString(R.string.api_error),
+                            Snackbar.ANIMATION_MODE_SLIDE
+                        )
+                        snackbar.view.background =
+                            ContextCompat.getDrawable(requireContext(), R.drawable.settingselectors)
                         snackbar.show()
 
                     }
@@ -220,7 +233,7 @@ class HomeFragment : Fragment() {
 
 
         binding.swipeRefreshLayout.setOnRefreshListener {
-           requestMyCurrentWeather()
+            requestMyCurrentWeather()
         }
         binding.allow.setOnClickListener {
             requestPermission()
@@ -228,16 +241,20 @@ class HomeFragment : Fragment() {
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         binding.lifecycleOwner
-        Log.i("lifecylce","onCreateView")
+
         return binding.root
     }
 
-    fun requestMyCurrentWeather(){
+    fun requestMyCurrentWeather() {
         if (NetworkConnection.getConnectivity(requireContext())) {
-            binding.swipeRefreshLayout.isRefreshing=false
+            binding.swipeRefreshLayout.isRefreshing = false
 
             when (status) {
                 "map" -> {
@@ -250,85 +267,58 @@ class HomeFragment : Fragment() {
                     Navigation.findNavController(requireView()).navigate(action)
                 }
                 "gps" -> {
-                        checkPermissionStatus()
-                  /*  loading.show()
-                    viewModel.getMyGpsLocation(language, units)
-                    Log.i("milad", "here gps")  */
+                    checkPermissionStatus()
+
                 }
                 "mapResult" -> {
                     loading.show()
                     var latitude = sharedPref.getFloat("lat", 0f).toDouble()
                     var longitude = sharedPref.getFloat("lon", 0f).toDouble()
                     viewModel.getMyWeatherStatus(latitude, longitude, language, units)
-                    Log.i("milad", "here gps modified")
+
 
                 }
             }
-        } else{
-            binding.swipeRefreshLayout.isRefreshing=false
+        } else {
+            binding.swipeRefreshLayout.isRefreshing = false
             viewModel.getMyBackupLocation()
-            layout= binding.homeConstrain
-            val snackbar=Snackbar.make(layout,getString(R.string.no_internet),Snackbar.ANIMATION_MODE_SLIDE)
-            snackbar.view.background= ContextCompat.getDrawable(requireContext(),R.drawable.settingselectors)
+            layout = binding.homeConstrain
+            val snackbar = Snackbar.make(
+                layout,
+                getString(R.string.no_internet),
+                Snackbar.ANIMATION_MODE_SLIDE
+            )
+            snackbar.view.background =
+                ContextCompat.getDrawable(requireContext(), R.drawable.settingselectors)
             snackbar.show()
 
-        } }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i("lifecylce","onDestroy")
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.i("lifecylce","onCreate")
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        Log.i("lifecylce","onViewCreated")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.i("lifecylce","onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.i("lifecylce","onStop")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.i("lifecylce","onDestroyView")
-
+        }
     }
 
 
-
-
-    fun excudeGpsCall(){
+    fun excudeGpsCall() {
         loading.show()
         viewModel.getMyGpsLocation(language, units)
-        Log.i("milad", "here gps")
+
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(requestCode==My_LOCATION_PERMISSION_ID){
-            Log.i("milad","inside first if onRequest")
-            if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                Log.i("milad","inside accept permision")
-                binding.permissionCard.visibility=View.GONE
+        if (requestCode == My_LOCATION_PERMISSION_ID) {
+
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                binding.permissionCard.visibility = View.GONE
                 excudeGpsCall()
-                //getLastLocation()
-                // call my block of code
-            } else{
-                Log.i("milad","inside refuse permision ")
-                binding.permissionCard.visibility=View.VISIBLE
-                // call my another block
+
+            } else {
+
+                binding.permissionCard.visibility = View.VISIBLE
+
             }
         }
 
@@ -337,59 +327,58 @@ class HomeFragment : Fragment() {
 
     @SuppressLint("MissingPermission")
     fun checkPermissionStatus() {
-        if (checkPermission()){
+        if (checkPermission()) {
 
-            if(isLocationEnabled()){
+            if (isLocationEnabled()) {
                 excudeGpsCall()
-            } else{
-                Toast.makeText(requireContext(),"please turn on location", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(requireContext(), "please turn on location", Toast.LENGTH_LONG)
+                    .show()
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 requireContext().startActivity(intent)
             }
 
-        }else {
-            if(!requestPermissionStatus){
-                requestPermissionStatus =true
+        } else {
+            if (!requestPermissionStatus) {
+                requestPermissionStatus = true
                 requestPermission()
             }
 
         }
 
     }
-    private fun checkPermission():Boolean{
-        return  (ActivityCompat.checkSelfPermission(requireContext(),
+
+    private fun checkPermission(): Boolean {
+        return (ActivityCompat.checkSelfPermission(
+            requireContext(),
             Manifest.permission.ACCESS_COARSE_LOCATION
         ) ==
                 PackageManager.PERMISSION_GRANTED)
                 ||
-                (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
+                (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) ==
                         PackageManager.PERMISSION_GRANTED)
     }
+
     private fun requestPermission() {
-       requestPermissions( arrayOf(
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ), My_LOCATION_PERMISSION_ID)
+        requestPermissions(
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ), My_LOCATION_PERMISSION_ID
+        )
     }
 
 
-    private  fun isLocationEnabled():Boolean{
-        val locationManger : LocationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManger.isProviderEnabled(LocationManager.GPS_PROVIDER)|| locationManger.isProviderEnabled(
-            LocationManager.NETWORK_PROVIDER)
+    private fun isLocationEnabled(): Boolean {
+        val locationManger: LocationManager =
+            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManger.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManger.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

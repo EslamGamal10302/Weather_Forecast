@@ -42,28 +42,41 @@ import java.util.*
 
 class FavoriteWeather : Fragment() {
     lateinit var binding: FragmentFavoriteWeatherBinding
-    val args :FavoriteWeatherArgs by navArgs()
-    lateinit var factory : FavoriteWeatherViewModelFactory
-    lateinit var viewModel : FavoriteWeatherViewModel
+    val args: FavoriteWeatherArgs by navArgs()
+    lateinit var factory: FavoriteWeatherViewModelFactory
+    lateinit var viewModel: FavoriteWeatherViewModel
     lateinit var loading: ProgressDialog
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorite_weather, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_favorite_weather, container, false)
         binding.lifecycleOwner
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.i("yarb","${args.location!!.latitude}  ${ args.location!!.longitude}")
         val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
-        val units = sharedPref.getString("units","metric")
-        val language = sharedPref.getString("language","en")
-        factory= FavoriteWeatherViewModelFactory( Repository.getInstance(
-            WeatherClient.getInstance(),
-            LocalRepository.getInstance(requireContext())))
-        viewModel= ViewModelProvider(requireActivity(),factory).get(FavoriteWeatherViewModel::class.java)
-        viewModel.getMyWeatherStatus(args.location!!.latitude,args.location!!.longitude,language!!,units!!)
+        val units = sharedPref.getString("units", "metric")
+        val language = sharedPref.getString("language", "en")
+        factory = FavoriteWeatherViewModelFactory(
+            Repository.getInstance(
+                WeatherClient.getInstance(),
+                LocalRepository.getInstance(requireContext())
+            )
+        )
+        viewModel =
+            ViewModelProvider(requireActivity(), factory).get(FavoriteWeatherViewModel::class.java)
+        viewModel.getMyWeatherStatus(
+            args.location!!.latitude,
+            args.location!!.longitude,
+            language!!,
+            units!!
+        )
 
 
 
@@ -71,30 +84,38 @@ class FavoriteWeather : Fragment() {
 
             viewModel.finalWeather.collectLatest {
 
-                when (it){
-                    is ApiState.Loading ->{
+                when (it) {
+                    is ApiState.Loading -> {
                         loading.show()
                     }
-                    is ApiState.Success ->{
+                    is ApiState.Success -> {
                         loading.dismiss()
                         binding.areaTxt.visibility = View.VISIBLE
-                        try{
-                            val geocoder = Geocoder(requireContext(), Locale.forLanguageTag(language))
-                            var addressList:List<Address> = geocoder.getFromLocation(it.data.lat,it.data.lon,1) as List<Address>
-                            if (addressList.size != 0){
+                        try {
+                            val geocoder =
+                                Geocoder(requireContext(), Locale.forLanguageTag(language))
+                            var addressList: List<Address> = geocoder.getFromLocation(
+                                it.data.lat,
+                                it.data.lon,
+                                1
+                            ) as List<Address>
+                            if (addressList.size != 0) {
                                 var area = addressList.get(0).countryName
                                 var country = addressList.get(0).adminArea
-                                binding.areaTxt.text = country +" , "+ area
-                            }else{
-                                binding.areaTxt.text =it.data.timezone
+                                binding.areaTxt.text = country + " , " + area
+                            } else {
+                                binding.areaTxt.text = it.data.timezone
                             }
-                        }catch (e : IOException){
+                        } catch (e: IOException) {
                             binding.areaTxt.text = it.data.timezone
-                        }catch (e: RemoteException){
+                        } catch (e: RemoteException) {
                             binding.areaTxt.text = it.data.timezone
                         }
 
-                        var simpleDate = SimpleDateFormat("dd/M/yyyy - hh:mm:a ",Locale.forLanguageTag(language))
+                        var simpleDate = SimpleDateFormat(
+                            "dd/M/yyyy - hh:mm:a ",
+                            Locale.forLanguageTag(language)
+                        )
                         var currentDate = simpleDate.format(it.data.current.dt.times(1000L))
                         binding.dateTxt.visibility = View.VISIBLE
                         binding.dateTxt.text = currentDate.toString()
@@ -107,26 +128,28 @@ class FavoriteWeather : Fragment() {
                         binding.weatherStatusTxt.text = it.data.current.weather.get(0).description
                         var temp = it.data.current.temp
                         var intTemp = Math.ceil(temp).toInt()
-                        // var tempCelucis = "$intTemp°C"
 
 
-                        var finalTemp=""
+                        var finalTemp = ""
 
-                        if(language.equals("en")) {
+                        if (language.equals("en")) {
                             finalTemp =
                                 if (units.equals("standard")) "$intTemp°K" else if (units.equals("metric")) "$intTemp°C" else "$intTemp°F"
-                        }else{
-                            finalTemp=  if (units.equals("standard")) "$intTemp°ك " else if (units.equals("metric")) "$intTemp°س " else "$intTemp°ف "
+                        } else {
+                            finalTemp =
+                                if (units.equals("standard")) "$intTemp°ك " else if (units.equals("metric")) "$intTemp°س " else "$intTemp°ف "
                         }
                         binding.weatherTempTxt.text = finalTemp
 
 
 
 
-                       /* val url =
-                            "https://openweathermap.org/img/wn/${it.data.current.weather.get(0).icon}@2x.png"
-                        Glide.with(requireContext()).load(url).into(binding.myFavWeatherIconImg)*/
-                        binding.myFavWeatherIconImg.setImageResource(MyWeatherIcons.mapIcon[it.data.current.weather.get(0).icon]!!)
+
+                        binding.myFavWeatherIconImg.setImageResource(
+                            MyWeatherIcons.mapIcon[it.data.current.weather.get(
+                                0
+                            ).icon]!!
+                        )
 
                         binding.detailsCard.visibility = View.VISIBLE
                         binding.pressureTxt.text = it.data.current.pressure.toString()
@@ -141,18 +164,25 @@ class FavoriteWeather : Fragment() {
                         var manger = LinearLayoutManager(requireContext())
                         manger.orientation = RecyclerView.HORIZONTAL
                         binding.hourlyWeatherRv.layoutManager = manger
-                        binding.hourlyWeatherRv.adapter = DayAdapter(requireContext(), it.data.hourly)
+                        binding.hourlyWeatherRv.adapter =
+                            DayAdapter(requireContext(), it.data.hourly)
                         var mangerVertical = LinearLayoutManager(requireContext())
                         mangerVertical.orientation = RecyclerView.VERTICAL
                         binding.weeklyWeatherRv.layoutManager = mangerVertical
-                        binding.weeklyWeatherRv.adapter = WeekAdapter(requireContext(), it.data.daily)
+                        binding.weeklyWeatherRv.adapter =
+                            WeekAdapter(requireContext(), it.data.daily)
 
                     }
-                    else ->{
+                    else -> {
                         loading.dismiss()
-                        var layout= binding.favWeatherConst
-                        val snackbar= Snackbar.make(layout,getString(R.string.api_error), Snackbar.ANIMATION_MODE_SLIDE)
-                        snackbar.view.background= ContextCompat.getDrawable(requireContext(),R.drawable.settingselectors)
+                        var layout = binding.favWeatherConst
+                        val snackbar = Snackbar.make(
+                            layout,
+                            getString(R.string.api_error),
+                            Snackbar.ANIMATION_MODE_SLIDE
+                        )
+                        snackbar.view.background =
+                            ContextCompat.getDrawable(requireContext(), R.drawable.settingselectors)
                         snackbar.show()
                     }
 
@@ -162,7 +192,6 @@ class FavoriteWeather : Fragment() {
             }
 
         }
-
 
 
     }
@@ -176,6 +205,7 @@ class FavoriteWeather : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        (activity as AppCompatActivity?)?.supportActionBar?.title=requireActivity().getString(R.string.favorites)
+        (activity as AppCompatActivity?)?.supportActionBar?.title =
+            requireActivity().getString(R.string.favorites)
     }
 }

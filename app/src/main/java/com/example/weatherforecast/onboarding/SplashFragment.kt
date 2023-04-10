@@ -23,8 +23,12 @@ class SplashFragment : Fragment() {
         (activity as AppCompatActivity?)?.supportActionBar?.hide()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding=DataBindingUtil.inflate(inflater, R.layout.fragment_splash, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_splash, container, false)
         binding.lifecycleOwner
         binding.splashLottie.animate().setDuration(10000).setStartDelay(1500);
         Handler().postDelayed({
@@ -43,7 +47,6 @@ class SplashFragment : Fragment() {
     }
 
 
-
     private fun onBoardingFinished(): Boolean {
         val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
         return sharedPref.getBoolean("Finished", false)
@@ -53,9 +56,9 @@ class SplashFragment : Fragment() {
         val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
         var lang = sharedPref.getString("language", "en").toString()
         var local = Locale(lang)
-        var config : Configuration=resources.configuration
+        var config: Configuration = resources.configuration
         config.setLocale(local)
-        var appResources=requireContext()?.resources
-        appResources?.updateConfiguration(config,appResources.displayMetrics)
+        var appResources = requireContext()?.resources
+        appResources?.updateConfiguration(config, appResources.displayMetrics)
     }
 }
