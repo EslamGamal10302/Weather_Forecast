@@ -11,20 +11,20 @@ Mobile Application that displays the weather status and the temperature from you
 
 ## Application Features 
 
- - [displays the weather status and the temperature using GPS](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
- - [displays the weather status and the temperature using Map](https://github.com/matiassingers/awesome-readme)
- - [add locations to favorite list to show thier weather any time ](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
- - [choose alert for a perodic time and date to notify user with weather spercial conditions](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
-  - [support english and arabic languages](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
+ - displays the weather status and the temperature using GPS
+ - displays the weather status and the temperature using Map
+ - add locations to favorite list to show thier weather any time 
+ - choose alert for a perodic time and date to notify user with weather spercial conditions
+  -support english and arabic languages
  
 
 
 ## Permissions
 
-- [Network Permission](https://www.github.com/octokatherine)
-- [Location Permission](https://www.github.com/octokatherine)
-- [Notification Permission](https://www.github.com/octokatherine)
-- [Alarm Permission](https://www.github.com/octokatherine)
+- Network Permission
+- Location Permission
+- Notification Permission
+- Alarm Permission
 
 
 ## Technologies
@@ -42,7 +42,7 @@ Mobile Application that displays the weather status and the temperature from you
 
 ## Android SDK
 
-[sdk version 33](https://choosealicense.com/licenses/mit/)
+sdk version 33
 
 
 ## Home
